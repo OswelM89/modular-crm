@@ -77,9 +77,6 @@ function App() {
       {/* Selector de idioma flotante */}
       <LanguageSelector />
       
-      {/* Selector de idioma flotante */}
-      <LanguageSelector />
-      
       <main className="flex-1 px-6 py-8">
         <div className="max-w-[1150px] mx-auto">
           {renderContent()}
