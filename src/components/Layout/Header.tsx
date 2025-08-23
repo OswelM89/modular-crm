@@ -70,7 +70,7 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
         <div className="max-w-[1150px] mx-auto flex items-center justify-between">
           <div className="flex items-center">
             <img 
-              src="/Modular-CRM-Logo.png" 
+              src="/Logo modular CRM.svg" 
               alt="Modular CRM" 
               className="h-6 sm:h-8 w-auto"
             />
