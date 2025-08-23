@@ -9,6 +9,7 @@ import { CompanyList } from './components/Companies/CompanyList';
 import { DealList } from './components/Deals/DealList';
 import { QuoteList } from './components/Quotes/QuoteList';
 import { QuoteBuilder } from './components/Quotes/QuoteBuilder';
+import { SettingsPage } from './components/Settings/SettingsPage';
 
 const sectionTitles = {
   dashboard: 'Dashboard',
@@ -96,17 +97,7 @@ function App() {
         );
       case 'settings':
         return (
-          <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div>
-                <h1 className="text-gray-900" style={{ fontSize: '1.875rem', fontWeight: '700' }}>Configuración</h1>
-                <p className="text-sm text-gray-600">Configuración del sistema</p>
-              </div>
-            </div>
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
-            <p className="text-gray-600">Módulo de configuración en desarrollo</p>
-            </div>
-          </div>
+          <SettingsPage onSectionChange={handleSectionChange} />
         );
       default:
         return <Dashboard />;
