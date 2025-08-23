@@ -11,6 +11,7 @@ import { QuoteList } from './components/Quotes/QuoteList';
 import { QuoteBuilder } from './components/Quotes/QuoteBuilder';
 import { SettingsPage } from './components/Settings/SettingsPage';
 import { ProfilePage } from './components/Profile/ProfilePage';
+import { ChatWidget } from './components/Chat/ChatWidget';
 
 const sectionTitles = {
   dashboard: 'Dashboard',
@@ -131,6 +132,9 @@ function App() {
           {renderContent()}
         </div>
       </main>
+      
+      {/* Chat Widget */}
+      <ChatWidget currentUser={user} />
       
       <Footer />
     </div>
