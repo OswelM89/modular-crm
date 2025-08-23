@@ -245,15 +245,6 @@ export function ChatWidget({ currentUser }: ChatWidgetProps) {
           <div className="flex items-center space-x-2">
             {activeUser && (
               <>
-                <button className="p-1 hover:bg-orange-600 transition-colors">
-                  <Phone className="w-4 h-4" />
-                </button>
-                <button className="p-1 hover:bg-orange-600 transition-colors">
-                  <Video className="w-4 h-4" />
-                </button>
-                <button className="p-1 hover:bg-orange-600 transition-colors">
-                  <MoreVertical className="w-4 h-4" />
-                </button>
               </>
             )}
             <button
@@ -274,7 +265,7 @@ export function ChatWidget({ currentUser }: ChatWidgetProps) {
         {!isMinimized && (
           <div className="flex h-80">
             {/* Lista de conversaciones */}
-            <div className={`${activeConversation ? 'w-32' : 'w-full'} border-r border-gray-200 flex flex-col`}>
+            <div className={`${activeConversation ? 'hidden' : 'w-full'} border-r border-gray-200 flex flex-col`}>
               {/* Búsqueda */}
               {!activeConversation && (
                 <div className="p-3 border-b border-gray-200">
@@ -317,28 +308,26 @@ export function ChatWidget({ currentUser }: ChatWidgetProps) {
                           <div className={`absolute -bottom-1 -right-1 w-3 h-3 border-2 border-white ${getStatusColor(user.status)}`}></div>
                         </div>
                         
-                        {!activeConversation && (
-                          <div className="ml-3 flex-1 min-w-0">
-                            <div className="flex items-center justify-between">
-                              <p className="text-sm font-medium text-gray-900 truncate">
-                                {user.firstName} {user.lastName}
-                              </p>
-                              {conversation.unreadCount > 0 && (
-                                <span className="bg-[#FF6200] text-white text-xs px-2 py-1 ml-2">
-                                  {conversation.unreadCount}
-                                </span>
-                              )}
-                            </div>
-                            {conversation.lastMessage && (
-                              <p className="text-xs text-gray-600 truncate">
-                                {conversation.lastMessage.content}
-                              </p>
-                            )}
-                            <p className="text-xs text-gray-500">
-                              {getStatusText(user)}
+                        <div className="ml-3 flex-1 min-w-0">
+                          <div className="flex items-center justify-between">
+                            <p className="text-sm font-medium text-gray-900 truncate">
+                              {user.firstName} {user.lastName}
                             </p>
+                            {conversation.unreadCount > 0 && (
+                              <span className="bg-[#FF6200] text-white text-xs px-2 py-1 ml-2">
+                                {conversation.unreadCount}
+                              </span>
+                            )}
                           </div>
-                        )}
+                          {conversation.lastMessage && (
+                            <p className="text-xs text-gray-600 truncate">
+                              {conversation.lastMessage.content}
+                            </p>
+                          )}
+                          <p className="text-xs text-gray-500">
+                            {getStatusText(user)}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   );
@@ -348,17 +337,11 @@ export function ChatWidget({ currentUser }: ChatWidgetProps) {
 
             {/* Área de chat */}
             {activeConversation && (
-              <div className="flex-1 flex flex-col">
+              <div className="w-full flex flex-col">
                 {/* Info del usuario activo */}
                 <div className="p-3 border-b border-gray-200 bg-gray-50">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
-                      <button
-                        onClick={() => setActiveConversation(null)}
-                        className="mr-2 p-1 hover:bg-gray-200 transition-colors"
-                      >
-                        ←
-                      </button>
                       <div className="relative">
                         <div className="w-8 h-8 bg-orange-100 flex items-center justify-center">
                           <span className="text-xs font-medium text-[#FF6200]">
@@ -367,7 +350,7 @@ export function ChatWidget({ currentUser }: ChatWidgetProps) {
                         </div>
                         <div className={`absolute -bottom-1 -right-1 w-2 h-2 border border-white ${getStatusColor(activeUser?.status || 'offline')}`}></div>
                       </div>
-                      <div className="ml-2">
+                      <div className="ml-3">
                         <p className="text-sm font-medium text-gray-900">
                           {activeUser?.firstName} {activeUser?.lastName}
                         </p>
