@@ -9,7 +9,14 @@ interface SettingsPageProps {
 }
 
 export function SettingsPage({ onSectionChange }: SettingsPageProps) {
-  const [currentPage, setCurrentPage] = React.useState<string>('main');
+  const [currentPage, setCurrentPage] = React.useState<string>(() => {
+    return localStorage.getItem('settingsCurrentPage') || 'main';
+  });
+
+  // Guardar la página actual en localStorage cuando cambie
+  React.useEffect(() => {
+    localStorage.setItem('settingsCurrentPage', currentPage);
+  }, [currentPage]);
 
   const settingsCards = [
     {
