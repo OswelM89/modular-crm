@@ -17,6 +17,7 @@ import { ProfilePage } from './components/Profile/ProfilePage';
 
 function AppContent() {
   const { user, profile, loading } = useAuthContext();
+}
 const sectionTitles = {
   dashboard: 'Dashboard',
   contacts: 'Contactos',
