@@ -69,11 +69,18 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
       <div className="px-6 py-4">
         <div className="max-w-[1150px] mx-auto flex items-center justify-between">
           <div className="flex items-center">
-            <img 
-              src="/Logo modular CRM.svg" 
-              alt="Modular CRM" 
-              className="h-6 sm:h-8 w-auto"
-            />
+            <div className="flex items-center">
+              <img 
+                src="/Logo modular CRM.svg" 
+                alt="Modular CRM" 
+                className="h-6 sm:h-8 w-auto"
+                onError={(e) => {
+                  console.log('Error loading logo:', e);
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+              <span className="text-xl font-bold text-white ml-2">CotizaLow.co</span>
+            </div>
           </div>
 
           {/* Right Actions */}
