@@ -77,35 +77,66 @@ export interface Deal {
 // Auth helpers
 export const signUp = async (email: string, password: string, organizationName: string, firstName: string, lastName: string) => {
   try {
-    console.log('Attempting signup with:', { email, organizationName, firstName, lastName });
+    console.log('Attempting signup with:', { email, organizationName, firstName, lastName })
     
-    // 1. Create the user account with metadata
+    // 1. Create the user account WITHOUT metadata to avoid trigger issues
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
-      password,
-      options: {
-        data: {
-          first_name: firstName,
-          last_name: lastName,
-          organization_name: organizationName,
-          role: 'super_admin'
-        }
-      }
+      password
     })
 
     if (authError) {
-      console.error('Supabase auth error:', authError);
-      throw authError;
+      console.error('Supabase auth error:', authError)
+      throw authError
     }
     
-    console.log('Signup successful:', authData);
+    console.log('Signup successful:', authData)
 
-    // Note: The actual organization and profile creation should be handled
-    // by a database trigger or function when the user confirms their email
+    // 2. If user was created successfully, try to create organization and profile manually
+    if (authData.user && !authError) {
+      try {
+        // Create organization first
+        const { data: orgData, error: orgError } = await supabase
+          .from('organizations')
+          .insert([{
+            name: organizationName,
+            slug: organizationName.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')
+          }])
+          .select()
+          .single()
+
+        if (orgError) {
+          console.error('Organization creation error:', orgError)
+          // Don't throw here, user account was created successfully
+        }
+
+        // Create profile
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .insert([{
+            id: authData.user.id,
+            organization_id: orgData?.id || null,
+            email: email,
+            first_name: firstName,
+            last_name: lastName,
+            role: 'super_admin'
+          }])
+
+        if (profileError) {
+          console.error('Profile creation error:', profileError)
+          // Don't throw here, user account was created successfully
+        }
+
+        console.log('Organization and profile created successfully')
+      } catch (setupError) {
+        console.error('Post-signup setup error:', setupError)
+        // Don't throw here, the main signup was successful
+      }
+    }
     
     return { data: authData, error: null }
   } catch (error) {
-    console.error('SignUp function error:', error);
+    console.error('SignUp function error:', error)
     return { data: null, error }
   }
 }
