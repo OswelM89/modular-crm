@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { X, Building2, Hash, Briefcase, Globe, Mail, Phone, MapPin, Map } from 'lucide-react';
+import { useTranslation } from '../../hooks/useTranslation';
 
 interface CompanyFormProps {
   isOpen: boolean;
@@ -33,6 +34,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
   });
 
   const [errors, setErrors] = useState<Partial<CompanyFormData>>({});
+  const { t } = useTranslation();
 
   // Bloquear scroll del body cuando el modal está abierto
   React.useEffect(() => {
@@ -60,19 +62,19 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
     const newErrors: Partial<CompanyFormData> = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = 'El nombre de la empresa es requerido';
+      newErrors.name = t('companies.form.nameRequired');
     }
 
     if (!formData.nit.trim()) {
-      newErrors.nit = 'El NIT es requerido';
+      newErrors.nit = t('companies.form.nitRequired');
     }
 
     if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Email inválido';
+      newErrors.email = t('companies.form.invalidEmail');
     }
 
     if (formData.website && !formData.website.startsWith('http')) {
-      newErrors.website = 'El sitio web debe comenzar con http:// o https://';
+      newErrors.website = t('companies.form.invalidWebsite');
     }
 
     setErrors(newErrors);
@@ -128,7 +130,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
       <div className="absolute right-0 inset-y-0 w-full sm:w-96 bg-white flex flex-col">
           {/* Header */}
           <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 flex-shrink-0">
-            <h2 className="text-xl font-semibold text-gray-900">Nueva Empresa</h2>
+            <h2 className="text-xl font-semibold text-gray-900">{t('companies.form.title')}</h2>
             <button
               onClick={handleClose}
               className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -143,7 +145,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
               {/* Nombre de la empresa */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Nombre de la empresa *
+                  {t('companies.form.name')} *
                 </label>
                 <div className="relative">
                   <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -154,7 +156,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
                     className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
                       errors.name ? 'border-red-500' : 'border-gray-300'
                     }`}
-                    placeholder="Nombre de la empresa"
+                    placeholder={t('companies.form.namePlaceholder')}
                   />
                 </div>
                 {errors.name && (
@@ -165,7 +167,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
               {/* NIT */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  NIT *
+                  {t('companies.form.nit')} *
                 </label>
                 <div className="relative">
                   <Hash className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -176,7 +178,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
                     className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
                       errors.nit ? 'border-red-500' : 'border-gray-300'
                     }`}
-                    placeholder="Número de identificación tributaria"
+                    placeholder={t('companies.form.nitPlaceholder')}
                   />
                 </div>
                 {errors.nit && (
@@ -187,7 +189,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
               {/* Sector */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Sector
+                  {t('companies.form.sector')}
                 </label>
                 <div className="relative">
                   <Briefcase className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -196,7 +198,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
                     value={formData.sector}
                     onChange={(e) => handleInputChange('sector', e.target.value)}
                     className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
-                    placeholder="Ej: Tecnología, Manufactura, Servicios"
+                    placeholder={t('companies.form.sectorPlaceholder')}
                   />
                 </div>
               </div>
@@ -204,7 +206,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
               {/* Sitio Web */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Sitio Web
+                  {t('companies.form.website')}
                 </label>
                 <div className="relative">
                   <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -215,7 +217,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
                     className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
                       errors.website ? 'border-red-500' : 'border-gray-300'
                     }`}
-                    placeholder="https://www.empresa.com"
+                    placeholder={t('companies.form.websitePlaceholder')}
                   />
                 </div>
                 {errors.website && (
@@ -226,7 +228,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
               {/* Email Principal */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email Principal
+                  {t('companies.form.email')}
                 </label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -237,7 +239,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
                     className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
                       errors.email ? 'border-red-500' : 'border-gray-300'
                     }`}
-                    placeholder="info@empresa.com"
+                    placeholder={t('companies.form.emailPlaceholder')}
                   />
                 </div>
                 {errors.email && (
@@ -248,7 +250,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
               {/* Teléfono Principal */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Teléfono Principal
+                  {t('companies.form.phone')}
                 </label>
                 <div className="relative">
                   <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -257,7 +259,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
                     value={formData.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
                     className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
-                    placeholder="+52 55 1234 5678"
+                    placeholder={t('companies.form.phonePlaceholder')}
                   />
                 </div>
               </div>
@@ -265,7 +267,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
               {/* Dirección Principal */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Dirección Principal
+                  {t('companies.form.address')}
                 </label>
                 <div className="relative">
                   <MapPin className="absolute left-3 top-3 text-gray-400 w-4 h-4" />
@@ -274,7 +276,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
                     value={formData.address}
                     onChange={(e) => handleInputChange('address', e.target.value)}
                     className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
-                    placeholder="Dirección completa de la empresa"
+                    placeholder={t('companies.form.addressPlaceholder')}
                   />
                 </div>
               </div>
@@ -282,7 +284,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
               {/* Ciudad Principal */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Ciudad Principal
+                  {t('companies.form.city')}
                 </label>
                 <div className="relative">
                   <Map className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -291,7 +293,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
                     value={formData.city}
                     onChange={(e) => handleInputChange('city', e.target.value)}
                     className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
-                    placeholder="Ciudad donde opera"
+                    placeholder={t('companies.form.cityPlaceholder')}
                   />
                 </div>
               </div>
@@ -299,7 +301,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
               {/* País */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  País
+                  {t('companies.form.country')}
                 </label>
                 <div className="relative">
                   <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -308,7 +310,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
                     value={formData.country}
                     onChange={(e) => handleInputChange('country', e.target.value)}
                     className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
-                    placeholder="País de operación"
+                    placeholder={t('companies.form.countryPlaceholder')}
                   />
                 </div>
               </div>
@@ -322,13 +324,13 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
                   onClick={handleClose}
                   className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
                 >
-                  Cancelar
+                  {t('companies.form.cancel')}
                 </button>
                 <button
                   type="submit"
                   className="flex-1 px-4 py-2 bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
                 >
-                  Crear Empresa
+                  {t('companies.form.create')}
                 </button>
               </div>
             </div>

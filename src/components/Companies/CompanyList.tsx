@@ -4,6 +4,7 @@ import { Company } from '../../types';
 import { SkeletonTable } from '../UI/SkeletonLoader';
 import { mockCompanies } from '../../data/mockData';
 import { CompanyForm, CompanyFormData } from './CompanyForm';
+import { useTranslation } from '../../hooks/useTranslation';
 
 export function CompanyList() {
   const [loading, setLoading] = useState(true);
@@ -11,6 +12,7 @@ export function CompanyList() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
   const [showCompanyForm, setShowCompanyForm] = useState(false);
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1300);
@@ -107,15 +109,15 @@ export function CompanyList() {
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900">Empresas</h3>
-            <p className="text-sm text-gray-600">Administra tu cartera de clientes empresariales</p>
+            <h3 className="text-lg font-semibold text-gray-900">{t('companies.title')}</h3>
+            <p className="text-sm text-gray-600">{t('companies.subtitle')}</p>
           </div>
           <button 
             onClick={() => setShowCompanyForm(true)}
             className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
           >
             <Plus className="w-4 h-4 mr-2" />
-            Nueva Empresa
+            {t('companies.new')}
           </button>
         </div>
         <SkeletonTable />
@@ -127,14 +129,14 @@ export function CompanyList() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900">Empresas</h3>
-          <p className="text-sm text-gray-600">Administra tu cartera de clientes empresariales</p>
+          <h3 className="text-lg font-semibold text-gray-900">{t('companies.title')}</h3>
+          <p className="text-sm text-gray-600">{t('companies.subtitle')}</p>
         </div>
         <div className="flex items-center gap-3">
           {selectedCompanies.length > 0 && (
             <>
               <span className="text-sm text-gray-600">
-                {selectedCompanies.length} seleccionado(s)
+                {selectedCompanies.length} {t('contacts.selected')}
               </span>
               <button
                 onClick={handleDownloadSelected}
@@ -143,7 +145,7 @@ export function CompanyList() {
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
-                Descargar
+                {t('contacts.download')}
               </button>
               <button
                 onClick={handleDeleteSelected}
@@ -152,7 +154,7 @@ export function CompanyList() {
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                 </svg>
-                Eliminar
+                {t('contacts.delete')}
               </button>
             </>
           )}
@@ -161,7 +163,7 @@ export function CompanyList() {
             className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
           >
             <Plus className="w-4 h-4 mr-2" />
-            Nueva Empresa
+            {t('companies.new')}
           </button>
         </div>
       </div>
@@ -170,7 +172,7 @@ export function CompanyList() {
         <div className="p-6 border-b border-gray-200">
           <input
             type="text"
-            placeholder="Buscar empresas..."
+            placeholder={t('companies.search')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
            className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"

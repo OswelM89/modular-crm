@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, User, Building2, Mail, Phone, Briefcase, Upload, File, Search, ChevronDown } from 'lucide-react';
 import { mockCompanies } from '../../data/mockData';
+import { useTranslation } from '../../hooks/useTranslation';
 
 interface ContactFormProps {
   isOpen: boolean;
@@ -34,6 +35,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
   const [errors, setErrors] = useState<Partial<ContactFormData>>({});
   const [showCompanyDropdown, setShowCompanyDropdown] = useState(false);
   const [companySearch, setCompanySearch] = useState('');
+  const { t } = useTranslation();
 
   // Filtrar empresas por búsqueda
   const filteredCompanies = mockCompanies.filter(company =>
@@ -87,15 +89,15 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
     const newErrors: Partial<ContactFormData> = {};
 
     if (!formData.firstName.trim()) {
-      newErrors.firstName = 'El nombre es requerido';
+      newErrors.firstName = t('contacts.form.firstNameRequired');
     }
 
     if (!formData.lastName.trim()) {
-      newErrors.lastName = 'El apellido es requerido';
+      newErrors.lastName = t('contacts.form.lastNameRequired');
     }
 
     if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Email inválido';
+      newErrors.email = t('contacts.form.invalidEmail');
     }
 
     setErrors(newErrors);
@@ -149,7 +151,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
       <div className="absolute right-0 inset-y-0 w-full sm:w-96 bg-white flex flex-col">
           {/* Header */}
           <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 flex-shrink-0">
-            <h2 className="text-xl font-semibold text-gray-900">Nuevo Contacto</h2>
+            <h2 className="text-xl font-semibold text-gray-900">{t('contacts.form.title')}</h2>
             <button
               onClick={handleClose}
               className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -165,7 +167,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Nombre *
+                    {t('contacts.form.firstName')} *
                   </label>
                   <div className="relative">
                     <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -176,7 +178,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                      className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
                         errors.firstName ? 'border-red-500' : 'border-gray-300'
                       }`}
-                      placeholder="Nombre"
+                      placeholder={t('contacts.form.firstNamePlaceholder')}
                     />
                   </div>
                   {errors.firstName && (
@@ -186,7 +188,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Apellido *
+                    {t('contacts.form.lastName')} *
                   </label>
                   <input
                     type="text"
@@ -195,7 +197,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                    className={`w-full px-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
                       errors.lastName ? 'border-red-500' : 'border-gray-300'
                     }`}
-                    placeholder="Apellido"
+                    placeholder={t('contacts.form.lastNamePlaceholder')}
                   />
                   {errors.lastName && (
                     <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>
@@ -206,7 +208,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
               {/* Cédula de Identidad */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Cédula de Identidad
+                  {t('contacts.form.idNumber')}
                 </label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -215,7 +217,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                     value={formData.idNumber}
                     onChange={(e) => handleInputChange('idNumber', e.target.value)}
                     className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
-                    placeholder="Número de cédula"
+                    placeholder={t('contacts.form.idNumberPlaceholder')}
                   />
                 </div>
               </div>
@@ -223,7 +225,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
               {/* Empresa */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Empresa
+                  {t('contacts.form.company')}
                 </label>
                 <div className="relative" onClick={() => setShowCompanyDropdown(!showCompanyDropdown)}>
                   <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -231,7 +233,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                   <div
                     className="w-full pl-10 pr-10 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent cursor-pointer bg-white"
                   >
-                    {selectedCompany ? selectedCompany.name : 'Seleccionar empresa...'}
+                    {selectedCompany ? selectedCompany.name : t('contacts.form.selectCompany')}
                   </div>
                   
                   {showCompanyDropdown && (
@@ -244,7 +246,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                             value={companySearch}
                             onChange={(e) => setCompanySearch(e.target.value)}
                             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
-                            placeholder="Buscar empresa..."
+                            placeholder={t('contacts.form.searchCompany')}
                             onClick={(e) => e.stopPropagation()}
                           />
                         </div>
@@ -258,7 +260,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                           className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center text-gray-500"
                         >
                           <Building2 className="w-4 h-4 text-gray-400 mr-3" />
-                          <div>Sin empresa</div>
+                          <div>{t('contacts.form.noCompany')}</div>
                         </div>
                         {filteredCompanies.length > 0 ? (
                           filteredCompanies.map((company) => (
@@ -279,7 +281,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                           ))
                         ) : (
                           <div className="px-4 py-2 text-gray-500 text-center">
-                            No se encontraron empresas
+                            {t('contacts.form.noCompaniesFound')}
                           </div>
                         )}
                       </div>
@@ -291,7 +293,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
               {/* Cargo */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Cargo
+                  {t('contacts.form.position')}
                 </label>
                 <div className="relative">
                   <Briefcase className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -300,7 +302,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                     value={formData.position}
                     onChange={(e) => handleInputChange('position', e.target.value)}
                    className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
-                    placeholder="Cargo o posición"
+                    placeholder={t('contacts.form.positionPlaceholder')}
                   />
                 </div>
               </div>
@@ -308,7 +310,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
               {/* Email */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email
+                  {t('contacts.form.email')}
                 </label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -319,7 +321,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                    className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
                       errors.email ? 'border-red-500' : 'border-gray-300'
                     }`}
-                    placeholder="correo@ejemplo.com"
+                    placeholder={t('contacts.form.emailPlaceholder')}
                   />
                 </div>
                 {errors.email && (
@@ -330,7 +332,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
               {/* Teléfono */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Teléfono
+                  {t('contacts.form.phone')}
                 </label>
                 <div className="relative">
                   <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -339,7 +341,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                     value={formData.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
                    className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
-                    placeholder="+52 55 1234 5678"
+                    placeholder={t('contacts.form.phonePlaceholder')}
                   />
                 </div>
               </div>
@@ -347,7 +349,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
               {/* Documento Fiscal */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Documento Fiscal
+                  {t('contacts.form.taxDocument')}
                 </label>
                 <div className="border-2 border-dashed border-gray-300 p-4 hover:border-[#FF6200] transition-colors">
                   <input
@@ -371,10 +373,10 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                         <Upload className="w-8 h-8 text-gray-400" />
                         <div className="text-center">
                           <p className="text-sm font-medium text-gray-900">
-                            Subir documento fiscal
+                            {t('contacts.form.uploadDocument')}
                           </p>
                           <p className="text-xs text-gray-500">
-                            PDF, JPG, PNG, DOC (máx. 10MB)
+                            {t('contacts.form.fileTypes')}
                           </p>
                         </div>
                       </>
@@ -386,7 +388,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                       onClick={() => handleFileChange(null)}
                       className="mt-2 text-xs text-red-600 hover:text-red-800 transition-colors"
                     >
-                      Remover archivo
+                      {t('contacts.form.removeFile')}
                     </button>
                   )}
                 </div>
@@ -401,13 +403,13 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                   onClick={handleClose}
                   className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
                 >
-                  Cancelar
+                  {t('contacts.form.cancel')}
                 </button>
                 <button
                   type="submit"
                   className="flex-1 px-4 py-2 bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
                 >
-                  Crear Contacto
+                  {t('contacts.form.create')}
                 </button>
               </div>
             </div>

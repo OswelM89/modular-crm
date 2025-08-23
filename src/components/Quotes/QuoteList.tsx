@@ -3,12 +3,14 @@ import { Plus, Calendar, DollarSign, User, Building2, FileText, Edit, Trash2, Ey
 import { Quote } from '../../types';
 import { SkeletonTable } from '../UI/SkeletonLoader';
 import { mockQuotes } from '../../data/mockData';
+import { useTranslation } from '../../hooks/useTranslation';
 
 export function QuoteList() {
   const [loading, setLoading] = useState(true);
   const [quotes, setQuotes] = useState<Quote[]>(mockQuotes);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<string>('all');
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1100);
@@ -66,12 +68,12 @@ export function QuoteList() {
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900">Cotizaciones</h3>
-            <p className="text-sm text-gray-600">Crea y gestiona cotizaciones profesionales</p>
+            <h3 className="text-lg font-semibold text-gray-900">{t('quotes.title')}</h3>
+            <p className="text-sm text-gray-600">{t('quotes.subtitle')}</p>
           </div>
           <button className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors">
             <Plus className="w-4 h-4 mr-2" />
-            Nueva Cotización
+            {t('quotes.new')}
           </button>
         </div>
         <SkeletonTable />
@@ -83,12 +85,12 @@ export function QuoteList() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900">Cotizaciones</h3>
-          <p className="text-sm text-gray-600">Crea y gestiona cotizaciones profesionales</p>
+          <h3 className="text-lg font-semibold text-gray-900">{t('quotes.title')}</h3>
+          <p className="text-sm text-gray-600">{t('quotes.subtitle')}</p>
         </div>
         <button className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors">
           <Plus className="w-4 h-4 mr-2" />
-          Nueva Cotización
+          {t('quotes.new')}
         </button>
       </div>
 
@@ -97,7 +99,7 @@ export function QuoteList() {
           <div className="flex flex-col sm:flex-row gap-4">
             <input
               type="text"
-              placeholder="Buscar cotizaciones..."
+              placeholder={t('quotes.search')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
              className="flex-1 px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"

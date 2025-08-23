@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Search, Bell, User, ChevronDown, Menu, X } from 'lucide-react';
+import { useTranslation } from '../../hooks/useTranslation';
 
 interface HeaderProps {
   activeSection: string;
@@ -7,18 +8,19 @@ interface HeaderProps {
 }
 
 const navigation = [
-  { id: 'dashboard', name: 'Dashboard' },
-  { id: 'contacts', name: 'Contactos' },
-  { id: 'companies', name: 'Empresas' },
-  { id: 'deals', name: 'Negocios' },
-  { id: 'quotes', name: 'Cotizaciones' },
-  { id: 'pipeline', name: 'Pipeline' },
-  { id: 'reports', name: 'Novedades' },
+  { id: 'dashboard', nameKey: 'nav.dashboard' },
+  { id: 'contacts', nameKey: 'nav.contacts' },
+  { id: 'companies', nameKey: 'nav.companies' },
+  { id: 'deals', nameKey: 'nav.deals' },
+  { id: 'quotes', nameKey: 'nav.quotes' },
+  { id: 'pipeline', nameKey: 'nav.pipeline' },
+  { id: 'reports', nameKey: 'nav.reports' },
 ];
 
 export function Header({ activeSection, onSectionChange }: HeaderProps) {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const { t } = useTranslation();
 
   const toggleProfileDropdown = () => {
     setShowProfileDropdown(!showProfileDropdown);
@@ -90,7 +92,7 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <input
                 type="text"
-                placeholder="Buscar..."
+                placeholder={t('search.placeholder')}
                className="pl-10 pr-4 py-2 bg-[#21262d] border border-gray-600 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent text-white placeholder-gray-400 w-48 lg:w-64"
               />
             </div>
@@ -137,11 +139,11 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
                     onClick={() => onSectionChange('settings')}
                     className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
                   >
-                    Configuración
+                    {t('profile.settings')}
                   </button>
                   <hr className="my-1 border-gray-200" />
                   <button className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors">
-                    Salir
+                    {t('profile.logout')}
                   </button>
                 </div>
               )}
@@ -172,7 +174,7 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
                     : 'text-gray-300 border-transparent hover:text-white hover:border-gray-400'
                 }`}
               >
-                {item.name}
+                {t(item.nameKey)}
               </button>
             ))}
           </div>
@@ -197,7 +199,7 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
                       : 'text-gray-300 hover:text-white hover:bg-gray-600'
                   }`}
                 >
-                  {item.name}
+                  {t(item.nameKey)}
                 </button>
               ))}
             </div>

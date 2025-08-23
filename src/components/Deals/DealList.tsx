@@ -4,6 +4,7 @@ import { Deal } from '../../types';
 import { SkeletonTable } from '../UI/SkeletonLoader';
 import { mockDeals } from '../../data/mockData';
 import { DealForm, DealFormData } from './DealForm';
+import { useTranslation } from '../../hooks/useTranslation';
 
 export function DealList() {
   const [loading, setLoading] = useState(true);
@@ -12,6 +13,7 @@ export function DealList() {
   const [filterStage, setFilterStage] = useState<string>('all');
   const [selectedDeals, setSelectedDeals] = useState<string[]>([]);
   const [showDealForm, setShowDealForm] = useState(false);
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1400);
@@ -152,15 +154,15 @@ export function DealList() {
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900">Negocios</h3>
-            <p className="text-sm text-gray-600">Administra tu pipeline de ventas</p>
+            <h3 className="text-lg font-semibold text-gray-900">{t('deals.title')}</h3>
+            <p className="text-sm text-gray-600">{t('deals.subtitle')}</p>
           </div>
           <button 
             onClick={() => setShowDealForm(true)}
             className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
           >
             <Plus className="w-4 h-4 mr-2" />
-            Nuevo Negocio
+            {t('deals.new')}
           </button>
         </div>
         <SkeletonTable />
@@ -172,14 +174,14 @@ export function DealList() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900">Negocios</h3>
-          <p className="text-sm text-gray-600">Administra tu pipeline de ventas</p>
+          <h3 className="text-lg font-semibold text-gray-900">{t('deals.title')}</h3>
+          <p className="text-sm text-gray-600">{t('deals.subtitle')}</p>
         </div>
         <div className="flex items-center gap-3">
           {selectedDeals.length > 0 && (
             <>
               <span className="text-sm text-gray-600">
-                {selectedDeals.length} seleccionado(s)
+                {selectedDeals.length} {t('contacts.selected')}
               </span>
               <button
                 onClick={handleDownloadSelected}
@@ -188,14 +190,14 @@ export function DealList() {
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
-                Descargar
+                {t('contacts.download')}
               </button>
               <button
                 onClick={handleDeleteSelected}
                 className="inline-flex items-center px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
               >
                 <Trash2 className="w-4 h-4 mr-2" />
-                Eliminar
+                {t('contacts.delete')}
               </button>
             </>
           )}
@@ -204,7 +206,7 @@ export function DealList() {
             className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
           >
             <Plus className="w-4 h-4 mr-2" />
-            Nuevo Negocio
+            {t('deals.new')}
           </button>
         </div>
       </div>
@@ -214,7 +216,7 @@ export function DealList() {
           <div className="flex flex-col sm:flex-row gap-4">
             <input
               type="text"
-              placeholder="Buscar negocios..."
+              placeholder={t('deals.search')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
              className="flex-1 px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"

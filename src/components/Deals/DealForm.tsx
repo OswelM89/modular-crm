@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Target, FileText, Building2, User, DollarSign, Calendar, UserCheck, Users, Flag, MessageSquare, Search, ChevronDown } from 'lucide-react';
 import { mockCompanies, mockContacts } from '../../data/mockData';
+import { useTranslation } from '../../hooks/useTranslation';
 
 interface DealFormProps {
   isOpen: boolean;
@@ -42,6 +43,7 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
   const [showContactDropdown, setShowContactDropdown] = useState(false);
   const [companySearch, setCompanySearch] = useState('');
   const [contactSearch, setContactSearch] = useState('');
+  const { t } = useTranslation();
 
   // Bloquear scroll del body cuando el modal está abierto
   React.useEffect(() => {
@@ -96,36 +98,36 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
     const newErrors: Partial<DealFormData> = {};
 
     if (!formData.title.trim()) {
-      newErrors.title = 'El título es requerido';
+      newErrors.title = t('deals.form.titleRequired');
     }
 
     if (!formData.description.trim()) {
-      newErrors.description = 'La descripción es requerida';
+      newErrors.description = t('deals.form.descriptionRequired');
     }
 
     if (!formData.pipeline) {
-      newErrors.pipeline = 'Debe seleccionar un pipeline';
+      newErrors.pipeline = t('deals.form.pipelineRequired');
     }
 
     if (!formData.companyId && !formData.contactId) {
-      newErrors.companyId = 'Debe seleccionar una empresa o contacto';
-      newErrors.contactId = 'Debe seleccionar una empresa o contacto';
+      newErrors.companyId = t('deals.form.companyOrContactRequired');
+      newErrors.contactId = t('deals.form.companyOrContactRequired');
     }
 
     if (!formData.estimatedValue || formData.estimatedValue <= 0) {
-      newErrors.estimatedValue = 'El valor estimado debe ser mayor a 0';
+      newErrors.estimatedValue = t('deals.form.valueRequired');
     }
 
     if (!formData.estimatedCloseDate) {
-      newErrors.estimatedCloseDate = 'La fecha de cierre es requerida';
+      newErrors.estimatedCloseDate = t('deals.form.dateRequired');
     }
 
     if (!formData.dealType) {
-      newErrors.dealType = 'Debe seleccionar el tipo de negocio';
+      newErrors.dealType = t('deals.form.typeRequired');
     }
 
     if (!formData.priority) {
-      newErrors.priority = 'Debe seleccionar la prioridad';
+      newErrors.priority = t('deals.form.priorityRequired');
     }
 
     setErrors(newErrors);
@@ -194,7 +196,7 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
       <div className="absolute right-0 inset-y-0 w-full sm:w-96 bg-white flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 flex-shrink-0">
-          <h2 className="text-xl font-semibold text-gray-900">Nuevo Negocio</h2>
+          <h2 className="text-xl font-semibold text-gray-900">{t('deals.form.title')}</h2>
           <button
             onClick={handleClose}
             className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -209,7 +211,7 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
             {/* Título */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Título *
+                {t('deals.form.dealTitle')} *
               </label>
               <div className="relative">
                 <Target className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -220,7 +222,7 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
                   className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
                     errors.title ? 'border-red-500' : 'border-gray-300'
                   }`}
-                  placeholder="Título del negocio"
+                  placeholder={t('deals.form.titlePlaceholder')}
                 />
               </div>
               {errors.title && (
@@ -231,7 +233,7 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
             {/* Descripción */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Descripción *
+                {t('deals.form.description')} *
               </label>
               <div className="relative">
                 <FileText className="absolute left-3 top-3 text-gray-400 w-4 h-4" />
@@ -242,7 +244,7 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
                   className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
                     errors.description ? 'border-red-500' : 'border-gray-300'
                   }`}
-                  placeholder="Descripción del negocio"
+                  placeholder={t('deals.form.descriptionPlaceholder')}
                 />
               </div>
               {errors.description && (
@@ -253,7 +255,7 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
             {/* Pipeline */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Pipeline *
+                {t('deals.form.pipeline')} *
               </label>
               <select
                 value={formData.pipeline}
@@ -262,7 +264,7 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
                   errors.pipeline ? 'border-red-500' : 'border-gray-300'
                 }`}
               >
-                <option value="">Seleccionar pipeline...</option>
+                <option value="">{t('deals.form.selectPipeline')}</option>
                 <option value="ventas">Pipeline de Ventas</option>
                 <option value="marketing">Pipeline de Marketing</option>
                 <option value="soporte">Pipeline de Soporte</option>
@@ -275,7 +277,7 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
             {/* Empresa */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Empresa *
+                {t('deals.form.company')} *
               </label>
               <div className="relative" onClick={() => setShowCompanyDropdown(!showCompanyDropdown)}>
                 <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -285,7 +287,7 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
                     errors.companyId ? 'border-red-500' : 'border-gray-300'
                   } cursor-pointer bg-white`}
                 >
-                  {selectedCompany ? selectedCompany.name : 'Seleccionar empresa...'}
+                  {selectedCompany ? selectedCompany.name : t('deals.form.selectCompany')}
                 </div>
                 
                 {showCompanyDropdown && (
@@ -298,7 +300,7 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
                           value={companySearch}
                           onChange={(e) => setCompanySearch(e.target.value)}
                           className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
-                          placeholder="Buscar empresa..."
+                          placeholder={t('deals.form.searchCompany')}
                           onClick={(e) => e.stopPropagation()}
                         />
                       </div>
@@ -323,7 +325,7 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
                         ))
                       ) : (
                         <div className="px-4 py-2 text-gray-500 text-center">
-                          No se encontraron empresas
+                          {t('deals.form.noCompaniesFound')}
                         </div>
                       )}
                     </div>
@@ -338,7 +340,7 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
             {/* Contacto */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Contacto *
+                {t('deals.form.contact')} *
               </label>
               <div className="relative" onClick={() => setShowContactDropdown(!showContactDropdown)}>
                 <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -348,7 +350,7 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
                     errors.contactId ? 'border-red-500' : 'border-gray-300'
                   } cursor-pointer bg-white`}
                 >
-                  {selectedContact ? `${selectedContact.firstName} ${selectedContact.lastName}` : 'Seleccionar contacto...'}
+                  {selectedContact ? `${selectedContact.firstName} ${selectedContact.lastName}` : t('deals.form.selectContact')}
                 </div>
                 
                 {showContactDropdown && (
@@ -361,7 +363,7 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
                           value={contactSearch}
                           onChange={(e) => setContactSearch(e.target.value)}
                           className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
-                          placeholder="Buscar contacto..."
+                          placeholder={t('deals.form.searchContact')}
                           onClick={(e) => e.stopPropagation()}
                         />
                       </div>
@@ -392,7 +394,7 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
                         ))
                       ) : (
                         <div className="px-4 py-2 text-gray-500 text-center">
-                          No se encontraron contactos
+                          {t('deals.form.noContactsFound')}
                         </div>
                       )}
                     </div>
@@ -407,7 +409,7 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
             {/* Valor Estimado */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Valor Estimado *
+                {t('deals.form.estimatedValue')} *
               </label>
               <div className="relative">
                 <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -431,7 +433,7 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
             {/* Fecha de Cierre Estimada */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Fecha de Cierre Estimada *
+                {t('deals.form.estimatedCloseDate')} *
               </label>
               <div className="relative">
                 <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -452,7 +454,7 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
             {/* Responsable */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Responsable
+                {t('deals.form.responsible')}
               </label>
               <div className="relative">
                 <UserCheck className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -461,7 +463,7 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
                   onChange={(e) => handleInputChange('responsible', e.target.value)}
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
                 >
-                  <option value="">Yo (por defecto)</option>
+                  <option value="">{t('deals.form.defaultResponsible')}</option>
                   <option value="juan">Juan Pérez</option>
                   <option value="maria">María García</option>
                   <option value="carlos">Carlos López</option>
@@ -472,7 +474,7 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
             {/* Tipo de Negocio */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Tipo de Negocio *
+                {t('deals.form.dealType')} *
               </label>
               <div className="relative">
                 <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -483,9 +485,9 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
                     errors.dealType ? 'border-red-500' : 'border-gray-300'
                   }`}
                 >
-                  <option value="">Seleccionar tipo...</option>
-                  <option value="nuevo">Cliente Nuevo</option>
-                  <option value="existente">Cliente Existente</option>
+                  <option value="">{t('deals.form.selectType')}</option>
+                  <option value="nuevo">{t('deals.form.newClient')}</option>
+                  <option value="existente">{t('deals.form.existingClient')}</option>
                 </select>
               </div>
               {errors.dealType && (
@@ -496,7 +498,7 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
             {/* Prioridad */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Prioridad *
+                {t('deals.form.priority')} *
               </label>
               <div className="relative">
                 <Flag className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -507,10 +509,10 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
                     errors.priority ? 'border-red-500' : 'border-gray-300'
                   }`}
                 >
-                  <option value="">Seleccionar prioridad...</option>
-                  <option value="alta">🔴 Alta</option>
-                  <option value="media">🟡 Media</option>
-                  <option value="baja">🟢 Baja</option>
+                  <option value="">{t('deals.form.selectPriority')}</option>
+                  <option value="alta">{t('deals.form.highPriority')}</option>
+                  <option value="media">{t('deals.form.mediumPriority')}</option>
+                  <option value="baja">{t('deals.form.lowPriority')}</option>
                 </select>
               </div>
               {errors.priority && (
@@ -521,7 +523,7 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
             {/* Notas */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Notas
+                {t('deals.form.notes')}
               </label>
               <div className="relative">
                 <MessageSquare className="absolute left-3 top-3 text-gray-400 w-4 h-4" />
@@ -530,7 +532,7 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
                   value={formData.notes}
                   onChange={(e) => handleInputChange('notes', e.target.value)}
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
-                  placeholder="Notas adicionales sobre el negocio..."
+                  placeholder={t('deals.form.notesPlaceholder')}
                 />
               </div>
             </div>
@@ -544,13 +546,13 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
                 onClick={handleClose}
                 className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
               >
-                Cancelar
+                {t('deals.form.cancel')}
               </button>
               <button
                 type="submit"
                 className="flex-1 px-4 py-2 bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
               >
-                Crear Negocio
+                {t('deals.form.create')}
               </button>
             </div>
           </div>

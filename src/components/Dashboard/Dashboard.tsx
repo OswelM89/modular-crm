@@ -3,11 +3,13 @@ import { Users, Building2, Target, FileText, DollarSign, TrendingUp } from 'luci
 import { StatsCard } from './StatsCard';
 import { SkeletonCard } from '../UI/SkeletonLoader';
 import { mockDashboardStats, mockDeals, mockQuotes } from '../../data/mockData';
+import { useTranslation } from '../../hooks/useTranslation';
 
 export function Dashboard() {
   const [loading, setLoading] = React.useState(true);
   const recentDeals = mockDeals.slice(0, 3);
   const recentQuotes = mockQuotes.slice(0, 3);
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1500);
@@ -64,40 +66,40 @@ export function Dashboard() {
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <StatsCard
-          title="Total Contactos"
+          title={t('dashboard.totalContacts')}
           value={mockDashboardStats.totalContacts}
           icon={Users}
           color="primary"
           trend={{ value: 12, isPositive: true }}
         />
         <StatsCard
-          title="Empresas"
+          title={t('dashboard.companies')}
           value={mockDashboardStats.totalCompanies}
           icon={Building2}
           color="success"
           trend={{ value: 8, isPositive: true }}
         />
         <StatsCard
-          title="Negocios Activos"
+          title={t('dashboard.activeDeals')}
           value={mockDashboardStats.activeDeals}
           icon={Target}
           color="warning"
         />
         <StatsCard
-          title="Cotizaciones Pendientes"
+          title={t('dashboard.pendingQuotes')}
           value={mockDashboardStats.pendingQuotes}
           icon={FileText}
           color="info"
         />
         <StatsCard
-          title="Ingresos del Mes"
+          title={t('dashboard.monthlyRevenue')}
           value={formatCurrency(mockDashboardStats.monthlyRevenue)}
           icon={DollarSign}
           color="success"
           trend={{ value: 25, isPositive: true }}
         />
         <StatsCard
-          title="Negocios Ganados"
+          title={t('dashboard.wonDeals')}
           value={mockDashboardStats.wonDeals}
           icon={TrendingUp}
           color="primary"
@@ -106,7 +108,7 @@ export function Dashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Negocios Recientes</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('dashboard.recentDeals')}</h3>
           <div className="space-y-4">
             {recentDeals.map((deal) => (
               <div key={deal.id} className="flex items-center justify-between p-4 bg-gray-50">
@@ -126,7 +128,7 @@ export function Dashboard() {
         </div>
 
         <div className="bg-white border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Cotizaciones Recientes</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('dashboard.recentQuotes')}</h3>
           <div className="space-y-4">
             {recentQuotes.map((quote) => (
               <div key={quote.id} className="flex items-center justify-between p-4 bg-gray-50">

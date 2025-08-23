@@ -5,6 +5,7 @@ import { SkeletonTable } from '../UI/SkeletonLoader';
 import { mockContacts } from '../../data/mockData';
 import { ContactForm, ContactFormData } from './ContactForm';
 import { ContactDetail } from './ContactDetail';
+import { useTranslation } from '../../hooks/useTranslation';
 
 export function ContactList() {
   const [loading, setLoading] = useState(true);
@@ -13,6 +14,7 @@ export function ContactList() {
   const [showContactForm, setShowContactForm] = useState(false);
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
   const [selectedContacts, setSelectedContacts] = useState<string[]>([]);
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1200);
@@ -146,15 +148,15 @@ export function ContactList() {
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900">Contactos</h3>
-            <p className="text-sm text-gray-600">Gestiona todos tus contactos de clientes</p>
+            <h3 className="text-lg font-semibold text-gray-900">{t('contacts.title')}</h3>
+            <p className="text-sm text-gray-600">{t('contacts.subtitle')}</p>
           </div>
           <button 
             onClick={() => setShowContactForm(true)}
             className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
           >
             <Plus className="w-4 h-4 mr-2" />
-            Nuevo Contacto
+            {t('contacts.new')}
           </button>
         </div>
         <SkeletonTable />
@@ -166,14 +168,14 @@ export function ContactList() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900">Contactos</h3>
-          <p className="text-sm text-gray-600">Gestiona todos tus contactos de clientes</p>
+          <h3 className="text-lg font-semibold text-gray-900">{t('contacts.title')}</h3>
+          <p className="text-sm text-gray-600">{t('contacts.subtitle')}</p>
         </div>
         <div className="flex items-center gap-3">
           {selectedContacts.length > 0 && (
             <>
               <span className="text-sm text-gray-600">
-                {selectedContacts.length} seleccionado(s)
+                {selectedContacts.length} {t('contacts.selected')}
               </span>
               <button
                 onClick={handleDownloadSelected}
@@ -182,14 +184,14 @@ export function ContactList() {
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
-                Descargar
+                {t('contacts.download')}
               </button>
               <button
                 onClick={handleDeleteSelected}
                 className="inline-flex items-center px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
               >
                 <Trash2 className="w-4 h-4 mr-2" />
-                Eliminar
+                {t('contacts.delete')}
               </button>
             </>
           )}
@@ -198,7 +200,7 @@ export function ContactList() {
             className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
           >
             <Plus className="w-4 h-4 mr-2" />
-            Nuevo Contacto
+            {t('contacts.new')}
           </button>
         </div>
       </div>
@@ -207,7 +209,7 @@ export function ContactList() {
         <div className="p-6 border-b border-gray-200">
           <input
             type="text"
-            placeholder="Buscar contactos..."
+            placeholder={t('contacts.search')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
            className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
