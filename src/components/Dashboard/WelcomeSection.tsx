@@ -59,6 +59,13 @@ export function WelcomeSection({ userName, onSectionChange }: WelcomeSectionProp
       color: 'bg-gray-400',
       available: false
     }
+    {
+      id: 'new-features',
+      name: 'Nuevas Funciones',
+      icon: Plus,
+      color: 'bg-gray-400',
+      available: false
+    }
   ];
 
   return (
@@ -74,7 +81,7 @@ export function WelcomeSection({ userName, onSectionChange }: WelcomeSectionProp
       </div>
 
       {/* Acciones rápidas */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+      <div className="grid grid-cols-3 gap-4 mb-6">
         {quickActions.map((action) => {
           const Icon = action.icon;
           return (
@@ -82,7 +89,7 @@ export function WelcomeSection({ userName, onSectionChange }: WelcomeSectionProp
               key={action.id}
               onClick={() => action.available && onSectionChange(action.id)}
               disabled={!action.available}
-              className={`flex flex-col items-center p-4 bg-[#212830] hover:bg-[#2a3441] transition-all duration-200 ${
+              className={`flex flex-col items-center p-4 bg-[#212830] ${
                 action.available 
                   ? 'cursor-pointer' 
                   : 'cursor-not-allowed opacity-60'
