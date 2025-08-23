@@ -105,7 +105,7 @@ export function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="bg-white border border-gray-200 p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Negocios Recientes</h3>
           <div className="space-y-4">
             {recentDeals.map((deal) => (
@@ -125,7 +125,7 @@ export function Dashboard() {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="bg-white border border-gray-200 p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Cotizaciones Recientes</h3>
           <div className="space-y-4">
             {recentQuotes.map((quote) => (
