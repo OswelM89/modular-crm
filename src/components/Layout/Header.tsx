@@ -91,7 +91,7 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
               <input
                 type="text"
                 placeholder="Buscar..."
-                className="pl-10 pr-4 py-2 bg-[#21262d] border border-gray-600 rounded-lg focus:ring-2 focus:ring-[#FF6200] focus:border-transparent text-white placeholder-gray-400 w-48 lg:w-64"
+                className="pl-10 pr-4 py-2 bg-[#21262d] border border-gray-600 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent text-white placeholder-gray-400 w-48 lg:w-64"
               />
             </div>
             
@@ -109,10 +109,10 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
               className="relative profile-dropdown"
             >
               <div 
-                className="flex items-center space-x-2 sm:space-x-3 cursor-pointer hover:bg-[#21262d] px-2 sm:px-3 py-2 rounded-lg transition-colors"
+                className="flex items-center space-x-2 sm:space-x-3 cursor-pointer hover:bg-[#21262d] px-2 sm:px-3 py-2 transition-colors"
                 onClick={toggleProfileDropdown}
               >
-                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-[#FF6200] rounded-full flex items-center justify-center">
+                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-[#FF6200] flex items-center justify-center">
                   <User className="w-4 h-4 text-white" />
                 </div>
                 <div className="text-left hidden sm:block">
@@ -122,7 +122,7 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
               </div>
               
               {showProfileDropdown && (
-                <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-200 py-2 z-50">
                   <div className="px-4 py-2 border-b border-gray-200">
                     <div className="text-sm font-medium text-gray-900">Juan Pérez</div>
                     <div className="text-xs text-gray-500">Org: #123456</div>
@@ -191,7 +191,7 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
                     onSectionChange(item.id);
                     setShowMobileMenu(false);
                   }}
-                  className={`block w-full text-left py-3 px-4 text-sm font-medium transition-all duration-200 rounded-lg ${
+                  className={`block w-full text-left py-3 px-4 text-sm font-medium transition-all duration-200 ${
                     activeSection === item.id
                       ? 'text-white bg-gray-600'
                       : 'text-gray-300 hover:text-white hover:bg-gray-600'

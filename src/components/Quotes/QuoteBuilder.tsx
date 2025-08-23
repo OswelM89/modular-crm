@@ -108,11 +108,11 @@ export function QuoteBuilder() {
           <p className="text-sm text-gray-600">Genera cotizaciones profesionales</p>
         </div>
         <div className="flex gap-2">
-          <button className="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+          <button className="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors">
             <Save className="w-4 h-4 mr-2" />
             Guardar Borrador
           </button>
-          <button className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <button className="inline-flex items-center px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 transition-colors">
             <Send className="w-4 h-4 mr-2" />
             Enviar Cotización
           </button>
@@ -121,7 +121,7 @@ export function QuoteBuilder() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="bg-white border border-gray-200 p-6">
             <h4 className="text-lg font-semibold text-gray-900 mb-4">Información General</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -130,7 +130,7 @@ export function QuoteBuilder() {
                 </label>
                 <input
                   type="text"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
                   placeholder="Ej: Sistema CRM Personalizado"
                 />
               </div>
@@ -140,14 +140,14 @@ export function QuoteBuilder() {
                 </label>
                 <input
                   type="date"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Cliente/Empresa
                 </label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6200] focus:border-transparent">
+                <select className="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent">
                   <option value="">Seleccionar cliente...</option>
                   <option value="1">TechCorp Solutions</option>
                   <option value="2">Innovate Marketing</option>
@@ -157,7 +157,7 @@ export function QuoteBuilder() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Contacto
                 </label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6200] focus:border-transparent">
+                <select className="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent">
                   <option value="">Seleccionar contacto...</option>
                   <option value="1">María González</option>
                   <option value="2">Carlos Rodríguez</option>
@@ -166,12 +166,12 @@ export function QuoteBuilder() {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="bg-white border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-4">
               <h4 className="text-lg font-semibold text-gray-900">Items de la Cotización</h4>
               <button
                 onClick={addItem}
-                className="inline-flex items-center px-3 py-2 bg-[#FF6200] text-white rounded-lg hover:bg-orange-600 transition-colors"
+                className="inline-flex items-center px-3 py-2 bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Agregar Item
@@ -180,7 +180,7 @@ export function QuoteBuilder() {
 
             <div className="space-y-4">
               {items.map((item, index) => (
-                <div key={item.id} className="grid grid-cols-12 gap-4 items-end p-4 bg-gray-50 rounded-lg">
+                <div key={item.id} className="grid grid-cols-12 gap-4 items-end p-4 bg-gray-50">
                   <div className="col-span-12 md:col-span-5">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Descripción
@@ -189,7 +189,7 @@ export function QuoteBuilder() {
                       type="text"
                       value={item.description}
                       onChange={(e) => updateItem(item.id, 'description', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
                       placeholder="Descripción del producto/servicio"
                     />
                   </div>
@@ -201,7 +201,7 @@ export function QuoteBuilder() {
                       type="number"
                       value={item.quantity}
                       onChange={(e) => updateItem(item.id, 'quantity', parseFloat(e.target.value) || 0)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
                       min="0"
                       step="1"
                     />
@@ -214,7 +214,7 @@ export function QuoteBuilder() {
                       type="number"
                       value={item.unitPrice}
                       onChange={(e) => updateItem(item.id, 'unitPrice', parseFloat(e.target.value) || 0)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
                       min="0"
                       step="0.01"
                     />
@@ -223,7 +223,7 @@ export function QuoteBuilder() {
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Total
                     </label>
-                    <div className="px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-900 font-medium">
+                    <div className="px-3 py-2 bg-gray-100 border border-gray-300 text-gray-900 font-medium">
                       {formatCurrency(item.total)}
                     </div>
                   </div>
@@ -243,7 +243,7 @@ export function QuoteBuilder() {
         </div>
 
         <div className="space-y-6">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="bg-white border border-gray-200 p-6">
             <div className="flex items-center mb-4">
               <Calculator className="w-5 h-5 text-[#FF6200] mr-2" />
               <h4 className="text-lg font-semibold text-gray-900">Resumen</h4>
@@ -262,7 +262,7 @@ export function QuoteBuilder() {
                     type="number"
                     value={taxRate}
                     onChange={(e) => setTaxRate(parseFloat(e.target.value) || 0)}
-                    className="w-16 px-2 py-1 border border-gray-300 rounded text-center text-xs"
+                    className="w-16 px-2 py-1 border border-gray-300 text-center text-xs"
                     min="0"
                     max="100"
                     step="0.1"
@@ -281,11 +281,11 @@ export function QuoteBuilder() {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="bg-white border border-gray-200 p-6">
             <h4 className="text-lg font-semibold text-gray-900 mb-4">Notas</h4>
             <textarea
               rows={4}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
               placeholder="Términos y condiciones, notas adicionales..."
             />
           </div>

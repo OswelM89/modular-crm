@@ -141,14 +141,14 @@ export function CompanyList() {
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+      <div className="bg-white border border-gray-200">
         <div className="p-6 border-b border-gray-200">
           <input
             type="text"
             placeholder="Buscar empresas..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
           />
         </div>
 

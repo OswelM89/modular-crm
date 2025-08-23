@@ -109,7 +109,7 @@ export function Dashboard() {
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Negocios Recientes</h3>
           <div className="space-y-4">
             {recentDeals.map((deal) => (
-              <div key={deal.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+              <div key={deal.id} className="flex items-center justify-between p-4 bg-gray-50">
                 <div className="flex-1">
                   <h4 className="font-medium text-gray-900">{deal.title}</h4>
                   <p className="text-sm text-gray-600">{deal.company?.name}</p>
@@ -125,11 +125,11 @@ export function Dashboard() {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="bg-white border border-gray-200 p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Cotizaciones Recientes</h3>
           <div className="space-y-4">
             {recentQuotes.map((quote) => (
-              <div key={quote.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+              <div key={quote.id} className="flex items-center justify-between p-4 bg-gray-50">
                 <div className="flex-1">
                   <h4 className="font-medium text-gray-900">{quote.quoteNumber}</h4>
                   <p className="text-sm text-gray-600">{quote.company?.name}</p>

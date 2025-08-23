@@ -108,7 +108,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
       />
       
       {/* Sidebar */}
-      <div className="absolute right-0 top-0 h-full w-full sm:w-96 bg-white shadow-xl transform transition-transform duration-300 ease-in-out flex flex-col">
+      <div className="absolute right-0 top-0 h-full w-full sm:w-96 bg-white transform transition-transform duration-300 ease-in-out flex flex-col">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
             <h2 className="text-xl font-semibold text-gray-900">Nuevo Contacto</h2>
@@ -135,7 +135,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                       type="text"
                       value={formData.firstName}
                       onChange={(e) => handleInputChange('firstName', e.target.value)}
-                      className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                      className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
                         errors.firstName ? 'border-red-500' : 'border-gray-300'
                       }`}
                       placeholder="Nombre"
@@ -154,7 +154,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                     type="text"
                     value={formData.lastName}
                     onChange={(e) => handleInputChange('lastName', e.target.value)}
-                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                    className={`w-full px-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
                       errors.lastName ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder="Apellido"
@@ -176,7 +176,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                     type="text"
                     value={formData.company}
                     onChange={(e) => handleInputChange('company', e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
                     placeholder="Nombre de la empresa"
                   />
                 </div>
@@ -193,7 +193,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                     type="text"
                     value={formData.position}
                     onChange={(e) => handleInputChange('position', e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
                     placeholder="Cargo o posición"
                   />
                 </div>
@@ -210,7 +210,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                     type="email"
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
-                    className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                    className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
                       errors.email ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder="correo@ejemplo.com"
@@ -232,7 +232,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
                     placeholder="+52 55 1234 5678"
                   />
                 </div>
@@ -247,7 +247,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                   type="text"
                   value={formData.idNumber}
                   onChange={(e) => handleInputChange('idNumber', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
                   placeholder="Número de cédula"
                 />
               </div>
@@ -257,7 +257,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Documento Fiscal
                 </label>
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-[#FF6200] transition-colors">
+                <div className="border-2 border-dashed border-gray-300 p-4 hover:border-[#FF6200] transition-colors">
                   <input
                     type="file"
                     id="taxDocument"
@@ -307,13 +307,13 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                 <button
                   type="button"
                   onClick={handleClose}
-                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2 bg-[#FF6200] text-white rounded-lg hover:bg-orange-600 transition-colors"
+                  className="flex-1 px-4 py-2 bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
                 >
                   Crear Contacto
                 </button>

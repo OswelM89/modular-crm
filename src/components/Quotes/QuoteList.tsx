@@ -92,7 +92,7 @@ export function QuoteList() {
         </button>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+      <div className="bg-white border border-gray-200">
         <div className="p-6 border-b border-gray-200">
           <div className="flex flex-col sm:flex-row gap-4">
             <input
@@ -100,12 +100,12 @@ export function QuoteList() {
               placeholder="Buscar cotizaciones..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+              className="flex-1 px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
             />
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+              className="px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
             >
               {statuses.map((status) => (
                 <option key={status.value} value={status.value}>

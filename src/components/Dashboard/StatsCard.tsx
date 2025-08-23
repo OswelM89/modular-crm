@@ -39,9 +39,9 @@ export function StatsCard({ title, value, icon: Icon, trend, color }: StatsCardP
   const colors = colorClasses[color];
   
   return (
-    <div className={`${colors.bg} rounded-xl p-6 shadow-sm`}>
+    <div className={`${colors.bg} p-6`}>
       <div className="flex items-center">
-        <div className={`${colors.icon} rounded-lg p-3`}>
+        <div className={`${colors.icon} p-3`}>
           <Icon className="w-6 h-6" />
         </div>
         <div className="ml-4 flex-1">

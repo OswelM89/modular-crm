@@ -183,7 +183,7 @@ export function DealList() {
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+      <div className="bg-white border border-gray-200">
         <div className="p-6 border-b border-gray-200">
           <div className="flex flex-col sm:flex-row gap-4">
             <input
@@ -191,12 +191,12 @@ export function DealList() {
               placeholder="Buscar negocios..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+              className="flex-1 px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
             />
             <select
               value={filterStage}
               onChange={(e) => setFilterStage(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+              className="px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
             >
               {stages.map((stage) => (
                 <option key={stage.value} value={stage.value}>
