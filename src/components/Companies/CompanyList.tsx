@@ -129,7 +129,7 @@ export function CompanyList() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900">{t('companies.title')}</h3>
+          <h1 className="text-gray-900" style={{ fontSize: '1.875rem', fontWeight: '700' }}>{t('companies.title')}</h1>
           <p className="text-sm text-gray-600">{t('companies.subtitle')}</p>
         </div>
         <div className="flex items-center gap-3">

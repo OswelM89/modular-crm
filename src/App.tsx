@@ -68,23 +68,44 @@ function App() {
         return <QuoteBuilder />;
       case 'pipeline':
         return (
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Pipeline</h3>
+          <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <h1 className="text-gray-900" style={{ fontSize: '1.875rem', fontWeight: '700' }}>Pipeline</h1>
+                <p className="text-sm text-gray-600">Administra tu pipeline de ventas</p>
+              </div>
+            </div>
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
             <p className="text-gray-600">Módulo de pipeline en desarrollo</p>
+            </div>
           </div>
         );
       case 'reports':
         return (
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Novedades</h3>
+          <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <h1 className="text-gray-900" style={{ fontSize: '1.875rem', fontWeight: '700' }}>Novedades</h1>
+                <p className="text-sm text-gray-600">Últimas novedades y actualizaciones</p>
+              </div>
+            </div>
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
             <p className="text-gray-600">Módulo de novedades en desarrollo</p>
+            </div>
           </div>
         );
       case 'settings':
         return (
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Configuración</h3>
+          <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <h1 className="text-gray-900" style={{ fontSize: '1.875rem', fontWeight: '700' }}>Configuración</h1>
+                <p className="text-sm text-gray-600">Configuración del sistema</p>
+              </div>
+            </div>
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
             <p className="text-gray-600">Módulo de configuración en desarrollo</p>
+            </div>
           </div>
         );
       default:
