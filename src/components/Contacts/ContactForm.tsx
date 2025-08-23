@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { X, User, Building2, Mail, Phone, Briefcase, Upload, File } from 'lucide-react';
+import { X, User, Building2, Mail, Phone, Briefcase, Upload, File, Search, ChevronDown } from 'lucide-react';
+import { mockCompanies } from '../../data/mockData';
 
 interface ContactFormProps {
   isOpen: boolean;
@@ -11,7 +12,7 @@ export interface ContactFormData {
   firstName: string;
   lastName: string;
   idNumber: string;
-  company: string;
+  companyId: string;
   position: string;
   email: string;
   phone: string;
@@ -23,7 +24,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
     firstName: '',
     lastName: '',
     idNumber: '',
-    company: '',
+    companyId: '',
     position: '',
     email: '',
     phone: '',
@@ -31,6 +32,16 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
   });
 
   const [errors, setErrors] = useState<Partial<ContactFormData>>({});
+  const [showCompanyDropdown, setShowCompanyDropdown] = useState(false);
+  const [companySearch, setCompanySearch] = useState('');
+
+  // Filtrar empresas por búsqueda
+  const filteredCompanies = mockCompanies.filter(company =>
+    company.name.toLowerCase().includes(companySearch.toLowerCase())
+  );
+
+  // Obtener empresa seleccionada
+  const selectedCompany = mockCompanies.find(c => c.id === formData.companyId);
 
   // Bloquear scroll del body cuando el modal está abierto
   React.useEffect(() => {
@@ -61,6 +72,17 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
       setErrors(prev => ({ ...prev, taxDocument: '' }));
     }
   };
+
+  const handleCompanySelect = (companyId: string) => {
+    setFormData(prev => ({ ...prev, companyId }));
+    setShowCompanyDropdown(false);
+    setCompanySearch('');
+    // Clear error when user selects a company
+    if (errors.companyId) {
+      setErrors(prev => ({ ...prev, companyId: '' }));
+    }
+  };
+
   const validateForm = (): boolean => {
     const newErrors: Partial<ContactFormData> = {};
 
@@ -89,7 +111,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
         firstName: '',
         lastName: '',
         idNumber: '',
-        company: '',
+        companyId: '',
         position: '',
         email: '',
         phone: '',
@@ -104,7 +126,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
       firstName: '',
       lastName: '',
        idNumber: '',
-      company: '',
+      companyId: '',
       position: '',
       email: '',
       phone: '',
@@ -203,15 +225,66 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Empresa
                 </label>
-                <div className="relative">
+                <div className="relative" onClick={() => setShowCompanyDropdown(!showCompanyDropdown)}>
                   <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                  <input
-                    type="text"
-                    value={formData.company}
-                    onChange={(e) => handleInputChange('company', e.target.value)}
-                   className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
-                    placeholder="Nombre de la empresa"
-                  />
+                  <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <div
+                    className="w-full pl-10 pr-10 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent cursor-pointer bg-white"
+                  >
+                    {selectedCompany ? selectedCompany.name : 'Seleccionar empresa...'}
+                  </div>
+                  
+                  {showCompanyDropdown && (
+                    <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-50 max-h-60 overflow-y-auto">
+                      <div className="p-2 border-b border-gray-200">
+                        <div className="relative">
+                          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                          <input
+                            type="text"
+                            value={companySearch}
+                            onChange={(e) => setCompanySearch(e.target.value)}
+                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                            placeholder="Buscar empresa..."
+                            onClick={(e) => e.stopPropagation()}
+                          />
+                        </div>
+                      </div>
+                      <div className="max-h-40 overflow-y-auto">
+                        <div
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleCompanySelect('');
+                          }}
+                          className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center text-gray-500"
+                        >
+                          <Building2 className="w-4 h-4 text-gray-400 mr-3" />
+                          <div>Sin empresa</div>
+                        </div>
+                        {filteredCompanies.length > 0 ? (
+                          filteredCompanies.map((company) => (
+                            <div
+                              key={company.id}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleCompanySelect(company.id);
+                              }}
+                              className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                            >
+                              <Building2 className="w-4 h-4 text-gray-400 mr-3" />
+                              <div>
+                                <div className="font-medium text-gray-900">{company.name}</div>
+                                <div className="text-sm text-gray-500">{company.industry}</div>
+                              </div>
+                            </div>
+                          ))
+                        ) : (
+                          <div className="px-4 py-2 text-gray-500 text-center">
+                            No se encontraron empresas
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
