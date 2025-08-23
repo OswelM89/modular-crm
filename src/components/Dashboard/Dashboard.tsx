@@ -89,6 +89,34 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
           <SkeletonCard />
           <SkeletonCard />
         </div>
+        
+        {/* Articles section skeleton */}
+        <div className="bg-white border border-gray-200 p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div className="h-6 bg-gray-200 w-48 animate-pulse"></div>
+            <div className="h-10 bg-gray-200 w-24 animate-pulse"></div>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-1">
+              <div className="h-80 bg-gray-200 animate-pulse"></div>
+            </div>
+            <div className="lg:col-span-2 space-y-4">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="bg-gray-50 p-6">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="h-4 bg-gray-200 w-16 mb-2 animate-pulse"></div>
+                      <div className="h-5 bg-gray-200 w-3/4 mb-2 animate-pulse"></div>
+                      <div className="h-4 bg-gray-200 w-full mb-3 animate-pulse"></div>
+                      <div className="h-3 bg-gray-200 w-1/2 animate-pulse"></div>
+                    </div>
+                    <div className="w-16 h-16 bg-gray-200 ml-4 animate-pulse"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -180,6 +208,118 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Sección de Artículos - Bento Layout */}
+      <div className="bg-white border border-gray-200 p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-lg font-semibold text-gray-900">Artículos Destacados</h3>
+          <button 
+            onClick={() => onSectionChange && onSectionChange('blog')}
+            className="inline-flex items-center px-4 py-2 bg-[#FF6200] text-white hover:bg-orange-600 transition-colors text-sm"
+          >
+            Ver Blog
+          </button>
+        </div>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Artículo Principal - Izquierda */}
+          <div className="lg:col-span-1">
+            <div className="bg-gradient-to-br from-[#FF6200] to-orange-600 p-6 text-white h-full min-h-[300px] flex flex-col justify-between">
+              <div>
+                <span className="inline-block px-3 py-1 bg-white bg-opacity-20 text-xs font-medium mb-4">
+                  DESTACADO
+                </span>
+                <h4 className="text-xl font-bold mb-3 leading-tight">
+                  Cómo optimizar tu pipeline de ventas en 2024
+                </h4>
+                <p className="text-orange-100 text-sm leading-relaxed">
+                  Descubre las mejores estrategias para aumentar tus conversiones y acelerar tu ciclo de ventas con técnicas probadas.
+                </p>
+              </div>
+              <div className="flex items-center justify-between mt-6">
+                <span className="text-orange-200 text-xs">5 min de lectura</span>
+                <button className="text-white hover:text-orange-200 transition-colors">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          {/* Artículos Secundarios - Derecha */}
+          <div className="lg:col-span-2 space-y-4">
+            {/* Artículo 1 */}
+            <div className="bg-gray-50 p-6 hover:bg-gray-100 transition-colors cursor-pointer">
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <span className="inline-block px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium mb-2">
+                    CRM
+                  </span>
+                  <h4 className="font-semibold text-gray-900 mb-2">
+                    10 funciones de CRM que debes usar diariamente
+                  </h4>
+                  <p className="text-gray-600 text-sm mb-3">
+                    Maximiza el potencial de tu CRM con estas funciones esenciales que todo vendedor debe dominar.
+                  </p>
+                  <div className="flex items-center text-xs text-gray-500">
+                    <span>3 min de lectura</span>
+                    <span className="mx-2">•</span>
+                    <span>Hace 2 días</span>
+                  </div>
+                </div>
+                <div className="w-16 h-16 bg-blue-100 ml-4 flex-shrink-0"></div>
+              </div>
+            </div>
+            
+            {/* Artículo 2 */}
+            <div className="bg-gray-50 p-6 hover:bg-gray-100 transition-colors cursor-pointer">
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <span className="inline-block px-2 py-1 bg-green-100 text-green-800 text-xs font-medium mb-2">
+                    VENTAS
+                  </span>
+                  <h4 className="font-semibold text-gray-900 mb-2">
+                    Automatización de seguimiento: Guía completa
+                  </h4>
+                  <p className="text-gray-600 text-sm mb-3">
+                    Aprende a configurar flujos automáticos que nutran tus leads sin esfuerzo manual.
+                  </p>
+                  <div className="flex items-center text-xs text-gray-500">
+                    <span>7 min de lectura</span>
+                    <span className="mx-2">•</span>
+                    <span>Hace 1 semana</span>
+                  </div>
+                </div>
+                <div className="w-16 h-16 bg-green-100 ml-4 flex-shrink-0"></div>
+              </div>
+            </div>
+            
+            {/* Artículo 3 */}
+            <div className="bg-gray-50 p-6 hover:bg-gray-100 transition-colors cursor-pointer">
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <span className="inline-block px-2 py-1 bg-purple-100 text-purple-800 text-xs font-medium mb-2">
+                    PRODUCTIVIDAD
+                  </span>
+                  <h4 className="font-semibold text-gray-900 mb-2">
+                    Métricas clave para medir el éxito de tu equipo
+                  </h4>
+                  <p className="text-gray-600 text-sm mb-3">
+                    Identifica los KPIs más importantes para evaluar el rendimiento de tu equipo de ventas.
+                  </p>
+                  <div className="flex items-center text-xs text-gray-500">
+                    <span>4 min de lectura</span>
+                    <span className="mx-2">•</span>
+                    <span>Hace 2 semanas</span>
+                  </div>
+                </div>
+                <div className="w-16 h-16 bg-purple-100 ml-4 flex-shrink-0"></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
