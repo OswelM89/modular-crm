@@ -280,7 +280,7 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
         >
           <ArrowLeft className="w-5 h-5" />
         </button>
-        <div>
+        <div className="flex-1">
           <h1 className="text-gray-900" style={{ fontSize: '1.875rem', fontWeight: '700' }}>
             Gestión de Usuarios
           </h1>
@@ -288,6 +288,13 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
             Administra los usuarios de tu equipo
           </p>
         </div>
+        <button 
+          onClick={() => setShowUserForm(true)}
+          className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+        >
+          <Plus className="w-4 h-4 mr-2" />
+          Nuevo Usuario
+        </button>
       </div>
 
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -307,13 +314,6 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
             </>
           )}
         </div>
-        <button 
-          onClick={() => setShowUserForm(true)}
-          className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          Nuevo Usuario
-        </button>
       </div>
 
       <div className="bg-white border border-gray-200">
