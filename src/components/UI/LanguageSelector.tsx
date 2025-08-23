@@ -348,8 +348,8 @@ export function LanguageSelector() {
   const [isOpen, setIsOpen] = useState(false);
 
   const languages = [
-    { code: 'es', name: 'Español', flag: '🇨🇴' },
-    { code: 'en', name: 'English', flag: '🇺🇸' }
+    { code: 'es', name: 'Español' },
+    { code: 'en', name: 'English' }
   ];
 
   const handleLanguageChange = (langCode: string) => {
@@ -366,7 +366,6 @@ export function LanguageSelector() {
           onClick={() => setIsOpen(!isOpen)}
           className="bg-white hover:bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2"
         >
-          <span className="text-lg">{currentLanguage.flag}</span>
           <span className="text-sm font-medium text-gray-700">
             {currentLanguage.code.toUpperCase()} {currentLanguage.name}
           </span>
@@ -382,7 +381,6 @@ export function LanguageSelector() {
                   language === lang.code ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
                 }`}
               >
-                <span className="text-base">{lang.flag}</span>
                 <span>{lang.code.toUpperCase()} {lang.name}</span>
               </button>
             ))}
