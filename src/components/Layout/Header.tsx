@@ -70,8 +70,8 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
         <div className="max-w-[1150px] mx-auto flex items-center justify-between">
           <div className="flex items-center">
             <img 
-              src="/Cotizalow-logo.png" 
-              alt="CotizaLow.co" 
+              src="/Modular-CRM-Logo.png" 
+              alt="Modular CRM" 
               className="h-6 sm:h-8 w-auto"
             />
           </div>
