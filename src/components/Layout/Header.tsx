@@ -73,7 +73,8 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
               <img 
                 src="/Logo modular CRM.svg" 
                 alt="Modular CRM" 
-                className="h-6 sm:h-8 w-auto"
+                className="h-6 w-auto"
+                style={{ height: '1.5rem' }}
                 onError={(e) => {
                   console.log('Error loading logo:', e);
                   e.currentTarget.style.display = 'none';
