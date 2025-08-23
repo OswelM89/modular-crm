@@ -8,7 +8,7 @@ export function Footer() {
         <div className="max-w-[1150px] mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm">
-              © 2024 CotizaLow.co. Todos los derechos reservados.
+              © 2024 Modular CRM. Todos los derechos reservados.
             </p>
             <div className="flex items-center space-x-4 mt-4 md:mt-0">
               <a href="#" className="text-gray-400 hover:text-[#FF6200] transition-colors">

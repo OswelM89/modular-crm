@@ -80,6 +80,7 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
                 }}
               />
               <span className="text-xl font-bold text-white ml-2">CotizaLow.co</span>
+              <span className="text-xl font-bold text-white ml-2">Modular CRM</span>
             </div>
           </div>
 
