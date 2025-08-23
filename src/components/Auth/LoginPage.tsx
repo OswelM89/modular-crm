@@ -115,32 +115,23 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#FF6200] to-orange-600 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#0D1117] flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
           {onBack && (
             <button
               onClick={onBack}
-              className="absolute top-6 left-6 text-white hover:text-orange-200 transition-colors"
+              className="absolute top-6 left-6 text-white hover:text-[#FF6200] transition-colors"
             >
               <ArrowLeft className="w-6 h-6" />
             </button>
           )}
           
-          <div className="mb-6">
-            <img 
-              src="/Logo modular CRM.svg" 
-              alt="Modular CRM" 
-              className="h-12 w-auto mx-auto mb-4"
-              style={{ filter: 'brightness(0) invert(1)' }}
-            />
-          </div>
-          
           <h1 className="text-3xl font-bold text-white mb-2">
             {mode === 'login' ? 'Iniciar Sesión' : 'Crear Cuenta'}
           </h1>
-          <p className="text-orange-100">
+          <p className="text-gray-300">
             {mode === 'login' 
               ? 'Accede a tu cuenta de Modular CRM' 
               : 'Únete a Modular CRM hoy mismo'
@@ -149,12 +140,12 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
         </div>
 
         {/* Form Card */}
-        <div className="bg-white rounded-2xl shadow-2xl p-8">
+        <div className="bg-white p-8">
           {/* Google Login Button */}
           <button
             onClick={handleGoogleLogin}
             disabled={loading}
-            className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 hover:bg-gray-50 transition-colors mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -189,7 +180,7 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
                       type="text"
                       value={formData.firstName}
                       onChange={(e) => handleInputChange('firstName', e.target.value)}
-                      className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                      className={`w-full pl-10 pr-4 py-3 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
                         errors.firstName ? 'border-red-500' : 'border-gray-300'
                       }`}
                       placeholder="Nombre"
@@ -208,7 +199,7 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
                     type="text"
                     value={formData.lastName}
                     onChange={(e) => handleInputChange('lastName', e.target.value)}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                    className={`w-full px-4 py-3 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
                       errors.lastName ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder="Apellido"
@@ -230,7 +221,7 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
                   type="email"
                   value={formData.email}
                   onChange={(e) => handleInputChange('email', e.target.value)}
-                  className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                  className={`w-full pl-10 pr-4 py-3 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
                     errors.email ? 'border-red-500' : 'border-gray-300'
                   }`}
                   placeholder="tu@email.com"
@@ -251,7 +242,7 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
                   type={showPassword ? 'text' : 'password'}
                   value={formData.password}
                   onChange={(e) => handleInputChange('password', e.target.value)}
-                  className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                  className={`w-full pl-10 pr-12 py-3 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
                     errors.password ? 'border-red-500' : 'border-gray-300'
                   }`}
                   placeholder="••••••••"
@@ -280,7 +271,7 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
                     type="password"
                     value={formData.confirmPassword}
                     onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-                    className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                    className={`w-full pl-10 pr-4 py-3 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
                       errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder="••••••••"
@@ -295,7 +286,7 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#FF6200] text-white py-3 rounded-lg hover:bg-orange-600 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-[#FF6200] text-white py-3 hover:bg-orange-600 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Procesando...' : (mode === 'login' ? 'Iniciar Sesión' : 'Crear Cuenta')}
             </button>
@@ -325,7 +316,7 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
 
         {/* Footer */}
         <div className="mt-8 text-center text-orange-100 text-sm">
-          <p>© 2024 Modular CRM. Todos los derechos reservados.</p>
+          <p className="text-gray-400">© 2024 Modular CRM. Todos los derechos reservados.</p>
         </div>
       </div>
     </div>
