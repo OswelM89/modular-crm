@@ -85,7 +85,7 @@ export function ChatWidget({ currentUser }: ChatWidgetProps) {
       receiverId: currentUser.id,
       content: '¡Hola! ¿Cómo va el proyecto de TechCorp?',
       timestamp: new Date(Date.now() - 1800000), // 30 min atrás
-      read: true
+      read: false
     },
     {
       id: '2',
@@ -105,11 +105,51 @@ export function ChatWidget({ currentUser }: ChatWidgetProps) {
     },
     {
       id: '4',
+      senderId: '1',
+      receiverId: currentUser.id,
+      content: 'También revisé los números del trimestre, se ven muy prometedores.',
+      timestamp: new Date(Date.now() - 240000), // 4 min atrás
+      read: false
+    },
+    {
+      id: '5',
+      senderId: currentUser.id,
+      receiverId: '1',
+      content: 'Excelente, me alegra escuchar eso. ¿Podemos programar una reunión para la próxima semana?',
+      timestamp: new Date(Date.now() - 180000), // 3 min atrás
+      read: true
+    },
+    {
+      id: '6',
+      senderId: '1',
+      receiverId: currentUser.id,
+      content: 'Claro, ¿qué tal el martes a las 10:00 AM?',
+      timestamp: new Date(Date.now() - 120000), // 2 min atrás
+      read: false
+    },
+    {
+      id: '7',
       senderId: '2',
       receiverId: currentUser.id,
       content: 'Revisé los reportes del mes, todo se ve bien.',
       timestamp: new Date(Date.now() - 7200000), // 2 horas atrás
       read: true
+    },
+    {
+      id: '8',
+      senderId: currentUser.id,
+      receiverId: '2',
+      content: 'Perfecto Carlos, gracias por la revisión.',
+      timestamp: new Date(Date.now() - 7140000), // 1h 59min atrás
+      read: true
+    },
+    {
+      id: '9',
+      senderId: '2',
+      receiverId: currentUser.id,
+      content: '¿Necesitas que prepare algo especial para la presentación del viernes?',
+      timestamp: new Date(Date.now() - 3600000), // 1 hora atrás
+      read: false
     }
   ]);
 
@@ -237,16 +277,17 @@ export function ChatWidget({ currentUser }: ChatWidgetProps) {
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-[#FF6200] text-white">
           <div className="flex items-center">
-            <MessageCircle className="w-5 h-5 mr-2" />
+            <button
+              onClick={() => setActiveConversation(null)}
+              className="p-1 hover:bg-orange-600 transition-colors mr-3"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </button>
             <span className="font-medium">
-              {activeUser ? `${activeUser.firstName} ${activeUser.lastName}` : 'Chat'}
+              {activeUser ? `${activeUser.firstName} ${activeUser.lastName}` : ''}
             </span>
           </div>
           <div className="flex items-center space-x-2">
-            {activeUser && (
-              <>
-              </>
-            )}
             <button
               onClick={() => setIsMinimized(!isMinimized)}
               className="p-1 hover:bg-orange-600 transition-colors"
