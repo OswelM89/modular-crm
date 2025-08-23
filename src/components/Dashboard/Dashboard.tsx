@@ -216,7 +216,7 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
       <div className="border-t border-gray-200" style={{ marginTop: '2rem', marginBottom: '2rem' }}></div>
 
       {/* Sección de Artículos - Bento Layout */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-start justify-between mb-6">
         <h3 className="font-bold text-gray-900" style={{ fontSize: '1.875rem', fontWeight: '700' }}>Artículos Destacados</h3>
         <button 
           onClick={() => onSectionChange && onSectionChange('blog')}
