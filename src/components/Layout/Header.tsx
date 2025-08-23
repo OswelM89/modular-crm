@@ -79,7 +79,6 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
                   e.currentTarget.style.display = 'none';
                 }}
               />
-              <span className="text-xl font-bold text-white ml-2">CotizaLow.co</span>
             </div>
           </div>
 
