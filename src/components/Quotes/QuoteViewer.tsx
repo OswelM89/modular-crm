@@ -51,10 +51,10 @@ export function QuoteViewer({ quote, onClose }: QuoteViewerProps) {
             <div>
               <h4 className="text-lg font-semibold text-gray-900 mb-3">De:</h4>
               <div className="text-sm text-gray-600">
-                <p className="font-medium text-gray-900">CotizaLow.co</p>
-                <p>Tu Empresa S.A. de C.V.</p>
+                <p className="font-medium text-gray-900">Modular CRM</p>
+                <p>Tu Empresa</p>
                 <p>RFC: TUE123456789</p>
-                <p>contacto@cotizalow.co</p>
+                <p>contacto@modularcrm.com</p>
                 <p>+52 55 1234 5678</p>
               </div>
             </div>
