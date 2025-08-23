@@ -116,7 +116,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50">
+    <div className="z-50">
       {/* Overlay */}
       <div 
         className="absolute inset-0 bg-black bg-opacity-50"
