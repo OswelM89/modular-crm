@@ -10,6 +10,7 @@ import { DealList } from './components/Deals/DealList';
 import { QuoteList } from './components/Quotes/QuoteList';
 import { QuoteBuilder } from './components/Quotes/QuoteBuilder';
 import { SettingsPage } from './components/Settings/SettingsPage';
+import { ProfilePage } from './components/Profile/ProfilePage';
 
 const sectionTitles = {
   dashboard: 'Dashboard',
@@ -20,6 +21,7 @@ const sectionTitles = {
   pipeline: 'Pipeline',
   reports: 'Novedades',
   settings: 'Configuración',
+  profile: 'Mi Perfil',
 };
 
 function App() {
@@ -98,6 +100,10 @@ function App() {
       case 'settings':
         return (
           <SettingsPage onSectionChange={handleSectionChange} />
+        );
+      case 'profile':
+        return (
+          <ProfilePage user={user} onBack={() => handleSectionChange('dashboard')} />
         );
       default:
         return <Dashboard />;
