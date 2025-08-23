@@ -21,7 +21,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       if (user) {
         const profileData = await getCurrentProfile()
-        setProfile(profileData)
+        if (profileData) {
+          setProfile(profileData)
+        }
       }
     } catch (error) {
       console.error('Error fetching profile:', error)
@@ -39,7 +41,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       setUser(session?.user ?? null)
       
-      if (session?.user) {
+      if (session?.user && event === 'SIGNED_IN') {
         await refreshProfile()
       } else {
         setProfile(null)
@@ -52,7 +54,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   useEffect(() => {
-    if (user && !profile) {
+    if (user && !profile && !loading) {
       refreshProfile()
     }
   }, [user])

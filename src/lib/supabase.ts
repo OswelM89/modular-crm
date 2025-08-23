@@ -77,7 +77,7 @@ export interface Deal {
 // Auth helpers
 export const signUp = async (email: string, password: string, organizationName: string, firstName: string, lastName: string) => {
   try {
-    // 1. Create the user account
+    // 1. Create the user account with metadata
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password,
@@ -85,13 +85,17 @@ export const signUp = async (email: string, password: string, organizationName: 
         data: {
           first_name: firstName,
           last_name: lastName,
-          organization_name: organizationName
+          organization_name: organizationName,
+          role: 'super_admin'
         }
       }
     })
 
     if (authError) throw authError
 
+    // Note: The actual organization and profile creation should be handled
+    // by a database trigger or function when the user confirms their email
+    
     return { data: authData, error: null }
   } catch (error) {
     return { data: null, error }
@@ -127,17 +131,25 @@ export const getCurrentProfile = async () => {
   const user = await getCurrentUser()
   if (!user) return null
 
-  const { data, error } = await supabase
-    .from('profiles')
-    .select(`
-      *,
-      organization:organizations(*)
-    `)
-    .eq('id', user.id)
-    .single()
+  try {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select(`
+        *,
+        organization:organizations(*)
+      `)
+      .eq('id', user.id)
+      .single()
 
-  if (error) throw error
-  return data
+    if (error) {
+      console.error('Error fetching profile:', error)
+      return null
+    }
+    return data
+  } catch (error) {
+    console.error('Error in getCurrentProfile:', error)
+    return null
+  }
 }
 
 // CRUD operations with organization filtering

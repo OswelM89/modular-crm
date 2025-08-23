@@ -84,36 +84,38 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
         );
         
         if (error) {
-          setErrors({ email: error.message });
+          console.error('Registration error:', error);
+          setErrors({ email: 'Error en el registro. Intenta de nuevo.' });
           setLoading(false);
           return;
         }
         
-        // Show success message for email confirmation
-        alert('¡Registro exitoso! Por favor revisa tu email para confirmar tu cuenta.');
+        // Show success message
+        alert('¡Registro exitoso! Revisa tu email para confirmar tu cuenta antes de iniciar sesión.');
         setMode('login');
+        setFormData({
+          email: formData.email, // Keep email for login
+          password: '',
+          firstName: '',
+          lastName: '',
+          confirmPassword: '',
+          organizationName: ''
+        });
       } else {
         const { data, error } = await signIn(formData.email, formData.password);
         
         if (error) {
-          setErrors({ email: error.message });
+          console.error('Login error:', error);
+          setErrors({ email: 'Email o contraseña incorrectos.' });
           setLoading(false);
           return;
         }
         
-        if (data.user) {
-          const user = {
-            id: data.user.id,
-            email: data.user.email,
-            firstName: data.user.user_metadata?.first_name || 'Usuario',
-            lastName: data.user.user_metadata?.last_name || 'Demo',
-            avatar: data.user.user_metadata?.avatar_url
-          };
-          
-          onLogin(user);
-        }
+        // The AuthContext will handle the login automatically
+        // No need to call onLogin manually
       }
     } catch (error: any) {
+      console.error('Auth error:', error);
       setErrors({ email: 'Error de conexión. Intenta de nuevo.' });
     } finally {
       setLoading(false);

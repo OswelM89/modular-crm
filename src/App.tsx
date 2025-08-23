@@ -34,7 +34,7 @@ function AppContent() {
 
   const handleSectionChange = (section: string) => {
     if (section === 'logout') {
-      // Handle logout through auth context
+      signOut();
       return;
     }
     setActiveSection(section);
@@ -97,7 +97,7 @@ function AppContent() {
   };
 
   if (!user || !profile) {
-    return <LoginPage onLogin={() => {}} />;
+    return <LoginPage onLogin={() => {}} onBack={() => {}} />;
   }
 
   return (
