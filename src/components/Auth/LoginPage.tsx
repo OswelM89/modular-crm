@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Lock, User, Eye, EyeOff, ArrowLeft } from 'lucide-react';
-import { signUp, signIn } from '../../lib/supabase';
+import { useTranslation } from '../../hooks/useTranslation';
 
 interface LoginPageProps {
   onLogin: (user: any) => void;
@@ -18,10 +18,10 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
     password: '',
     firstName: '',
     lastName: '',
-    confirmPassword: '',
-    organizationName: ''
+    confirmPassword: ''
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const { t } = useTranslation();
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -57,10 +57,6 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
       } else if (formData.password !== formData.confirmPassword) {
         newErrors.confirmPassword = 'Las contraseñas no coinciden';
       }
-      
-      if (!formData.organizationName) {
-        newErrors.organizationName = 'El nombre de la organización es requerido';
-      }
     }
 
     setErrors(newErrors);
@@ -73,71 +69,19 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
 
     setLoading(true);
     
-    try {
-      if (mode === 'register') {
-        const { data, error } = await signUp(
-          formData.email,
-          formData.password,
-          formData.organizationName,
-          formData.firstName,
-          formData.lastName,
-          window.location.origin.includes('localhost') 
-            ? 'https://stackblitz.com' 
-            : window.location.origin
-        );
-        
-        if (error) {
-          let errorMessage = 'Error en el registro. Intenta de nuevo.';
-          
-          if (error.message?.includes('User already registered')) {
-            setErrors({ email: 'Este email ya está registrado. Intenta iniciar sesión.' });
-          } else if (error.message?.includes('Invalid email') || error.message?.includes('invalid_email')) {
-            setErrors({ email: 'Email inválido. Verifica el formato.' });
-          } else if (error.message?.includes('Password') || error.message?.includes('weak_password')) {
-            setErrors({ password: 'La contraseña debe tener al menos 6 caracteres.' });
-          } else {
-            setErrors({ email: errorMessage });
-          }
-          setLoading(false);
-          return;
-        }
-        
-        // Registro exitoso
-        if (data?.user) {
-          if (!data.user.email_confirmed_at) {
-            alert('¡Registro exitoso! Revisa tu email para confirmar tu cuenta.');
-          }
-          setMode('login');
-          setFormData({
-            email: formData.email,
-            password: '',
-            firstName: '',
-            lastName: '',
-            confirmPassword: '',
-            organizationName: ''
-          });
-        }
-      } else {
-        // Login
-        const { data, error } = await signIn(formData.email, formData.password);
-        
-        if (error) {
-          if (error.message?.includes('Invalid login credentials')) {
-            setErrors({ email: 'Email o contraseña incorrectos.' });
-          } else if (error.message?.includes('Email not confirmed')) {
-            setErrors({ email: 'Debes confirmar tu email antes de iniciar sesión.' });
-          } else {
-            setErrors({ email: 'Error en el login. Verifica tus credenciales.' });
-          }
-          setLoading(false);
-          return;
-        }
-      }
-    } catch (error: any) {
-      setErrors({ email: 'Error de conexión. Verifica tu internet.' });
-    } finally {
+    // Simular llamada a API
+    setTimeout(() => {
+      const user = {
+        id: '1',
+        email: formData.email,
+        firstName: mode === 'register' ? formData.firstName : 'Usuario',
+        lastName: mode === 'register' ? formData.lastName : 'Demo',
+        avatar: null
+      };
+      
+      onLogin(user);
       setLoading(false);
-    }
+    }, 1500);
   };
 
   const handleGoogleLogin = async () => {
@@ -166,8 +110,7 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
       password: '',
       firstName: '',
       lastName: '',
-      confirmPassword: '',
-      organizationName: ''
+      confirmPassword: ''
     });
   };
 
@@ -226,64 +169,44 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             {mode === 'register' && (
-              <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Nombre de la Organización *
+                    Nombre *
                   </label>
-                  <input
-                    type="text"
-                    value={formData.organizationName}
-                    onChange={(e) => handleInputChange('organizationName', e.target.value)}
-                    className={`w-full px-4 py-3 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
-                      errors.organizationName ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                    placeholder="Mi Empresa S.A."
-                  />
-                  {errors.organizationName && (
-                    <p className="mt-1 text-sm text-red-600">{errors.organizationName}</p>
+                  <div className="relative">
+                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                    <input
+                      type="text"
+                      value={formData.firstName}
+                      onChange={(e) => handleInputChange('firstName', e.target.value)}
+                      className={`w-full pl-10 pr-4 py-3 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                        errors.firstName ? 'border-red-500' : 'border-gray-300'
+                      }`}
+                      placeholder="Nombre"
+                    />
+                  </div>
+                  {errors.firstName && (
+                    <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>
                   )}
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Nombre *
-                    </label>
-                    <div className="relative">
-                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                      <input
-                        type="text"
-                        value={formData.firstName}
-                        onChange={(e) => handleInputChange('firstName', e.target.value)}
-                        className={`w-full pl-10 pr-4 py-3 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
-                          errors.firstName ? 'border-red-500' : 'border-gray-300'
-                        }`}
-                        placeholder="Nombre"
-                      />
-                    </div>
-                    {errors.firstName && (
-                      <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Apellido *
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.lastName}
-                      onChange={(e) => handleInputChange('lastName', e.target.value)}
-                      className={`w-full px-4 py-3 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
-                        errors.lastName ? 'border-red-500' : 'border-gray-300'
-                      }`}
-                      placeholder="Apellido"
-                    />
-                    {errors.lastName && (
-                      <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>
-                    )}
-                  </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Apellido *
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.lastName}
+                    onChange={(e) => handleInputChange('lastName', e.target.value)}
+                    className={`w-full px-4 py-3 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                      errors.lastName ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    placeholder="Apellido"
+                  />
+                  {errors.lastName && (
+                    <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>
+                  )}
                 </div>
               </div>
             )}
