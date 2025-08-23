@@ -12,7 +12,7 @@ export function SettingsPage({ onSectionChange }: SettingsPageProps) {
       title: 'Agregar Usuario',
       description: 'Invita nuevos miembros a tu equipo y gestiona permisos',
       icon: UserPlus,
-      color: 'bg-[#212830]',
+      color: '',
       available: true,
       action: () => console.log('Agregar usuario')
     },
@@ -21,7 +21,7 @@ export function SettingsPage({ onSectionChange }: SettingsPageProps) {
       title: 'Configurar Cotización',
       description: 'Personaliza plantillas, términos y configuración de cotizaciones',
       icon: FileText,
-      color: 'bg-[#212830]',
+      color: '',
       available: true,
       action: () => console.log('Configurar cotización')
     },
@@ -30,7 +30,7 @@ export function SettingsPage({ onSectionChange }: SettingsPageProps) {
       title: 'Preferencias',
       description: 'Ajusta idioma, notificaciones y configuración personal',
       icon: Settings,
-      color: 'bg-[#212830]',
+      color: '',
       available: true,
       action: () => console.log('Preferencias')
     },
@@ -39,7 +39,7 @@ export function SettingsPage({ onSectionChange }: SettingsPageProps) {
       title: 'Nuevas Funciones',
       description: 'Descubre las próximas características que estamos desarrollando',
       icon: Plus,
-      color: 'bg-[#212830]',
+      color: '',
       available: false,
       action: () => console.log('Nuevas funciones')
     }
@@ -73,7 +73,7 @@ export function SettingsPage({ onSectionChange }: SettingsPageProps) {
             >
               <div className="flex items-start justify-between mb-4">
                 <div className={`w-12 h-12 ${card.color} flex items-center justify-center`}>
-                  <Icon className="w-6 h-6 text-white" />
+                  <Icon className="w-6 h-6 text-[#FF6200]" />
                 </div>
                 {card.available && (
                   <ArrowRight className="w-5 h-5 text-gray-400" />
