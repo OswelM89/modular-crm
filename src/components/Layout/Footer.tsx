@@ -1,5 +1,4 @@
 import React from 'react';
-import { LanguageSelector } from '../UI/LanguageSelector';
 import { useTranslation } from '../../hooks/useTranslation';
 
 export function Footer() {
@@ -10,10 +9,7 @@ export function Footer() {
       <div className="px-6 py-8">
         <div className="max-w-[1150px] mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex items-center">
-              <LanguageSelector />
-            </div>
-            <div className="flex flex-col md:flex-row items-center gap-4">
+            <div className="flex flex-col md:flex-row items-center gap-4 w-full justify-center">
               <p className="text-gray-400 text-sm">
                 © 2024 Modular CRM. Todos los derechos reservados.
               </p>

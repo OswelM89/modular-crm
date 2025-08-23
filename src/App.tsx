@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Header } from './components/Layout/Header';
 import { Footer } from './components/Layout/Footer';
+import { LanguageSelector } from './components/UI/LanguageSelector';
 import { Dashboard } from './components/Dashboard/Dashboard';
 import { ContactList } from './components/Contacts/ContactList';
 import { CompanyList } from './components/Companies/CompanyList';
@@ -72,6 +73,9 @@ function App() {
   return (
     <div className="min-h-screen bg-[#F4F4F4] flex flex-col">
       <Header activeSection={activeSection} onSectionChange={handleSectionChange} />
+      
+      {/* Selector de idioma flotante */}
+      <LanguageSelector />
       
       <main className="flex-1 px-6 py-8">
         <div className="max-w-[1150px] mx-auto">
