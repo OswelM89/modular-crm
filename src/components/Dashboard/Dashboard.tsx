@@ -58,24 +58,10 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
   if (loading) {
     return (
       <div className="space-y-6">
-        {/* Welcome Section Skeleton */}
-        <div className="mb-8">
-          {/* Mensaje de bienvenida skeleton */}
-          <div className="mb-6">
-            <div className="h-8 bg-gray-200 w-1/3 mb-2 animate-pulse"></div>
-            <div className="h-6 bg-gray-200 w-2/3 animate-pulse"></div>
-          </div>
-          
-          {/* Acciones rápidas skeleton */}
-          <div className="grid grid-cols-3 gap-4 mb-6">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="flex flex-col items-center p-4 bg-gray-200 animate-pulse">
-                <div className="w-12 h-12 bg-gray-300 mb-3"></div>
-                <div className="h-4 bg-gray-300 w-16"></div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <WelcomeSection 
+          userName={user?.firstName || 'Usuario'} 
+          onSectionChange={onSectionChange || (() => {})}
+        />
         
         {/* Stats Cards Skeleton */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
