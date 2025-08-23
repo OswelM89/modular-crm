@@ -152,7 +152,7 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
       </div>
 
       {/* Navigation Bar */}
-      <div className="bg-[#FF6200] px-6 hidden lg:block">
+      <div className="bg-[#212830] px-6 hidden lg:block">
         <nav className="max-w-[1150px] mx-auto flex items-center justify-center">
           <div className="flex space-x-8">
             {navigation.map((item) => (
@@ -162,7 +162,7 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
                 className={`py-4 px-2 text-sm font-medium transition-all duration-200 border-b-2 ${
                   activeSection === item.id
                     ? 'text-white border-white'
-                    : 'text-orange-100 border-transparent hover:text-white hover:border-orange-200'
+                    : 'text-gray-300 border-transparent hover:text-white hover:border-gray-400'
                 }`}
               >
                 {item.name}
@@ -174,7 +174,7 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
 
       {/* Mobile Navigation Menu */}
       {showMobileMenu && (
-        <div className="lg:hidden bg-[#FF6200] mobile-menu">
+        <div className="lg:hidden bg-[#212830] mobile-menu">
           <nav className="px-6 py-4">
             <div className="space-y-2">
               {navigation.map((item) => (
@@ -186,8 +186,8 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
                   }}
                   className={`block w-full text-left py-3 px-4 text-sm font-medium transition-all duration-200 rounded-lg ${
                     activeSection === item.id
-                      ? 'text-white bg-orange-600'
-                      : 'text-orange-100 hover:text-white hover:bg-orange-600'
+                      ? 'text-white bg-gray-600'
+                      : 'text-gray-300 hover:text-white hover:bg-gray-600'
                   }`}
                 >
                   {item.name}
