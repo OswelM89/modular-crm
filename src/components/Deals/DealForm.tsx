@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { X, Target, FileText, Building2, User, DollarSign, Calendar, UserCheck, Users, Flag, MessageSquare } from 'lucide-react';
+import { X, Target, FileText, Building2, User, DollarSign, Calendar, UserCheck, Users, Flag, MessageSquare, Search, ChevronDown } from 'lucide-react';
+import { mockCompanies, mockContacts } from '../../data/mockData';
 
 interface DealFormProps {
   isOpen: boolean;
@@ -37,6 +38,10 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
   });
 
   const [errors, setErrors] = useState<Partial<DealFormData>>({});
+  const [showCompanyDropdown, setShowCompanyDropdown] = useState(false);
+  const [showContactDropdown, setShowContactDropdown] = useState(false);
+  const [companySearch, setCompanySearch] = useState('');
+  const [contactSearch, setContactSearch] = useState('');
 
   // Bloquear scroll del body cuando el modal está abierto
   React.useEffect(() => {
@@ -51,11 +56,40 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
     };
   }, [isOpen]);
 
+  // Filtrar empresas por búsqueda
+  const filteredCompanies = mockCompanies.filter(company =>
+    company.name.toLowerCase().includes(companySearch.toLowerCase())
+  );
+
+  // Filtrar contactos por búsqueda
+  const filteredContacts = mockContacts.filter(contact =>
+    `${contact.firstName} ${contact.lastName}`.toLowerCase().includes(contactSearch.toLowerCase()) ||
+    contact.email.toLowerCase().includes(contactSearch.toLowerCase())
+  );
+
+  // Obtener empresa seleccionada
+  const selectedCompany = mockCompanies.find(c => c.id === formData.companyId);
+  
+  // Obtener contacto seleccionado
+  const selectedContact = mockContacts.find(c => c.id === formData.contactId);
+
   const handleInputChange = (field: keyof DealFormData, value: string | number) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: '' }));
     }
+  };
+
+  const handleCompanySelect = (companyId: string) => {
+    handleInputChange('companyId', companyId);
+    setShowCompanyDropdown(false);
+    setCompanySearch('');
+  };
+
+  const handleContactSelect = (contactId: string) => {
+    handleInputChange('contactId', contactId);
+    setShowContactDropdown(false);
+    setContactSearch('');
   };
 
   const validateForm = (): boolean => {
@@ -243,19 +277,58 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Empresa *
               </label>
-              <div className="relative">
+              <div className="relative" onClick={() => setShowCompanyDropdown(!showCompanyDropdown)}>
                 <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <select
-                  value={formData.companyId}
-                  onChange={(e) => handleInputChange('companyId', e.target.value)}
+                <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <div
                   className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
                     errors.companyId ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  } cursor-pointer bg-white`}
                 >
-                  <option value="">Seleccionar empresa...</option>
-                  <option value="1">TechCorp Solutions</option>
-                  <option value="2">Innovate Marketing</option>
-                </select>
+                  {selectedCompany ? selectedCompany.name : 'Seleccionar empresa...'}
+                </div>
+                
+                {showCompanyDropdown && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-50 max-h-60 overflow-y-auto">
+                    <div className="p-2 border-b border-gray-200">
+                      <div className="relative">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                        <input
+                          type="text"
+                          value={companySearch}
+                          onChange={(e) => setCompanySearch(e.target.value)}
+                          className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                          placeholder="Buscar empresa..."
+                          onClick={(e) => e.stopPropagation()}
+                        />
+                      </div>
+                    </div>
+                    <div className="max-h-40 overflow-y-auto">
+                      {filteredCompanies.length > 0 ? (
+                        filteredCompanies.map((company) => (
+                          <div
+                            key={company.id}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleCompanySelect(company.id);
+                            }}
+                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                          >
+                            <Building2 className="w-4 h-4 text-gray-400 mr-3" />
+                            <div>
+                              <div className="font-medium text-gray-900">{company.name}</div>
+                              <div className="text-sm text-gray-500">{company.industry}</div>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="px-4 py-2 text-gray-500 text-center">
+                          No se encontraron empresas
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
               {errors.companyId && (
                 <p className="mt-1 text-sm text-red-600">{errors.companyId}</p>
@@ -267,20 +340,64 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Contacto *
               </label>
-              <div className="relative">
+              <div className="relative" onClick={() => setShowContactDropdown(!showContactDropdown)}>
                 <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <select
-                  value={formData.contactId}
-                  onChange={(e) => handleInputChange('contactId', e.target.value)}
+                <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <div
                   className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
                     errors.contactId ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  } cursor-pointer bg-white`}
                 >
-                  <option value="">Seleccionar contacto...</option>
-                  <option value="1">María González</option>
-                  <option value="2">Carlos Rodríguez</option>
-                  <option value="3">Ana López</option>
-                </select>
+                  {selectedContact ? `${selectedContact.firstName} ${selectedContact.lastName}` : 'Seleccionar contacto...'}
+                </div>
+                
+                {showContactDropdown && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-50 max-h-60 overflow-y-auto">
+                    <div className="p-2 border-b border-gray-200">
+                      <div className="relative">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                        <input
+                          type="text"
+                          value={contactSearch}
+                          onChange={(e) => setContactSearch(e.target.value)}
+                          className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                          placeholder="Buscar contacto..."
+                          onClick={(e) => e.stopPropagation()}
+                        />
+                      </div>
+                    </div>
+                    <div className="max-h-40 overflow-y-auto">
+                      {filteredContacts.length > 0 ? (
+                        filteredContacts.map((contact) => (
+                          <div
+                            key={contact.id}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleContactSelect(contact.id);
+                            }}
+                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                          >
+                            <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center mr-3">
+                              <span className="text-xs font-medium text-[#FF6200]">
+                                {contact.firstName.charAt(0)}{contact.lastName.charAt(0)}
+                              </span>
+                            </div>
+                            <div>
+                              <div className="font-medium text-gray-900">
+                                {contact.firstName} {contact.lastName}
+                              </div>
+                              <div className="text-sm text-gray-500">{contact.email}</div>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="px-4 py-2 text-gray-500 text-center">
+                          No se encontraron contactos
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
               {errors.contactId && (
                 <p className="mt-1 text-sm text-red-600">{errors.contactId}</p>
