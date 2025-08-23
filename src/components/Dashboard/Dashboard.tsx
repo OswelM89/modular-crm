@@ -125,7 +125,7 @@ export function Dashboard() {
           </div>
         </div>
 
-        <div className="bg-white border border-gray-200 p-6">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Cotizaciones Recientes</h3>
           <div className="space-y-4">
             {recentQuotes.map((quote) => (
@@ -136,7 +136,7 @@ export function Dashboard() {
                 </div>
                 <div className="text-right">
                   <p className="font-medium text-gray-900">{formatCurrency(quote.total)}</p>
-                  <span className={`inline-flex px-2 py-1 text-xs font-medium ${getStatusColor(quote.status)}`}>
+                  <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(quote.status)}`}>
                     {quote.status}
                   </span>
                 </div>
@@ -145,6 +145,6 @@ export function Dashboard() {
           </div>
         </div>
       </div>
-        <div className="bg-white border border-gray-200 p-6">
+    </div>
   );
 }
