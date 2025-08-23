@@ -17,20 +17,6 @@ import { ProfilePage } from './components/Profile/ProfilePage';
 
 function AppContent() {
   const { user, profile, loading } = useAuthContext();
-}
-const sectionTitles = {
-  dashboard: 'Dashboard',
-  contacts: 'Contactos',
-  companies: 'Empresas',
-  deals: 'Negocios',
-  quotes: 'Cotizaciones',
-  pipeline: 'Pipeline',
-  reports: 'Novedades',
-  settings: 'Configuración',
-  profile: 'Mi Perfil',
-};
-
-function App() {
   const [activeSection, setActiveSection] = useState(() => {
     return localStorage.getItem('activeSection') || 'dashboard';
   });
