@@ -60,6 +60,7 @@ export function useAuth() {
 
   const fetchProfile = async (userId: string) => {
     try {
+      console.log('Fetching profile for user:', userId);
       const { data: profile, error } = await supabase
         .from('profiles')
         .select('*')
@@ -67,12 +68,19 @@ export function useAuth() {
         .single()
 
       if (error) {
-        console.error('Error fetching profile:', error)
+        console.error('Error fetching profile:', error);
+        // Si no existe el perfil, crear uno básico
+        if (error.code === 'PGRST116') {
+          console.log('Profile not found, will be created by trigger');
+          setAuthState(prev => ({ ...prev, loading: false }));
+          return;
+        }
       } else {
+        console.log('Profile fetched successfully:', profile);
         setAuthState(prev => ({ ...prev, profile }))
       }
     } catch (error) {
-      console.error('Error fetching profile:', error)
+      console.error('Unexpected error fetching profile:', error);
     } finally {
       setAuthState(prev => ({ ...prev, loading: false }))
     }

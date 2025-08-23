@@ -21,6 +21,11 @@ function AppContent() {
     return localStorage.getItem('activeSection') || 'dashboard';
   });
 
+  // Debug logging
+  React.useEffect(() => {
+    console.log('Auth state:', { user: !!user, profile: !!profile, loading });
+  }, [user, profile, loading]);
+
   const handleSectionChange = (section: string) => {
     if (section === 'logout') {
       // El logout se maneja en el Header
