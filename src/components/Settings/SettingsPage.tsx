@@ -1,11 +1,16 @@
 import React from 'react';
 import { UserPlus, FileText, Settings, Plus, ArrowRight } from 'lucide-react';
+import { AddUserPage } from './AddUserPage';
+import { QuoteConfigPage } from './QuoteConfigPage';
+import { PreferencesPage } from './PreferencesPage';
 
 interface SettingsPageProps {
   onSectionChange?: (section: string) => void;
 }
 
 export function SettingsPage({ onSectionChange }: SettingsPageProps) {
+  const [currentPage, setCurrentPage] = React.useState<string>('main');
+
   const settingsCards = [
     {
       id: 'add-user',
@@ -14,7 +19,7 @@ export function SettingsPage({ onSectionChange }: SettingsPageProps) {
       icon: UserPlus,
       color: '',
       available: true,
-      action: () => console.log('Agregar usuario')
+      action: () => setCurrentPage('add-user')
     },
     {
       id: 'quote-config',
@@ -23,7 +28,7 @@ export function SettingsPage({ onSectionChange }: SettingsPageProps) {
       icon: FileText,
       color: '',
       available: true,
-      action: () => console.log('Configurar cotización')
+      action: () => setCurrentPage('quote-config')
     },
     {
       id: 'preferences',
@@ -32,7 +37,7 @@ export function SettingsPage({ onSectionChange }: SettingsPageProps) {
       icon: Settings,
       color: '',
       available: true,
-      action: () => console.log('Preferencias')
+      action: () => setCurrentPage('preferences')
     },
     {
       id: 'new-features',
@@ -44,6 +49,19 @@ export function SettingsPage({ onSectionChange }: SettingsPageProps) {
       action: () => console.log('Nuevas funciones')
     }
   ];
+
+  // Renderizar páginas específicas
+  if (currentPage === 'add-user') {
+    return <AddUserPage onBack={() => setCurrentPage('main')} />;
+  }
+
+  if (currentPage === 'quote-config') {
+    return <QuoteConfigPage onBack={() => setCurrentPage('main')} />;
+  }
+
+  if (currentPage === 'preferences') {
+    return <PreferencesPage onBack={() => setCurrentPage('main')} />;
+  }
 
   return (
     <div className="space-y-6">
