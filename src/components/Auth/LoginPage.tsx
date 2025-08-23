@@ -87,16 +87,14 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
           console.error('Registration error:', error);
           
           // Manejar diferentes tipos de errores de registro
-          if (error.message?.includes('User already registered') || error.message?.includes('already been registered')) {
-            setErrors({ email: 'Este email ya está registrado. Intenta iniciar sesión.' });
+          if (error.message?.includes('User already registered') || 
+              error.message?.includes('already been registered') ||
           } else if (error.message?.includes('Invalid email')) {
             setErrors({ email: 'Email inválido. Verifica el formato.' });
           } else if (error.message?.includes('Password') || error.message?.includes('password')) {
             setErrors({ password: 'La contraseña debe tener al menos 6 caracteres.' });
           } else if (error.message?.includes('signup is disabled')) {
             setErrors({ email: 'El registro está deshabilitado. Contacta al administrador.' });
-          } else if (error.message?.includes('Database error')) {
-            setErrors({ email: 'Error en la base de datos. El usuario fue creado pero puede necesitar configuración adicional.' });
           } else {
             setErrors({ email: `Error de registro: ${error.message || 'Error desconocido'}` });
           }
@@ -105,16 +103,21 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
         }
         
         // Show success message - registration was successful
-        alert('¡Registro exitoso! Revisa tu email para confirmar tu cuenta antes de iniciar sesión.');
-        setMode('login');
-        setFormData({
-          email: formData.email, // Keep email for login
-          password: '',
-          firstName: '',
-          lastName: '',
-          confirmPassword: '',
-          organizationName: ''
-        });
+        if (data?.user && !data.user.email_confirmed_at) {
+          alert('¡Registro exitoso! Revisa tu email para confirmar tu cuenta.');
+          setMode('login');
+          setFormData({
+            email: formData.email, // Keep email for login
+            password: '',
+            firstName: '',
+            lastName: '',
+            confirmPassword: '',
+            organizationName: ''
+          });
+        } else {
+          // User is already confirmed, they should be logged in automatically
+          console.log('User registered and confirmed automatically');
+        }
       } else {
         const { data, error } = await signIn(formData.email, formData.password);
         

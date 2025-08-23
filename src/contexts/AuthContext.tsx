@@ -46,7 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       
       setUser(session?.user ?? null)
       
-      if (session?.user && event === 'SIGNED_IN') {
+      if (session?.user && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED')) {
         console.log('User signed in, fetching profile...');
         await refreshProfile()
       } else {
@@ -60,10 +60,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   useEffect(() => {
+    // Check URL for auth tokens (email confirmation)
+    const hashParams = new URLSearchParams(window.location.hash.substring(1))
+    const accessToken = hashParams.get('access_token')
+    
+    if (accessToken) {
+      console.log('Found access token in URL, setting session...')
+      supabase.auth.setSession({
+        access_token: accessToken,
+        refresh_token: hashParams.get('refresh_token') || ''
+      }).then(() => {
+        // Clean up URL
+        window.history.replaceState({}, document.title, window.location.pathname)
+      })
+    }
+    
     if (user && !profile && !loading) {
       refreshProfile()
     }
-  }, [user])
+  }, [user, loading])
 
   const handleSignOut = async () => {
     await supabase.auth.signOut()
