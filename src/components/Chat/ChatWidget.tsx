@@ -391,8 +391,8 @@ export function ChatWidget({ currentUser }: ChatWidgetProps) {
                         </div>
                         <div className={`absolute -bottom-1 -right-1 w-2 h-2 border border-white ${getStatusColor(activeUser?.status || 'offline')}`}></div>
                       </div>
-                      <div className="ml-3">
-                        <p className="text-sm font-medium text-gray-900">
+                          ? 'bg-[#FF6200] text-white' 
+                          : 'bg-gray-200 text-gray-900'
                           {activeUser?.firstName} {activeUser?.lastName}
                         </p>
                         <p className="text-xs text-gray-500">
