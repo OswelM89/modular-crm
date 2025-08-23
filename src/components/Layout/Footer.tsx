@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslation } from '../../hooks/useTranslation';
 
 export function Footer() {
@@ -10,9 +9,6 @@ export function Footer() {
         <div className="max-w-[1150px] mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex flex-col md:flex-row items-center gap-4 w-full justify-center">
-              <p className="text-gray-400 text-sm">
-                © 2024 Modular CRM. Todos los derechos reservados.
-              </p>
               <div className="flex items-center space-x-4">
                 <a href="#" className="text-gray-400 hover:text-[#FF6200] transition-colors text-sm">
                   Términos de Servicio
