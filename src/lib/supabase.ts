@@ -77,6 +77,8 @@ export interface Deal {
 // Auth helpers
 export const signUp = async (email: string, password: string, organizationName: string, firstName: string, lastName: string) => {
   try {
+    console.log('Attempting signup with:', { email, organizationName, firstName, lastName });
+    
     // 1. Create the user account with metadata
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
@@ -91,13 +93,19 @@ export const signUp = async (email: string, password: string, organizationName: 
       }
     })
 
-    if (authError) throw authError
+    if (authError) {
+      console.error('Supabase auth error:', authError);
+      throw authError;
+    }
+    
+    console.log('Signup successful:', authData);
 
     // Note: The actual organization and profile creation should be handled
     // by a database trigger or function when the user confirms their email
     
     return { data: authData, error: null }
   } catch (error) {
+    console.error('SignUp function error:', error);
     return { data: null, error }
   }
 }

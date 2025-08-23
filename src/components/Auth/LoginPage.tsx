@@ -85,13 +85,25 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
         
         if (error) {
           console.error('Registration error:', error);
-          setErrors({ email: 'Error en el registro. Intenta de nuevo.' });
+          
+          // Manejar diferentes tipos de errores
+          if (error.message?.includes('User already registered')) {
+            setErrors({ email: 'Este email ya está registrado. Intenta iniciar sesión.' });
+          } else if (error.message?.includes('Invalid email')) {
+            setErrors({ email: 'Email inválido. Verifica el formato.' });
+          } else if (error.message?.includes('Password')) {
+            setErrors({ password: 'La contraseña debe tener al menos 6 caracteres.' });
+          } else if (error.message?.includes('signup is disabled')) {
+            setErrors({ email: 'El registro está deshabilitado. Contacta al administrador.' });
+          } else {
+            setErrors({ email: `Error: ${error.message || 'Error desconocido en el registro'}` });
+          }
           setLoading(false);
           return;
         }
         
         // Show success message
-        alert('¡Registro exitoso! Revisa tu email para confirmar tu cuenta antes de iniciar sesión.');
+        alert('¡Registro exitoso! Revisa tu email para confirmar tu cuenta.');
         setMode('login');
         setFormData({
           email: formData.email, // Keep email for login
@@ -106,7 +118,17 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
         
         if (error) {
           console.error('Login error:', error);
-          setErrors({ email: 'Email o contraseña incorrectos.' });
+          
+          // Manejar diferentes tipos de errores de login
+          if (error.message?.includes('Invalid login credentials')) {
+            setErrors({ email: 'Email o contraseña incorrectos.' });
+          } else if (error.message?.includes('Email not confirmed')) {
+            setErrors({ email: 'Debes confirmar tu email antes de iniciar sesión.' });
+          } else if (error.message?.includes('Too many requests')) {
+            setErrors({ email: 'Demasiados intentos. Espera unos minutos.' });
+          } else {
+            setErrors({ email: `Error: ${error.message || 'Error desconocido en el login'}` });
+          }
           setLoading(false);
           return;
         }
@@ -116,7 +138,7 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
       }
     } catch (error: any) {
       console.error('Auth error:', error);
-      setErrors({ email: 'Error de conexión. Intenta de nuevo.' });
+      setErrors({ email: `Error de conexión: ${error.message || 'Verifica tu conexión a internet'}` });
     } finally {
       setLoading(false);
     }

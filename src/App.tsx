@@ -34,6 +34,7 @@ function AppContent() {
 
   const handleSectionChange = (section: string) => {
     if (section === 'logout') {
+      const { signOut } = useAuth();
       signOut();
       return;
     }
