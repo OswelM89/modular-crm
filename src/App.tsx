@@ -33,6 +33,8 @@ function App() {
   const handleLogin = (userData: any) => {
     setUser(userData);
     localStorage.setItem('user', JSON.stringify(userData));
+    setActiveSection('dashboard');
+    localStorage.setItem('activeSection', 'dashboard');
   };
 
   const handleLogout = () => {
