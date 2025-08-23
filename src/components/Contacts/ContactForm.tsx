@@ -32,6 +32,20 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
 
   const [errors, setErrors] = useState<Partial<ContactFormData>>({});
 
+  // Bloquear scroll del body cuando el modal está abierto
+  React.useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    // Cleanup al desmontar el componente
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
   const handleInputChange = (field: keyof ContactFormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     // Clear error when user starts typing
