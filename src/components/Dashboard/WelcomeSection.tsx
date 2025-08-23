@@ -57,7 +57,7 @@ export function WelcomeSection({ userName, onSectionChange }: WelcomeSectionProp
       name: 'Pipeline',
       icon: BarChart3,
       color: 'bg-gray-400',
-      available: false
+      available: true
     },
     {
       id: 'new-features',
