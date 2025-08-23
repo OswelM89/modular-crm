@@ -84,67 +84,54 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
         );
         
         if (error) {
-          console.error('Registration error:', error);
+          let errorMessage = 'Error en el registro. Intenta de nuevo.';
           
-          // Manejar diferentes tipos de errores de registro
-          if (error.message?.includes('User already registered') || 
-              error.message?.includes('already been registered')) {
+          if (error.message?.includes('User already registered')) {
             setErrors({ email: 'Este email ya está registrado. Intenta iniciar sesión.' });
-          } else if (error.message?.includes('Invalid email')) {
+          } else if (error.message?.includes('Invalid email') || error.message?.includes('invalid_email')) {
             setErrors({ email: 'Email inválido. Verifica el formato.' });
-          } else if (error.message?.includes('Password') || error.message?.includes('password')) {
+          } else if (error.message?.includes('Password') || error.message?.includes('weak_password')) {
             setErrors({ password: 'La contraseña debe tener al menos 6 caracteres.' });
-          } else if (error.message?.includes('signup is disabled')) {
-            setErrors({ email: 'El registro está deshabilitado. Contacta al administrador.' });
           } else {
-            setErrors({ email: `Error de registro: ${error.message || 'Error desconocido'}` });
+            setErrors({ email: errorMessage });
           }
           setLoading(false);
           return;
         }
         
-        // Show success message - registration was successful
-        if (data?.user && !data.user.email_confirmed_at) {
-          alert('¡Registro exitoso! Revisa tu email para confirmar tu cuenta.');
+        // Registro exitoso
+        if (data?.user) {
+          if (!data.user.email_confirmed_at) {
+            alert('¡Registro exitoso! Revisa tu email para confirmar tu cuenta.');
+          }
           setMode('login');
           setFormData({
-            email: formData.email, // Keep email for login
+            email: formData.email,
             password: '',
             firstName: '',
             lastName: '',
             confirmPassword: '',
             organizationName: ''
           });
-        } else {
-          // User is already confirmed, they should be logged in automatically
-          console.log('User registered and confirmed automatically');
         }
       } else {
+        // Login
         const { data, error } = await signIn(formData.email, formData.password);
         
         if (error) {
-          console.error('Login error:', error);
-          
-          // Manejar diferentes tipos de errores de login
           if (error.message?.includes('Invalid login credentials')) {
             setErrors({ email: 'Email o contraseña incorrectos.' });
           } else if (error.message?.includes('Email not confirmed')) {
             setErrors({ email: 'Debes confirmar tu email antes de iniciar sesión.' });
-          } else if (error.message?.includes('Too many requests')) {
-            setErrors({ email: 'Demasiados intentos. Espera unos minutos.' });
           } else {
-            setErrors({ email: `Error: ${error.message || 'Error desconocido en el login'}` });
+            setErrors({ email: 'Error en el login. Verifica tus credenciales.' });
           }
           setLoading(false);
           return;
         }
-        
-        // The AuthContext will handle the login automatically
-        // No need to call onLogin manually
       }
     } catch (error: any) {
-      console.error('Auth error:', error);
-      setErrors({ email: `Error de conexión: ${error.message || 'Verifica tu conexión a internet'}` });
+      setErrors({ email: 'Error de conexión. Verifica tu internet.' });
     } finally {
       setLoading(false);
     }

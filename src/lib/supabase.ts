@@ -9,9 +9,10 @@ if (!supabaseUrl || !supabaseAnonKey) {
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    redirectTo: window.location.origin,
     autoRefreshToken: true,
-    persistSession: true
+    persistSession: true,
+    detectSessionInUrl: true,
+    flowType: 'pkce'
   }
 })
 
@@ -83,9 +84,6 @@ export interface Deal {
 // Auth helpers
 export const signUp = async (email: string, password: string, organizationName: string, firstName: string, lastName: string) => {
   try {
-    console.log('Attempting signup with:', { email, organizationName, firstName, lastName })
-    
-    // 1. Create the user account WITH metadata
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password,
@@ -95,23 +93,16 @@ export const signUp = async (email: string, password: string, organizationName: 
           last_name: lastName,
           organization_name: organizationName,
           role: 'super_admin'
-        },
-        emailRedirectTo: window.location.origin
+        }
       }
     })
 
     if (authError) {
-      console.error('Supabase auth error:', authError)
       throw authError
     }
-    
-    console.log('Signup successful:', authData)
 
-    // The trigger should handle creating organization and profile automatically
-    
     return { data: authData, error: null }
   } catch (error) {
-    console.error('SignUp function error:', error)
     return { data: null, error }
   }
 }
@@ -146,22 +137,29 @@ export const getCurrentProfile = async () => {
   if (!user) return null
 
   try {
+    // Esperar un poco para que el trigger termine
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    
     const { data, error } = await supabase
       .from('profiles')
       .select(`
         *,
-        organization:organizations(*)
+        organizations(*)
       `)
       .eq('id', user.id)
       .single()
 
     if (error) {
-      console.error('Error fetching profile:', error)
+      // Si no existe el perfil, intentar crearlo
+      if (error.code === 'PGRST116') {
+        console.log('Profile not found, user might need to complete registration')
+        return null
+      }
       return null
     }
+    
     return data
   } catch (error) {
-    console.error('Error in getCurrentProfile:', error)
     return null
   }
 }

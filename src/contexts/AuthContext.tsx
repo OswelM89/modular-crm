@@ -34,13 +34,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Get initial session
     supabase.auth.getSession().then(({ data: { session }, error }) => {
       if (error) {
-        console.error('Error getting session:', error);
-        // If user doesn't exist but we have a token, clear the session
-        if (error.message?.includes('User from sub claim in JWT does not exist')) {
-          console.log('Invalid JWT token detected, signing out...');
-          handleSignOut();
-          return;
-        }
+        console.error('Error getting session:', error)
+        handleSignOut()
+        return
       }
       setUser(session?.user ?? null)
       setLoading(false)
@@ -48,12 +44,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('Auth state changed:', event, session?.user?.email);
+      console.log('Auth state changed:', event, session?.user?.email)
       
       setUser(session?.user ?? null)
       
       if (session?.user && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED')) {
-        console.log('User signed in, fetching profile...');
+        console.log('User signed in, fetching profile...')
         await refreshProfile()
       } else {
         setProfile(null)
@@ -65,22 +61,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe()
   }, [])
 
+  // Refresh profile when user changes
   useEffect(() => {
-    // Check URL for auth tokens (email confirmation)
-    const hashParams = new URLSearchParams(window.location.hash.substring(1))
-    const accessToken = hashParams.get('access_token')
-    
-    if (accessToken) {
-      console.log('Found access token in URL, setting session...')
-      supabase.auth.setSession({
-        access_token: accessToken,
-        refresh_token: hashParams.get('refresh_token') || ''
-      }).then(() => {
-        // Clean up URL
-        window.history.replaceState({}, document.title, window.location.pathname)
-      })
-    }
-    
     if (user && !profile && !loading) {
       refreshProfile()
     }
@@ -90,6 +72,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await supabase.auth.signOut()
     setUser(null)
     setProfile(null)
+    // Clear any remaining session data
+    localStorage.removeItem('supabase.auth.token')
+    // Clean URL
+    window.history.replaceState({}, document.title, window.location.pathname)
   }
 
   const value = {
