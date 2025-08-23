@@ -55,7 +55,7 @@ function App() {
   const renderContent = () => {
     switch (activeSection) {
       case 'dashboard':
-        return <Dashboard />;
+        return <Dashboard user={user} onSectionChange={handleSectionChange} />;
       case 'contacts':
         return <ContactList />;
       case 'companies':
