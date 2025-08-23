@@ -13,7 +13,9 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     persistSession: true,
     detectSessionInUrl: true,
     flowType: 'pkce',
-    redirectTo: window.location.origin
+    redirectTo: window.location.origin.includes('localhost') 
+      ? 'https://stackblitz.com' 
+      : window.location.origin
   }
 })
 
@@ -89,7 +91,9 @@ export const signUp = async (email: string, password: string, organizationName: 
       email,
       password,
       options: {
-        emailRedirectTo: redirectTo || window.location.origin,
+        emailRedirectTo: redirectTo || (window.location.origin.includes('localhost') 
+          ? 'https://stackblitz.com' 
+          : window.location.origin),
         data: {
           first_name: firstName,
           last_name: lastName,

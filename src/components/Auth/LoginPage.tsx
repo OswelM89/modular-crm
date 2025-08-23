@@ -81,7 +81,9 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
           formData.organizationName,
           formData.firstName,
           formData.lastName,
-          window.location.origin
+          window.location.origin.includes('localhost') 
+            ? 'https://stackblitz.com' 
+            : window.location.origin
         );
         
         if (error) {
