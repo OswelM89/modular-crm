@@ -136,7 +136,7 @@ export function Dashboard() {
                 </div>
                 <div className="text-right">
                   <p className="font-medium text-gray-900">{formatCurrency(quote.total)}</p>
-                  <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(quote.status)}`}>
+                  <span className={`inline-flex px-2 py-1 text-xs font-medium ${getStatusColor(quote.status)}`}>
                     {quote.status}
                   </span>
                 </div>
@@ -145,6 +145,6 @@ export function Dashboard() {
           </div>
         </div>
       </div>
-    </div>
+        <div className="bg-white border border-gray-200 p-6">
   );
 }

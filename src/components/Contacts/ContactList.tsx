@@ -161,7 +161,7 @@ export function ContactList() {
           </div>
           <button 
             onClick={() => setShowContactForm(true)}
-            className="inline-flex items-center px-4 py-2 bg-[#FF6200] text-white rounded-lg hover:bg-orange-600 transition-colors"
+            className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
           >
             <Plus className="w-4 h-4 mr-2" />
             Nuevo Contacto
@@ -205,7 +205,7 @@ export function ContactList() {
           )}
           <button 
             onClick={() => setShowContactForm(true)}
-            className="inline-flex items-center px-4 py-2 bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+            className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
           >
             <Plus className="w-4 h-4 mr-2" />
             Nuevo Contacto
