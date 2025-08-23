@@ -271,7 +271,11 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
                     <span>Hace 2 días</span>
                   </div>
                 </div>
-                <div className="w-16 h-16 bg-blue-100 ml-4 flex-shrink-0"></div>
+                <img 
+                  src="/Modular cover.jpg" 
+                  alt="CRM Functions" 
+                  className="w-16 h-16 ml-4 flex-shrink-0 object-cover rounded"
+                />
               </div>
             </div>
             
@@ -294,7 +298,11 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
                     <span>Hace 1 semana</span>
                   </div>
                 </div>
-                <div className="w-16 h-16 bg-green-100 ml-4 flex-shrink-0"></div>
+                <img 
+                  src="/Modular cover.jpg" 
+                  alt="Sales Automation" 
+                  className="w-16 h-16 ml-4 flex-shrink-0 object-cover rounded"
+                />
               </div>
             </div>
             
@@ -317,7 +325,11 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
                     <span>Hace 2 semanas</span>
                   </div>
                 </div>
-                <div className="w-16 h-16 bg-purple-100 ml-4 flex-shrink-0"></div>
+                <img 
+                  src="/Modular cover.jpg" 
+                  alt="Team Metrics" 
+                  className="w-16 h-16 ml-4 flex-shrink-0 object-cover rounded"
+                />
               </div>
             </div>
           </div>
