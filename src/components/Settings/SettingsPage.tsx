@@ -64,7 +64,7 @@ export function SettingsPage({ onSectionChange }: SettingsPageProps) {
           return (
             <div
               key={card.id}
-              className={`bg-white border border-gray-200 p-6 hover:shadow-lg transition-all duration-200 ${
+              className={`bg-white border border-gray-200 p-6 ${
                 card.available 
                   ? 'cursor-pointer' 
                   : 'cursor-not-allowed opacity-60'
