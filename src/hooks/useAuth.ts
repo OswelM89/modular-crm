@@ -69,20 +69,26 @@ export function useAuth() {
 
       if (error) {
         console.error('Error fetching profile:', error);
-        // Si no existe el perfil, crear uno básico
+        // Si no existe el perfil, esperar a que el trigger lo cree
         if (error.code === 'PGRST116') {
-          console.log('Profile not found, will be created by trigger');
-          setAuthState(prev => ({ ...prev, loading: false }));
+          console.log('Profile not found, waiting for trigger to create it...');
+          // Esperar un momento y reintentar
+          setTimeout(() => {
+            fetchProfile(userId);
+          }, 2000);
           return;
         }
+        setAuthState(prev => ({ ...prev, loading: false }));
       } else {
         console.log('Profile fetched successfully:', profile);
         setAuthState(prev => ({ ...prev, profile }))
+        setAuthState(prev => ({ ...prev, loading: false }))
       }
     } catch (error) {
       console.error('Unexpected error fetching profile:', error);
-    } finally {
       setAuthState(prev => ({ ...prev, loading: false }))
+    } finally {
+      // El loading se maneja en cada caso específico arriba
     }
   }
 
