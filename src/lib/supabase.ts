@@ -15,40 +15,43 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   }
 })
 
-// Tipos para la base de datos
+// Tipos actualizados para la base de datos
 export interface Database {
   public: {
     Tables: {
       profiles: {
         Row: {
           id: string
-          organization_id: string | null
           email: string
+          full_name: string | null
           first_name: string
           last_name: string
           role: 'super_admin' | 'admin' | 'manager' | 'user' | 'viewer'
+          organization_id: string | null
           avatar_url: string | null
           created_at: string
           updated_at: string
         }
         Insert: {
           id: string
-          organization_id?: string | null
           email: string
+          full_name?: string | null
           first_name: string
           last_name: string
           role?: 'super_admin' | 'admin' | 'manager' | 'user' | 'viewer'
+          organization_id?: string | null
           avatar_url?: string | null
           created_at?: string
           updated_at?: string
         }
         Update: {
           id?: string
-          organization_id?: string | null
           email?: string
+          full_name?: string | null
           first_name?: string
           last_name?: string
           role?: 'super_admin' | 'admin' | 'manager' | 'user' | 'viewer'
+          organization_id?: string | null
           avatar_url?: string | null
           created_at?: string
           updated_at?: string
@@ -59,6 +62,8 @@ export interface Database {
           id: string
           name: string
           slug: string
+          logo_url: string | null
+          created_by: string | null
           created_at: string
           updated_at: string
         }
@@ -66,6 +71,8 @@ export interface Database {
           id?: string
           name: string
           slug?: string
+          logo_url?: string | null
+          created_by?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -73,8 +80,59 @@ export interface Database {
           id?: string
           name?: string
           slug?: string
+          logo_url?: string | null
+          created_by?: string | null
           created_at?: string
           updated_at?: string
+        }
+      }
+      organization_members: {
+        Row: {
+          id: string
+          user_id: string
+          organization_id: string
+          role: 'owner' | 'admin' | 'manager' | 'member' | 'viewer'
+          invited_by: string | null
+          joined_at: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          organization_id: string
+          role?: 'owner' | 'admin' | 'manager' | 'member' | 'viewer'
+          invited_by?: string | null
+          joined_at?: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          organization_id?: string
+          role?: 'owner' | 'admin' | 'manager' | 'member' | 'viewer'
+          invited_by?: string | null
+          joined_at?: string
+          created_at?: string
+        }
+      }
+      super_admins: {
+        Row: {
+          id: string
+          user_id: string
+          created_by: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          created_by?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          created_by?: string | null
+          created_at?: string
         }
       }
     }

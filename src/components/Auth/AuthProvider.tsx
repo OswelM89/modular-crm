@@ -4,11 +4,12 @@ import { User, Session } from '@supabase/supabase-js'
 
 interface Profile {
   id: string
-  organization_id: string | null
   email: string
+  full_name: string | null
   first_name: string
   last_name: string
   role: 'super_admin' | 'admin' | 'manager' | 'user' | 'viewer'
+  organization_id: string | null
   avatar_url: string | null
   created_at: string
   updated_at: string
