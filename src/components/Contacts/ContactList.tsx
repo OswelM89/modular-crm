@@ -148,7 +148,7 @@ export function ContactList() {
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900">{t('contacts.title')}</h3>
+            <h1 className="text-gray-900" style={{ fontSize: '1.875rem', fontWeight: '700' }}>{t('contacts.title')}</h1>
             <p className="text-sm text-gray-600">{t('contacts.subtitle')}</p>
           </div>
           <button 
