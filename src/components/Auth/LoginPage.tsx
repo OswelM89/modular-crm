@@ -88,7 +88,8 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
           
           // Manejar diferentes tipos de errores de registro
           if (error.message?.includes('User already registered') || 
-              error.message?.includes('already been registered') ||
+              error.message?.includes('already been registered')) {
+            setErrors({ email: 'Este email ya está registrado. Intenta iniciar sesión.' });
           } else if (error.message?.includes('Invalid email')) {
             setErrors({ email: 'Email inválido. Verifica el formato.' });
           } else if (error.message?.includes('Password') || error.message?.includes('password')) {
