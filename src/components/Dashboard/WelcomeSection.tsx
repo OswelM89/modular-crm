@@ -82,11 +82,11 @@ export function WelcomeSection({ userName, onSectionChange }: WelcomeSectionProp
         </div>
         <div className="flex items-center gap-3">
           <button
-            onClick={() => onSectionChange('tutorial')}
-            className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+            onClick={() => onSectionChange('tutoriales')}
+            className="inline-flex items-center px-6 py-3 text-base bg-[#212830] text-white hover:bg-gray-700 transition-colors"
           >
             <BookOpen className="w-4 h-4 mr-2" />
-            Tutorial
+            Tutoriales
           </button>
           <button
             onClick={() => onSectionChange('settings')}
