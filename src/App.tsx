@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Header } from './components/Layout/Header';
 import { Footer } from './components/Layout/Footer';
 import { LanguageSelector } from './components/UI/LanguageSelector';
+import { LoginPage } from './components/Auth/LoginPage';
 import { Dashboard } from './components/Dashboard/Dashboard';
 import { ContactList } from './components/Contacts/ContactList';
 import { CompanyList } from './components/Companies/CompanyList';
@@ -24,8 +25,27 @@ function App() {
   const [activeSection, setActiveSection] = useState(() => {
     return localStorage.getItem('activeSection') || 'dashboard';
   });
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem('user');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+
+  const handleLogin = (userData: any) => {
+    setUser(userData);
+    localStorage.setItem('user', JSON.stringify(userData));
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem('user');
+    setActiveSection('dashboard');
+  };
 
   const handleSectionChange = (section: string) => {
+    if (section === 'logout') {
+      handleLogout();
+      return;
+    }
     setActiveSection(section);
     localStorage.setItem('activeSection', section);
   };
@@ -70,9 +90,18 @@ function App() {
     }
   };
 
+  // Si no hay usuario logueado, mostrar página de login
+  if (!user) {
+    return <LoginPage onLogin={handleLogin} />;
+  }
+
   return (
     <div className="min-h-screen bg-[#F4F4F4] flex flex-col">
-      <Header activeSection={activeSection} onSectionChange={handleSectionChange} />
+      <Header 
+        activeSection={activeSection} 
+        onSectionChange={handleSectionChange}
+        user={user}
+      />
       
       {/* Selector de idioma flotante */}
       <LanguageSelector />

@@ -5,6 +5,12 @@ import { useTranslation } from '../../hooks/useTranslation';
 interface HeaderProps {
   activeSection: string;
   onSectionChange: (section: string) => void;
+  user?: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    avatar?: string;
+  };
 }
 
 const navigation = [
@@ -17,7 +23,7 @@ const navigation = [
   { id: 'reports', nameKey: 'nav.reports' },
 ];
 
-export function Header({ activeSection, onSectionChange }: HeaderProps) {
+export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const { t } = useTranslation();
@@ -115,10 +121,22 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
                 onClick={toggleProfileDropdown}
               >
                 <div className="w-6 h-6 sm:w-8 sm:h-8 bg-[#FF6200] flex items-center justify-center">
-                  <User className="w-4 h-4 text-white" />
+                  {user?.avatar ? (
+                    <img 
+                      src={user.avatar} 
+                      alt={`${user.firstName} ${user.lastName}`}
+                      className="w-full h-full rounded-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-xs font-medium text-white">
+                      {user?.firstName?.charAt(0)}{user?.lastName?.charAt(0)}
+                    </span>
+                  )}
                 </div>
                 <div className="text-left hidden sm:block">
-                  <div className="text-sm font-medium text-white">Juan Pérez</div>
+                  <div className="text-sm font-medium text-white">
+                    {user?.firstName} {user?.lastName}
+                  </div>
                 </div>
                 <ChevronDown className="w-4 h-4 text-gray-300 hidden sm:block" />
               </div>
@@ -126,8 +144,10 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
               {showProfileDropdown && (
                <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-200 py-2 z-50">
                   <div className="px-4 py-2 border-b border-gray-200">
-                    <div className="text-sm font-medium text-gray-900">Juan Pérez</div>
-                    <div className="text-xs text-gray-500">Org: #123456</div>
+                    <div className="text-sm font-medium text-gray-900">
+                      {user?.firstName} {user?.lastName}
+                    </div>
+                    <div className="text-xs text-gray-500">{user?.email}</div>
                   </div>
                   <button 
                     onClick={() => onSectionChange('profile')}
@@ -142,7 +162,10 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
                     {t('profile.settings')}
                   </button>
                   <hr className="my-1 border-gray-200" />
-                  <button className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors">
+                  <button 
+                    onClick={() => onSectionChange('logout')}
+                    className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                  >
                     {t('profile.logout')}
                   </button>
                 </div>
