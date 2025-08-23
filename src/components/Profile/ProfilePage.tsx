@@ -3,15 +3,26 @@ import { ArrowLeft, User, Mail, Phone, Calendar, MapPin, Camera, Save, X, Edit, 
 
 interface ProfilePageProps {
   user: {
+    id: string;
     firstName: string;
     lastName: string;
     email: string;
-    avatar?: string;
-  };
+    avatar_url?: string | null;
+  } | null;
   onBack: () => void;
 }
 
 export function ProfilePage({ user, onBack }: ProfilePageProps) {
+  if (!user) {
+    return (
+      <div className="space-y-6">
+        <div className="text-center py-12">
+          <p className="text-gray-500">No se pudo cargar la información del perfil</p>
+        </div>
+      </div>
+    );
+  }
+
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState({
     firstName: user.firstName,
@@ -23,7 +34,7 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
     location: 'Ciudad de México, México',
     bio: 'Especialista en gestión de relaciones con clientes y desarrollo de estrategias de ventas.',
     joinDate: '15 de Enero, 2024',
-    avatar: user.avatar
+    avatar: user.avatar_url
   });
 
   const [newAvatar, setNewAvatar] = useState<File | null>(null);

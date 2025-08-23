@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { AuthProvider, useAuthContext } from './components/Auth/AuthProvider';
+import { SupabaseLoginPage } from './components/Auth/SupabaseLoginPage';
+import { LoadingScreen } from './components/Auth/LoadingScreen';
 import { Header } from './components/Layout/Header';
 import { Footer } from './components/Layout/Footer';
 import { LanguageSelector } from './components/UI/LanguageSelector';
@@ -12,6 +15,8 @@ import { QuoteBuilder } from './components/Quotes/QuoteBuilder';
 import { SettingsPage } from './components/Settings/SettingsPage';
 import { ProfilePage } from './components/Profile/ProfilePage';
 
+function AppContent() {
+  const { user, profile, loading } = useAuthContext();
 const sectionTitles = {
   dashboard: 'Dashboard',
   contacts: 'Contactos',
@@ -28,27 +33,10 @@ function App() {
   const [activeSection, setActiveSection] = useState(() => {
     return localStorage.getItem('activeSection') || 'dashboard';
   });
-  const [user, setUser] = useState(() => {
-    const savedUser = localStorage.getItem('user');
-    return savedUser ? JSON.parse(savedUser) : null;
-  });
-
-  const handleLogin = (userData: any) => {
-    setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
-    setActiveSection('dashboard');
-    localStorage.setItem('activeSection', 'dashboard');
-  };
-
-  const handleLogout = () => {
-    setUser(null);
-    localStorage.removeItem('user');
-    setActiveSection('dashboard');
-  };
 
   const handleSectionChange = (section: string) => {
     if (section === 'logout') {
-      handleLogout();
+      // El logout se maneja en el Header
       return;
     }
     setActiveSection(section);
@@ -58,7 +46,7 @@ function App() {
   const renderContent = () => {
     switch (activeSection) {
       case 'dashboard':
-        return <Dashboard user={user} onSectionChange={handleSectionChange} />;
+        return <Dashboard user={profile} onSectionChange={handleSectionChange} />;
       case 'contacts':
         return <ContactList />;
       case 'companies':
@@ -103,16 +91,21 @@ function App() {
         );
       case 'profile':
         return (
-          <ProfilePage user={user} onBack={() => handleSectionChange('dashboard')} />
+          <ProfilePage user={profile} onBack={() => handleSectionChange('dashboard')} />
         );
       default:
         return <Dashboard />;
     }
   };
 
-  // Si no hay usuario logueado, mostrar página de login
-  if (!user) {
-    return <LoginPage onLogin={handleLogin} />;
+  // Mostrar loading mientras se verifica la autenticación
+  if (loading) {
+    return <LoadingScreen />;
+  }
+
+  // Si no hay usuario logueado, mostrar página de login de Supabase
+  if (!user || !profile) {
+    return <SupabaseLoginPage />;
   }
 
   return (
@@ -120,7 +113,7 @@ function App() {
       <Header 
         activeSection={activeSection} 
         onSectionChange={handleSectionChange}
-        user={user}
+        user={profile}
       />
       
       {/* Selector de idioma flotante */}
@@ -134,6 +127,14 @@ function App() {
       
       <Footer />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
 

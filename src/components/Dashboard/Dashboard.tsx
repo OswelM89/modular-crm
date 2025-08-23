@@ -8,9 +8,12 @@ import { useTranslation } from '../../hooks/useTranslation';
 
 interface DashboardProps {
   user?: {
+    id: string;
     firstName: string;
     lastName: string;
-  };
+    email: string;
+    avatar_url?: string | null;
+  } | null;
   onSectionChange?: (section: string) => void;
 }
 

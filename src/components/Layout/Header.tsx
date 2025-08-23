@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { Search, Bell, User, ChevronDown, Menu, X } from 'lucide-react';
+import { useAuthContext } from '../Auth/AuthProvider';
 import { useTranslation } from '../../hooks/useTranslation';
 
 interface HeaderProps {
   activeSection: string;
   onSectionChange: (section: string) => void;
-  user?: {
+  user: {
+    id: string;
     firstName: string;
     lastName: string;
     email: string;
-    avatar?: string;
-  };
+    avatar_url?: string | null;
+  } | null;
 }
 
 const navigation = [
@@ -26,7 +28,13 @@ const navigation = [
 export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const { signOut } = useAuthContext();
   const { t } = useTranslation();
+
+  const handleLogout = async () => {
+    await signOut();
+    setShowProfileDropdown(false);
+  };
 
   const toggleProfileDropdown = () => {
     setShowProfileDropdown(!showProfileDropdown);
@@ -121,21 +129,21 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
                 onClick={toggleProfileDropdown}
               >
                 <div className="w-6 h-6 sm:w-8 sm:h-8 bg-[#FF6200] flex items-center justify-center">
-                  {user?.avatar ? (
+                  {user?.avatar_url ? (
                     <img 
-                      src={user.avatar} 
-                      alt={`${user.firstName} ${user.lastName}`}
+                      src={user.avatar_url} 
+                      alt={`${user?.firstName} ${user?.lastName}`}
                       className="w-full h-full rounded-full object-cover"
                     />
                   ) : (
                     <span className="text-xs font-medium text-white">
-                      {user?.firstName?.charAt(0)}{user?.lastName?.charAt(0)}
+                      {user?.firstName?.charAt(0) || 'U'}{user?.lastName?.charAt(0) || 'U'}
                     </span>
                   )}
                 </div>
                 <div className="text-left hidden sm:block">
                   <div className="text-sm font-medium text-white">
-                    {user?.firstName} {user?.lastName}
+                    {user?.firstName || 'Usuario'} {user?.lastName || ''}
                   </div>
                 </div>
                 <ChevronDown className="w-4 h-4 text-gray-300 hidden sm:block" />
@@ -145,9 +153,9 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
                <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-200 py-2 z-50">
                   <div className="px-4 py-2 border-b border-gray-200">
                     <div className="text-sm font-medium text-gray-900">
-                      {user?.firstName} {user?.lastName}
+                      {user?.firstName || 'Usuario'} {user?.lastName || ''}
                     </div>
-                    <div className="text-xs text-gray-500">{user?.email}</div>
+                    <div className="text-xs text-gray-500">{user?.email || ''}</div>
                   </div>
                   <button 
                     onClick={() => onSectionChange('profile')}
@@ -163,7 +171,7 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
                   </button>
                   <hr className="my-1 border-gray-200" />
                   <button 
-                    onClick={() => onSectionChange('logout')}
+                    onClick={handleLogout}
                     className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
                   >
                     {t('profile.logout')}
