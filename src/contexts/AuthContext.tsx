@@ -35,6 +35,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     supabase.auth.getSession().then(({ data: { session }, error }) => {
       if (error) {
         console.error('Error getting session:', error);
+        // If user doesn't exist but we have a token, clear the session
+        if (error.message?.includes('User from sub claim in JWT does not exist')) {
+          console.log('Invalid JWT token detected, signing out...');
+          handleSignOut();
+          return;
+        }
       }
       setUser(session?.user ?? null)
       setLoading(false)
