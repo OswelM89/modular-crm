@@ -213,7 +213,7 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
       </div>
 
       {/* Separador */}
-      <div className="border-t border-gray-200 my-8"></div>
+      <div className="border-t border-gray-200" style={{ marginTop: '2rem', marginBottom: '2rem' }}></div>
 
       {/* Sección de Artículos - Bento Layout */}
       <div className="flex items-center justify-between mb-6">
