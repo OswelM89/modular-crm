@@ -12,7 +12,7 @@ export function SettingsPage({ onSectionChange }: SettingsPageProps) {
       title: 'Agregar Usuario',
       description: 'Invita nuevos miembros a tu equipo y gestiona permisos',
       icon: UserPlus,
-      color: 'bg-blue-500',
+      color: 'bg-[#212830]',
       available: true,
       action: () => console.log('Agregar usuario')
     },
@@ -21,7 +21,7 @@ export function SettingsPage({ onSectionChange }: SettingsPageProps) {
       title: 'Configurar Cotización',
       description: 'Personaliza plantillas, términos y configuración de cotizaciones',
       icon: FileText,
-      color: 'bg-green-500',
+      color: 'bg-[#212830]',
       available: true,
       action: () => console.log('Configurar cotización')
     },
@@ -30,7 +30,7 @@ export function SettingsPage({ onSectionChange }: SettingsPageProps) {
       title: 'Preferencias',
       description: 'Ajusta idioma, notificaciones y configuración personal',
       icon: Settings,
-      color: 'bg-orange-500',
+      color: 'bg-[#212830]',
       available: true,
       action: () => console.log('Preferencias')
     },
@@ -39,7 +39,7 @@ export function SettingsPage({ onSectionChange }: SettingsPageProps) {
       title: 'Nuevas Funciones',
       description: 'Descubre las próximas características que estamos desarrollando',
       icon: Plus,
-      color: 'bg-gray-400',
+      color: 'bg-[#212830]',
       available: false,
       action: () => console.log('Nuevas funciones')
     }
@@ -66,17 +66,17 @@ export function SettingsPage({ onSectionChange }: SettingsPageProps) {
               key={card.id}
               className={`bg-white border border-gray-200 p-6 hover:shadow-lg transition-all duration-200 ${
                 card.available 
-                  ? 'cursor-pointer hover:border-[#FF6200]' 
+                  ? 'cursor-pointer' 
                   : 'cursor-not-allowed opacity-60'
               }`}
               onClick={() => card.available && card.action()}
             >
               <div className="flex items-start justify-between mb-4">
-                <div className={`w-12 h-12 ${card.color} rounded-lg flex items-center justify-center`}>
+                <div className={`w-12 h-12 ${card.color} flex items-center justify-center`}>
                   <Icon className="w-6 h-6 text-white" />
                 </div>
                 {card.available && (
-                  <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-[#FF6200] transition-colors" />
+                  <ArrowRight className="w-5 h-5 text-gray-400" />
                 )}
               </div>
               
@@ -90,7 +90,7 @@ export function SettingsPage({ onSectionChange }: SettingsPageProps) {
               
               {!card.available && (
                 <div className="flex items-center">
-                  <span className="inline-flex items-center px-2 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-full">
+                  <span className="inline-flex items-center px-2 py-1 bg-gray-100 text-gray-600 text-xs font-medium">
                     Próximamente
                   </span>
                 </div>
@@ -108,10 +108,10 @@ export function SettingsPage({ onSectionChange }: SettingsPageProps) {
       </div>
 
       {/* Información adicional */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+      <div className="bg-blue-50 border border-blue-200 p-6">
         <div className="flex items-start">
           <div className="flex-shrink-0">
-            <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+            <div className="w-8 h-8 bg-blue-500 flex items-center justify-center">
               <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -125,10 +125,10 @@ export function SettingsPage({ onSectionChange }: SettingsPageProps) {
               Si tienes dudas sobre alguna configuración, consulta nuestra documentación o contacta al soporte técnico.
             </p>
             <div className="mt-3 flex space-x-3">
-              <button className="text-sm text-blue-600 hover:text-blue-800 font-medium transition-colors">
+              <button className="text-sm text-blue-600 font-medium">
                 Ver documentación
               </button>
-              <button className="text-sm text-blue-600 hover:text-blue-800 font-medium transition-colors">
+              <button className="text-sm text-blue-600 font-medium">
                 Contactar soporte
               </button>
             </div>
