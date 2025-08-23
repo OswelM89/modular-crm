@@ -12,7 +12,8 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: true,
-    flowType: 'pkce'
+    flowType: 'pkce',
+    redirectTo: window.location.origin
   }
 })
 
@@ -82,12 +83,13 @@ export interface Deal {
 }
 
 // Auth helpers
-export const signUp = async (email: string, password: string, organizationName: string, firstName: string, lastName: string) => {
+export const signUp = async (email: string, password: string, organizationName: string, firstName: string, lastName: string, redirectTo?: string) => {
   try {
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password,
       options: {
+        emailRedirectTo: redirectTo || window.location.origin,
         data: {
           first_name: firstName,
           last_name: lastName,

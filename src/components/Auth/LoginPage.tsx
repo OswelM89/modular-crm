@@ -80,7 +80,8 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
           formData.password,
           formData.organizationName,
           formData.firstName,
-          formData.lastName
+          formData.lastName,
+          window.location.origin
         );
         
         if (error) {
