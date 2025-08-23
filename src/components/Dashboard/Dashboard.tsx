@@ -220,7 +220,7 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
         <h3 className="font-bold text-gray-900" style={{ fontSize: '1.875rem', fontWeight: '700' }}>Artículos Destacados</h3>
         <button 
           onClick={() => onSectionChange && onSectionChange('blog')}
-          className="inline-flex items-center px-4 py-2 bg-[#FF6200] text-white hover:bg-orange-600 transition-colors text-sm"
+          className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
         >
           Ver Blog
         </button>
