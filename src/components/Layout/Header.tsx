@@ -64,7 +64,7 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
     };
   }, [showMobileMenu]);
   return (
-    <div className="bg-[#2D2520] text-white">
+    <div className="bg-[#0D1117] text-white">
       {/* Top Header */}
       <div className="px-6 py-4">
         <div className="max-w-[1150px] mx-auto flex items-center justify-between">
@@ -84,7 +84,7 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
               <input
                 type="text"
                 placeholder="Buscar..."
-                className="pl-10 pr-4 py-2 bg-[#3D3530] border border-gray-600 rounded-lg focus:ring-2 focus:ring-[#FF6200] focus:border-transparent text-white placeholder-gray-400 w-48 lg:w-64"
+                className="pl-10 pr-4 py-2 bg-[#21262d] border border-gray-600 rounded-lg focus:ring-2 focus:ring-[#FF6200] focus:border-transparent text-white placeholder-gray-400 w-48 lg:w-64"
               />
             </div>
             
@@ -102,7 +102,7 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
               className="relative profile-dropdown"
             >
               <div 
-                className="flex items-center space-x-2 sm:space-x-3 cursor-pointer hover:bg-[#3D3530] px-2 sm:px-3 py-2 rounded-lg transition-colors"
+                className="flex items-center space-x-2 sm:space-x-3 cursor-pointer hover:bg-[#21262d] px-2 sm:px-3 py-2 rounded-lg transition-colors"
                 onClick={toggleProfileDropdown}
               >
                 <div className="w-6 h-6 sm:w-8 sm:h-8 bg-[#FF6200] rounded-full flex items-center justify-center">
