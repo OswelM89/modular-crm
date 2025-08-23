@@ -135,7 +135,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                       type="text"
                       value={formData.firstName}
                       onChange={(e) => handleInputChange('firstName', e.target.value)}
-                      className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                     className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
                         errors.firstName ? 'border-red-500' : 'border-gray-300'
                       }`}
                       placeholder="Nombre"
@@ -154,7 +154,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                     type="text"
                     value={formData.lastName}
                     onChange={(e) => handleInputChange('lastName', e.target.value)}
-                    className={`w-full px-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                   className={`w-full px-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
                       errors.lastName ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder="Apellido"
@@ -176,7 +176,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                     type="text"
                     value={formData.company}
                     onChange={(e) => handleInputChange('company', e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                   className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
                     placeholder="Nombre de la empresa"
                   />
                 </div>
@@ -193,7 +193,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                     type="text"
                     value={formData.position}
                     onChange={(e) => handleInputChange('position', e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                   className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
                     placeholder="Cargo o posición"
                   />
                 </div>
@@ -210,7 +210,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                     type="email"
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
-                    className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                   className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
                       errors.email ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder="correo@ejemplo.com"
@@ -232,7 +232,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                   className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
                     placeholder="+52 55 1234 5678"
                   />
                 </div>
@@ -247,7 +247,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                   type="text"
                   value={formData.idNumber}
                   onChange={(e) => handleInputChange('idNumber', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                 className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
                   placeholder="Número de cédula"
                 />
               </div>
