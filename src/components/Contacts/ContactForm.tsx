@@ -10,11 +10,11 @@ interface ContactFormProps {
 export interface ContactFormData {
   firstName: string;
   lastName: string;
+  idNumber: string;
   company: string;
   position: string;
   email: string;
   phone: string;
-  idNumber: string;
   taxDocument: File | null;
 }
 
@@ -22,11 +22,11 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
   const [formData, setFormData] = useState<ContactFormData>({
     firstName: '',
     lastName: '',
+    idNumber: '',
     company: '',
     position: '',
     email: '',
     phone: '',
-    idNumber: '',
     taxDocument: null,
   });
 
@@ -88,12 +88,13 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
       setFormData({
         firstName: '',
         lastName: '',
+        idNumber: '',
         company: '',
         position: '',
         email: '',
         phone: '',
-      });
         taxDocument: null,
+      });
       onClose();
     }
   };
@@ -102,12 +103,13 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
     setFormData({
       firstName: '',
       lastName: '',
+       idNumber: '',
       company: '',
       position: '',
       email: '',
       phone: '',
-    });
       taxDocument: null,
+    });
     onClose();
   };
 
@@ -122,7 +124,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
       />
       
       {/* Sidebar */}
-      <div className="absolute right-0 top-0 h-screen w-full sm:w-96 bg-white transform transition-transform duration-300 ease-in-out flex flex-col">
+      <div className="absolute right-0 top-0 bottom-0 w-full sm:w-96 bg-white transform transition-transform duration-300 ease-in-out flex flex-col">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
             <h2 className="text-xl font-semibold text-gray-900">Nuevo Contacto</h2>
@@ -176,6 +178,23 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                   {errors.lastName && (
                     <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>
                   )}
+                </div>
+              </div>
+
+              {/* Cédula de Identidad */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Cédula de Identidad
+                </label>
+                <div className="relative">
+                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <input
+                    type="text"
+                    value={formData.idNumber}
+                    onChange={(e) => handleInputChange('idNumber', e.target.value)}
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                    placeholder="Número de cédula"
+                  />
                 </div>
               </div>
 
