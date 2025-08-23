@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Plus, Calendar, DollarSign, User, Building2, Edit, Trash2 } from 'lucide-react';
 import { Deal } from '../../types';
-import { SkeletonGrid } from '../UI/SkeletonLoader';
+import { SkeletonTable } from '../UI/SkeletonLoader';
 import { mockDeals } from '../../data/mockData';
 
 export function DealList() {
@@ -140,17 +140,7 @@ export function DealList() {
             Nuevo Negocio
           </button>
         </div>
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200">
-          <div className="p-6 border-b border-gray-200">
-            <div className="flex flex-col sm:flex-row gap-4">
-              <div className="flex-1 h-10 bg-gray-200 rounded animate-pulse"></div>
-              <div className="w-48 h-10 bg-gray-200 rounded animate-pulse"></div>
-            </div>
-          </div>
-          <div className="p-6">
-            <SkeletonGrid />
-          </div>
-        </div>
+        <SkeletonTable />
       </div>
     );
   }
