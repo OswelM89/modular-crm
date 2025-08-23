@@ -23,10 +23,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const profileData = await getCurrentProfile()
         if (profileData) {
           setProfile(profileData)
+        } else {
+          // If profile is null, user doesn't exist in database
+          console.log('Profile not found, signing out user')
+          await handleSignOut()
         }
       }
     } catch (error) {
       console.error('Error fetching profile:', error)
+      // If any error occurs (including JWT errors), sign out
+      await handleSignOut()
     }
   }
 
