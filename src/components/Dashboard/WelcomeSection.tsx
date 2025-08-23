@@ -1,5 +1,5 @@
 import React from 'react';
-import { Users, Building2, Target, FileText, BarChart3, Plus } from 'lucide-react';
+import { Users, Building2, Target, FileText, BarChart3, Plus, Settings } from 'lucide-react';
 
 interface WelcomeSectionProps {
   userName: string;
@@ -71,13 +71,22 @@ export function WelcomeSection({ userName, onSectionChange }: WelcomeSectionProp
   return (
     <div className="mb-8">
       {/* Mensaje de bienvenida */}
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Hola {userName}
-        </h1>
-        <p className="text-lg text-gray-600">
-          {getDailyMessage()}
-        </p>
+      <div className="mb-6 flex items-start justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Hola {userName}
+          </h1>
+          <p className="text-lg text-gray-600">
+            {getDailyMessage()}
+          </p>
+        </div>
+        <button
+          onClick={() => onSectionChange('settings')}
+          className="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
+        >
+          <Settings className="w-4 h-4 mr-2" />
+          Configuración
+        </button>
       </div>
 
       {/* Acciones rápidas */}
