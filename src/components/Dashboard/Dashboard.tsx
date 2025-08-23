@@ -213,18 +213,17 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
       </div>
 
       {/* Sección de Artículos - Bento Layout */}
-      <div className="bg-white border border-gray-200 p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-semibold text-gray-900">Artículos Destacados</h3>
-          <button 
-            onClick={() => onSectionChange && onSectionChange('blog')}
-            className="inline-flex items-center px-4 py-2 bg-[#FF6200] text-white hover:bg-orange-600 transition-colors text-sm"
-          >
-            Ver Blog
-          </button>
-        </div>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="font-semibold text-gray-900" style={{ fontSize: '1.875rem' }}>Artículos Destacados</h3>
+        <button 
+          onClick={() => onSectionChange && onSectionChange('blog')}
+          className="inline-flex items-center px-4 py-2 bg-[#FF6200] text-white hover:bg-orange-600 transition-colors text-sm"
+        >
+          Ver Blog
+        </button>
+      </div>
+      
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Artículo Principal - Izquierda */}
           <div className="lg:col-span-1">
             <div className="bg-gradient-to-br from-[#FF6200] to-orange-600 p-6 text-white h-full min-h-[300px] flex flex-col justify-between">
@@ -334,7 +333,6 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
             </div>
           </div>
         </div>
-      </div>
     </div>
   );
 }
