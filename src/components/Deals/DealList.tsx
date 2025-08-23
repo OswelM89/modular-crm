@@ -3,6 +3,7 @@ import { Plus, Calendar, DollarSign, User, Building2, Edit, Trash2 } from 'lucid
 import { Deal } from '../../types';
 import { SkeletonTable } from '../UI/SkeletonLoader';
 import { mockDeals } from '../../data/mockData';
+import { DealForm, DealFormData } from './DealForm';
 
 export function DealList() {
   const [loading, setLoading] = useState(true);
@@ -10,6 +11,7 @@ export function DealList() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStage, setFilterStage] = useState<string>('all');
   const [selectedDeals, setSelectedDeals] = useState<string[]>([]);
+  const [showDealForm, setShowDealForm] = useState(false);
 
   React.useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1400);
@@ -127,6 +129,24 @@ export function DealList() {
     document.body.removeChild(link);
   };
 
+  const handleCreateDeal = (dealData: DealFormData) => {
+    const newDeal: Deal = {
+      id: Math.random().toString(36).substr(2, 9),
+      title: dealData.title,
+      value: dealData.estimatedValue,
+      stage: 'prospecting',
+      probability: 50,
+      expectedCloseDate: new Date(dealData.estimatedCloseDate),
+      contactId: dealData.contactId || '1',
+      companyId: dealData.companyId || '1',
+      description: dealData.description,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    
+    setDeals(prev => [newDeal, ...prev]);
+  };
+
   if (loading) {
     return (
       <div className="space-y-6">
@@ -135,7 +155,10 @@ export function DealList() {
             <h3 className="text-lg font-semibold text-gray-900">Negocios</h3>
             <p className="text-sm text-gray-600">Administra tu pipeline de ventas</p>
           </div>
-          <button className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors">
+          <button 
+            onClick={() => setShowDealForm(true)}
+            className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+          >
             <Plus className="w-4 h-4 mr-2" />
             Nuevo Negocio
           </button>
@@ -176,7 +199,10 @@ export function DealList() {
               </button>
             </>
           )}
-          <button className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors">
+          <button 
+            onClick={() => setShowDealForm(true)}
+            className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+          >
             <Plus className="w-4 h-4 mr-2" />
             Nuevo Negocio
           </button>
@@ -299,6 +325,12 @@ export function DealList() {
           </table>
         </div>
       </div>
+
+      <DealForm
+        isOpen={showDealForm}
+        onClose={() => setShowDealForm(false)}
+        onSubmit={handleCreateDeal}
+      />
     </div>
   );
 }
