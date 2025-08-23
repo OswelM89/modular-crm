@@ -91,7 +91,7 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
               <input
                 type="text"
                 placeholder="Buscar..."
-                className="pl-10 pr-4 py-2 bg-[#21262d] border border-gray-600 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent text-white placeholder-gray-400 w-48 lg:w-64"
+               className="pl-10 pr-4 py-2 bg-[#21262d] border border-gray-600 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent text-white placeholder-gray-400 w-48 lg:w-64"
               />
             </div>
             
@@ -122,7 +122,7 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
               </div>
               
               {showProfileDropdown && (
-                <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-200 py-2 z-50">
+               <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-200 py-2 z-50">
                   <div className="px-4 py-2 border-b border-gray-200">
                     <div className="text-sm font-medium text-gray-900">Juan Pérez</div>
                     <div className="text-xs text-gray-500">Org: #123456</div>

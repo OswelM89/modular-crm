@@ -130,7 +130,7 @@ export function QuoteBuilder() {
                 </label>
                 <input
                   type="text"
-                  className="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                 className="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
                   placeholder="Ej: Sistema CRM Personalizado"
                 />
               </div>
@@ -140,7 +140,7 @@ export function QuoteBuilder() {
                 </label>
                 <input
                   type="date"
-                  className="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                 className="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
                 />
               </div>
               <div>
@@ -189,7 +189,7 @@ export function QuoteBuilder() {
                       type="text"
                       value={item.description}
                       onChange={(e) => updateItem(item.id, 'description', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                     className="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
                       placeholder="Descripción del producto/servicio"
                     />
                   </div>
@@ -201,7 +201,7 @@ export function QuoteBuilder() {
                       type="number"
                       value={item.quantity}
                       onChange={(e) => updateItem(item.id, 'quantity', parseFloat(e.target.value) || 0)}
-                      className="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                     className="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
                       min="0"
                       step="1"
                     />
@@ -214,7 +214,7 @@ export function QuoteBuilder() {
                       type="number"
                       value={item.unitPrice}
                       onChange={(e) => updateItem(item.id, 'unitPrice', parseFloat(e.target.value) || 0)}
-                      className="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                     className="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
                       min="0"
                       step="0.01"
                     />
@@ -262,7 +262,7 @@ export function QuoteBuilder() {
                     type="number"
                     value={taxRate}
                     onChange={(e) => setTaxRate(parseFloat(e.target.value) || 0)}
-                    className="w-16 px-2 py-1 border border-gray-300 text-center text-xs"
+                   className="w-16 px-2 py-1 border border-gray-300 text-center text-xs"
                     min="0"
                     max="100"
                     step="0.1"
@@ -285,7 +285,7 @@ export function QuoteBuilder() {
             <h4 className="text-lg font-semibold text-gray-900 mb-4">Notas</h4>
             <textarea
               rows={4}
-              className="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+             className="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
               placeholder="Términos y condiciones, notas adicionales..."
             />
           </div>

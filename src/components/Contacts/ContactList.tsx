@@ -220,7 +220,7 @@ export function ContactList() {
             placeholder="Buscar contactos..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+           className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
           />
         </div>
 
@@ -233,7 +233,7 @@ export function ContactList() {
                     type="checkbox"
                     checked={selectedContacts.length === filteredContacts.length && filteredContacts.length > 0}
                     onChange={handleSelectAll}
-                    className="w-4 h-4 text-[#FF6200] bg-gray-100 border-gray-300 rounded focus:ring-[#FF6200] focus:ring-2"
+                   className="w-4 h-4 text-[#FF6200] bg-gray-100 border-gray-300 focus:ring-[#FF6200] focus:ring-2"
                   />
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -258,7 +258,7 @@ export function ContactList() {
                       type="checkbox"
                       checked={selectedContacts.includes(contact.id)}
                       onChange={() => handleSelectContact(contact.id)}
-                      className="w-4 h-4 text-[#FF6200] bg-gray-100 border-gray-300 rounded focus:ring-[#FF6200] focus:ring-2"
+                     className="w-4 h-4 text-[#FF6200] bg-gray-100 border-gray-300 focus:ring-[#FF6200] focus:ring-2"
                     />
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
