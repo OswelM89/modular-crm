@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { AuthProvider, useAuthContext } from './components/Auth/AuthProvider';
 import { SupabaseLoginPage } from './components/Auth/SupabaseLoginPage';
 import { LoadingScreen } from './components/Auth/LoadingScreen';
+import { AuthProvider, useAuthContext } from './components/Auth/AuthProvider';
+import { SupabaseLoginPage } from './components/Auth/SupabaseLoginPage';
+import { LoadingScreen } from './components/Auth/LoadingScreen';
 import { Header } from './components/Layout/Header';
 import { Footer } from './components/Layout/Footer';
 import { LanguageSelector } from './components/UI/LanguageSelector';
@@ -17,26 +20,12 @@ import { ProfilePage } from './components/Profile/ProfilePage';
 
 function AppContent() {
   const { user, profile, loading } = useAuthContext();
+}
+function AppContent() {
+  const { user, profile, loading } = useAuthContext();
   const [activeSection, setActiveSection] = useState(() => {
     return localStorage.getItem('activeSection') || 'dashboard';
   });
-
-  // Debug logging
-  React.useEffect(() => {
-    if (loading) {
-      console.log('Auth state:', { user: !!user, profile: !!profile, loading });
-    }
-  }, [user, profile, loading]);
-
-  const handleSectionChange = (section: string) => {
-    if (section === 'logout') {
-      // El logout se maneja en el Header
-      return;
-    }
-    setActiveSection(section);
-    localStorage.setItem('activeSection', section);
-  };
-
   const renderContent = () => {
     switch (activeSection) {
       case 'dashboard':
@@ -102,6 +91,11 @@ function AppContent() {
     return <SupabaseLoginPage />;
   }
 
+  // Si no hay usuario logueado, mostrar página de login de Supabase
+  if (!user || !profile) {
+    return <SupabaseLoginPage />;
+  }
+
   return (
     <div className="min-h-screen bg-[#F4F4F4] flex flex-col">
       <Header 
@@ -121,6 +115,14 @@ function AppContent() {
       
       <Footer />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
 
