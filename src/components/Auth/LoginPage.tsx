@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Lock, User, Eye, EyeOff, ArrowLeft } from 'lucide-react';
-import { useTranslation } from '../../hooks/useTranslation';
+import { signUp, signIn } from '../../lib/supabase';
 
 interface LoginPageProps {
   onLogin: (user: any) => void;
@@ -18,10 +18,10 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
     password: '',
     firstName: '',
     lastName: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    organizationName: ''
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const { t } = useTranslation();
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -57,6 +57,10 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
       } else if (formData.password !== formData.confirmPassword) {
         newErrors.confirmPassword = 'Las contraseñas no coinciden';
       }
+      
+      if (!formData.organizationName) {
+        newErrors.organizationName = 'El nombre de la organización es requerido';
+      }
     }
 
     setErrors(newErrors);
@@ -69,19 +73,51 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
 
     setLoading(true);
     
-    // Simular llamada a API
-    setTimeout(() => {
-      const user = {
-        id: '1',
-        email: formData.email,
-        firstName: mode === 'register' ? formData.firstName : 'Usuario',
-        lastName: mode === 'register' ? formData.lastName : 'Demo',
-        avatar: null
-      };
-      
-      onLogin(user);
+    try {
+      if (mode === 'register') {
+        const { data, error } = await signUp(
+          formData.email,
+          formData.password,
+          formData.organizationName,
+          formData.firstName,
+          formData.lastName
+        );
+        
+        if (error) {
+          setErrors({ email: error.message });
+          setLoading(false);
+          return;
+        }
+        
+        // Show success message for email confirmation
+        alert('¡Registro exitoso! Por favor revisa tu email para confirmar tu cuenta.');
+        setMode('login');
+      } else {
+        const { data, error } = await signIn(formData.email, formData.password);
+        
+        if (error) {
+          setErrors({ email: error.message });
+          setLoading(false);
+          return;
+        }
+        
+        if (data.user) {
+          const user = {
+            id: data.user.id,
+            email: data.user.email,
+            firstName: data.user.user_metadata?.first_name || 'Usuario',
+            lastName: data.user.user_metadata?.last_name || 'Demo',
+            avatar: data.user.user_metadata?.avatar_url
+          };
+          
+          onLogin(user);
+        }
+      }
+    } catch (error: any) {
+      setErrors({ email: 'Error de conexión. Intenta de nuevo.' });
+    } finally {
       setLoading(false);
-    }, 1500);
+    }
   };
 
   const handleGoogleLogin = async () => {
@@ -110,7 +146,8 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
       password: '',
       firstName: '',
       lastName: '',
-      confirmPassword: ''
+      confirmPassword: '',
+      organizationName: ''
     });
   };
 
@@ -169,44 +206,64 @@ export function LoginPage({ onLogin, onBack }: LoginPageProps) {
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             {mode === 'register' && (
-              <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Nombre *
-                  </label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                    <input
-                      type="text"
-                      value={formData.firstName}
-                      onChange={(e) => handleInputChange('firstName', e.target.value)}
-                      className={`w-full pl-10 pr-4 py-3 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
-                        errors.firstName ? 'border-red-500' : 'border-gray-300'
-                      }`}
-                      placeholder="Nombre"
-                    />
-                  </div>
-                  {errors.firstName && (
-                    <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Apellido *
+                    Nombre de la Organización *
                   </label>
                   <input
                     type="text"
-                    value={formData.lastName}
-                    onChange={(e) => handleInputChange('lastName', e.target.value)}
+                    value={formData.organizationName}
+                    onChange={(e) => handleInputChange('organizationName', e.target.value)}
                     className={`w-full px-4 py-3 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
-                      errors.lastName ? 'border-red-500' : 'border-gray-300'
+                      errors.organizationName ? 'border-red-500' : 'border-gray-300'
                     }`}
-                    placeholder="Apellido"
+                    placeholder="Mi Empresa S.A."
                   />
-                  {errors.lastName && (
-                    <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>
+                  {errors.organizationName && (
+                    <p className="mt-1 text-sm text-red-600">{errors.organizationName}</p>
                   )}
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Nombre *
+                    </label>
+                    <div className="relative">
+                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                      <input
+                        type="text"
+                        value={formData.firstName}
+                        onChange={(e) => handleInputChange('firstName', e.target.value)}
+                        className={`w-full pl-10 pr-4 py-3 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                          errors.firstName ? 'border-red-500' : 'border-gray-300'
+                        }`}
+                        placeholder="Nombre"
+                      />
+                    </div>
+                    {errors.firstName && (
+                      <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Apellido *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.lastName}
+                      onChange={(e) => handleInputChange('lastName', e.target.value)}
+                      className={`w-full px-4 py-3 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                        errors.lastName ? 'border-red-500' : 'border-gray-300'
+                      }`}
+                      placeholder="Apellido"
+                    />
+                    {errors.lastName && (
+                      <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>
+                    )}
+                  </div>
                 </div>
               </div>
             )}

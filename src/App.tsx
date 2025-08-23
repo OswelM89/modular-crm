@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { AuthProvider } from './contexts/AuthContext';
 import { Header } from './components/Layout/Header';
 import { Footer } from './components/Layout/Footer';
 import { LanguageSelector } from './components/UI/LanguageSelector';
@@ -11,44 +12,29 @@ import { QuoteList } from './components/Quotes/QuoteList';
 import { QuoteBuilder } from './components/Quotes/QuoteBuilder';
 import { SettingsPage } from './components/Settings/SettingsPage';
 import { ProfilePage } from './components/Profile/ProfilePage';
+import { useAuth } from './contexts/AuthContext';
 
-const sectionTitles = {
-  dashboard: 'Dashboard',
-  contacts: 'Contactos',
-  companies: 'Empresas',
-  deals: 'Negocios',
-  quotes: 'Cotizaciones',
-  pipeline: 'Pipeline',
-  reports: 'Novedades',
-  settings: 'Configuración',
-  profile: 'Mi Perfil',
-};
-
-function App() {
+function AppContent() {
   const [activeSection, setActiveSection] = useState(() => {
     return localStorage.getItem('activeSection') || 'dashboard';
   });
-  const [user, setUser] = useState(() => {
-    const savedUser = localStorage.getItem('user');
-    return savedUser ? JSON.parse(savedUser) : null;
-  });
+  
+  const { user, profile, loading } = useAuth();
 
-  const handleLogin = (userData: any) => {
-    setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
-    setActiveSection('dashboard');
-    localStorage.setItem('activeSection', 'dashboard');
-  };
-
-  const handleLogout = () => {
-    setUser(null);
-    localStorage.removeItem('user');
-    setActiveSection('dashboard');
-  };
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#F4F4F4] flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#FF6200] mx-auto mb-4"></div>
+          <p className="text-gray-600">Cargando...</p>
+        </div>
+      </div>
+    );
+  }
 
   const handleSectionChange = (section: string) => {
     if (section === 'logout') {
-      handleLogout();
+      // Handle logout through auth context
       return;
     }
     setActiveSection(section);
@@ -58,7 +44,7 @@ function App() {
   const renderContent = () => {
     switch (activeSection) {
       case 'dashboard':
-        return <Dashboard user={user} onSectionChange={handleSectionChange} />;
+        return <Dashboard user={profile} onSectionChange={handleSectionChange} />;
       case 'contacts':
         return <ContactList />;
       case 'companies':
@@ -103,16 +89,15 @@ function App() {
         );
       case 'profile':
         return (
-          <ProfilePage user={user} onBack={() => handleSectionChange('dashboard')} />
+          <ProfilePage user={profile} onBack={() => handleSectionChange('dashboard')} />
         );
       default:
         return <Dashboard />;
     }
   };
 
-  // Si no hay usuario logueado, mostrar página de login
-  if (!user) {
-    return <LoginPage onLogin={handleLogin} />;
+  if (!user || !profile) {
+    return <LoginPage onLogin={() => {}} />;
   }
 
   return (
@@ -120,7 +105,12 @@ function App() {
       <Header 
         activeSection={activeSection} 
         onSectionChange={handleSectionChange}
-        user={user}
+        user={{
+          firstName: profile.first_name,
+          lastName: profile.last_name,
+          email: profile.email,
+          avatar: profile.avatar_url
+        }}
       />
       
       {/* Selector de idioma flotante */}
@@ -134,6 +124,14 @@ function App() {
       
       <Footer />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
 
