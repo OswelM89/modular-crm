@@ -1,5 +1,5 @@
 import React from 'react';
-import { Users, Building2, Target, FileText, BarChart3, Plus, Settings } from 'lucide-react';
+import { Users, Building2, Target, FileText, BarChart3, Plus, Settings, BookOpen } from 'lucide-react';
 
 interface WelcomeSectionProps {
   userName: string;
@@ -80,13 +80,22 @@ export function WelcomeSection({ userName, onSectionChange }: WelcomeSectionProp
             {getDailyMessage()}
           </p>
         </div>
-        <button
-          onClick={() => onSectionChange('settings')}
-          className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
-        >
-          <Settings className="w-4 h-4 mr-2" />
-          Configuración
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => onSectionChange('tutorial')}
+            className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+          >
+            <BookOpen className="w-4 h-4 mr-2" />
+            Tutorial
+          </button>
+          <button
+            onClick={() => onSectionChange('settings')}
+            className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+          >
+            <Settings className="w-4 h-4 mr-2" />
+            Configuración
+          </button>
+        </div>
       </div>
 
       {/* Acciones rápidas */}
