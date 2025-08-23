@@ -58,7 +58,7 @@ export function WelcomeSection({ userName, onSectionChange }: WelcomeSectionProp
       icon: BarChart3,
       color: 'bg-gray-400',
       available: false
-    }
+    },
     {
       id: 'new-features',
       name: 'Nuevas Funciones',
