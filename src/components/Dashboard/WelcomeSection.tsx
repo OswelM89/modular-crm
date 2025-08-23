@@ -74,37 +74,34 @@ export function WelcomeSection({ userName, onSectionChange }: WelcomeSectionProp
       </div>
 
       {/* Acciones rápidas */}
-      <div className="bg-white border border-gray-200 p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Acciones rápidas</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-          {quickActions.map((action) => {
-            const Icon = action.icon;
-            return (
-              <button
-                key={action.id}
-                onClick={() => action.available && onSectionChange(action.id)}
-                disabled={!action.available}
-                className={`flex flex-col items-center p-4 border border-gray-200 hover:border-gray-300 transition-all duration-200 ${
-                  action.available 
-                    ? 'hover:bg-gray-50 cursor-pointer' 
-                    : 'cursor-not-allowed opacity-60'
-                }`}
-              >
-                <div className={`w-12 h-12 ${action.color} flex items-center justify-center mb-3`}>
-                  <Icon className="w-6 h-6 text-white" />
-                </div>
-                <span className={`text-sm font-medium ${
-                  action.available ? 'text-gray-900' : 'text-gray-500'
-                }`}>
-                  {action.name}
-                </span>
-                {!action.available && (
-                  <span className="text-xs text-gray-400 mt-1">Próximamente</span>
-                )}
-              </button>
-            );
-          })}
-        </div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+        {quickActions.map((action) => {
+          const Icon = action.icon;
+          return (
+            <button
+              key={action.id}
+              onClick={() => action.available && onSectionChange(action.id)}
+              disabled={!action.available}
+              className={`flex flex-col items-center p-4 bg-[#212830] hover:bg-[#2a3441] transition-all duration-200 ${
+                action.available 
+                  ? 'cursor-pointer' 
+                  : 'cursor-not-allowed opacity-60'
+              }`}
+            >
+              <div className="w-12 h-12 bg-[#212830] flex items-center justify-center mb-3">
+                <Icon className="w-6 h-6 text-[#FF6200]" />
+              </div>
+              <span className={`text-sm font-medium ${
+                action.available ? 'text-white' : 'text-gray-500'
+              }`}>
+                {action.name}
+              </span>
+              {!action.available && (
+                <span className="text-xs text-gray-400 mt-1">Próximamente</span>
+              )}
+            </button>
+          );
+        })}
       </div>
     </div>
   );
