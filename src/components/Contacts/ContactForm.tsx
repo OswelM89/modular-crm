@@ -116,7 +116,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden">
+    <div className="fixed inset-0 z-50">
       {/* Overlay */}
       <div 
         className="absolute inset-0 bg-black bg-opacity-50"
@@ -124,9 +124,9 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
       />
       
       {/* Sidebar */}
-      <div className="absolute right-0 top-0 bottom-0 w-full sm:w-96 bg-white transform transition-transform duration-300 ease-in-out flex flex-col">
+      <div className="absolute right-0 inset-y-0 w-full sm:w-96 bg-white flex flex-col">
           {/* Header */}
-          <div className="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 flex-shrink-0">
             <h2 className="text-xl font-semibold text-gray-900">Nuevo Contacto</h2>
             <button
               onClick={handleClose}
