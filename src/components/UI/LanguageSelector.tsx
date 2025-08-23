@@ -355,6 +355,8 @@ export function LanguageSelector() {
   const handleLanguageChange = (langCode: string) => {
     changeLanguage(langCode);
     setIsOpen(false);
+    // Recargar la página para aplicar el cambio de idioma
+    window.location.reload();
   };
 
   const currentLanguage = languages.find(lang => lang.code === language) || languages[0];
