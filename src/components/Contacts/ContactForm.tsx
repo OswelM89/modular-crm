@@ -122,7 +122,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
       />
       
       {/* Sidebar */}
-      <div className="absolute right-0 top-0 h-full w-full sm:w-96 bg-white transform transition-transform duration-300 ease-in-out flex flex-col">
+      <div className="absolute right-0 top-0 h-screen w-full sm:w-96 bg-white transform transition-transform duration-300 ease-in-out flex flex-col">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
             <h2 className="text-xl font-semibold text-gray-900">Nuevo Contacto</h2>
@@ -250,20 +250,6 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                     placeholder="+52 55 1234 5678"
                   />
                 </div>
-              </div>
-
-              {/* Cédula de Identidad */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Cédula de Identidad
-                </label>
-                <input
-                  type="text"
-                  value={formData.idNumber}
-                  onChange={(e) => handleInputChange('idNumber', e.target.value)}
-                 className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
-                  placeholder="Número de cédula"
-                />
               </div>
 
               {/* Documento Fiscal */}
