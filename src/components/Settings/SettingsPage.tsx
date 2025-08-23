@@ -72,7 +72,7 @@ export function SettingsPage({ onSectionChange }: SettingsPageProps) {
               onClick={() => card.available && card.action()}
             >
               <div className="flex items-start justify-between mb-4">
-                <div className={`w-12 h-12 ${card.color} flex items-center justify-center`}>
+                <div className="w-12 h-12 bg-[#FF6200] flex items-center justify-center">
                   <Icon className="w-6 h-6 text-white" />
                 </div>
                 {card.available && (
