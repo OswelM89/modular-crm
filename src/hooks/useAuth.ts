@@ -27,40 +27,107 @@ export function useAuth() {
     user: null,
     profile: null,
     session: null,
-    loading: true
+    loading: false // Empezar sin loading
   })
 
+  // Cache del perfil en localStorage
+  const getCachedProfile = (userId: string): Profile | null => {
+    try {
+      const cached = localStorage.getItem(`profile_${userId}`)
+      if (cached) {
+        const profile = JSON.parse(cached)
+        // Verificar que no sea muy viejo (5 minutos)
+        const cacheTime = localStorage.getItem(`profile_${userId}_time`)
+        if (cacheTime && Date.now() - parseInt(cacheTime) < 5 * 60 * 1000) {
+          return profile
+        }
+      }
+    } catch (error) {
+      console.error('Error reading cached profile:', error)
+    }
+    return null
+  }
+
+  const setCachedProfile = (userId: string, profile: Profile) => {
+    try {
+      localStorage.setItem(`profile_${userId}`, JSON.stringify(profile))
+      localStorage.setItem(`profile_${userId}_time`, Date.now().toString())
+    } catch (error) {
+      console.error('Error caching profile:', error)
+    }
+  }
   useEffect(() => {
+    let mounted = true
+    
     // Obtener sesión inicial
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setAuthState(prev => ({ ...prev, session, user: session?.user ?? null }))
+      if (!mounted) return
       
-      if (session?.user) {
-        fetchProfile(session.user.id)
+      const user = session?.user ?? null
+      setAuthState(prev => ({ ...prev, session, user, loading: !!user }))
+      
+      if (user) {
+        // Intentar usar cache primero
+        const cachedProfile = getCachedProfile(user.id)
+        if (cachedProfile) {
+          setAuthState(prev => ({ ...prev, profile: cachedProfile, loading: false }))
+          // Actualizar en background
+          fetchProfile(user.id, true)
+        } else {
+          fetchProfile(user.id)
+        }
       } else {
-        setAuthState(prev => ({ ...prev, loading: false }))
+        setAuthState(prev => ({ ...prev, profile: null, loading: false }))
       }
     })
 
     // Escuchar cambios de autenticación
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        setAuthState(prev => ({ ...prev, session, user: session?.user ?? null }))
+        if (!mounted) return
         
-        if (session?.user) {
-          await fetchProfile(session.user.id)
+        const user = session?.user ?? null
+        setAuthState(prev => ({ ...prev, session, user, loading: !!user }))
+        
+        if (user) {
+          // Para login, usar cache si está disponible
+          if (event === 'SIGNED_IN') {
+            const cachedProfile = getCachedProfile(user.id)
+            if (cachedProfile) {
+              setAuthState(prev => ({ ...prev, profile: cachedProfile, loading: false }))
+              fetchProfile(user.id, true) // Actualizar en background
+              return
+            }
+          }
+          await fetchProfile(user.id)
         } else {
+          // Limpiar cache al hacer logout
+          try {
+            Object.keys(localStorage).forEach(key => {
+              if (key.startsWith('profile_')) {
+                localStorage.removeItem(key)
+              }
+            })
+          } catch (error) {
+            console.error('Error clearing profile cache:', error)
+          }
           setAuthState(prev => ({ ...prev, profile: null, loading: false }))
         }
       }
     )
 
-    return () => subscription.unsubscribe()
+    return () => {
+      mounted = false
+      subscription.unsubscribe()
+    }
   }, [])
 
-  const fetchProfile = async (userId: string) => {
+  const fetchProfile = async (userId: string, isBackground = false) => {
     try {
-      console.log('Fetching profile for user:', userId);
+      if (!isBackground) {
+        console.log('Fetching profile for user:', userId)
+      }
+      
       const { data: profile, error } = await supabase
         .from('profiles')
         .select('*')
@@ -68,27 +135,36 @@ export function useAuth() {
         .single()
 
       if (error) {
-        console.error('Error fetching profile:', error);
+        if (!isBackground) {
+          console.error('Error fetching profile:', error)
+        }
         // Si no existe el perfil, esperar a que el trigger lo cree
         if (error.code === 'PGRST116') {
-          console.log('Profile not found, waiting for trigger to create it...');
-          // Esperar un momento y reintentar
-          setTimeout(() => {
-            fetchProfile(userId);
-          }, 2000);
-          return;
+          if (!isBackground) {
+            console.log('Profile not found, waiting for trigger to create it...')
+            // Esperar un momento y reintentar solo si no es background
+            setTimeout(() => {
+              fetchProfile(userId)
+            }, 1000) // Reducido de 2000 a 1000ms
+          }
+          return
         }
-        setAuthState(prev => ({ ...prev, loading: false }));
+        if (!isBackground) {
+          setAuthState(prev => ({ ...prev, loading: false }))
+        }
       } else {
-        console.log('Profile fetched successfully:', profile);
-        setAuthState(prev => ({ ...prev, profile }))
-        setAuthState(prev => ({ ...prev, loading: false }))
+        if (!isBackground) {
+          console.log('Profile fetched successfully:', profile)
+        }
+        // Guardar en cache
+        setCachedProfile(userId, profile)
+        setAuthState(prev => ({ ...prev, profile, loading: false }))
       }
     } catch (error) {
-      console.error('Unexpected error fetching profile:', error);
-      setAuthState(prev => ({ ...prev, loading: false }))
-    } finally {
-      // El loading se maneja en cada caso específico arriba
+      if (!isBackground) {
+        console.error('Unexpected error fetching profile:', error)
+        setAuthState(prev => ({ ...prev, loading: false }))
+      }
     }
   }
 

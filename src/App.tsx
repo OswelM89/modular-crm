@@ -23,7 +23,9 @@ function AppContent() {
 
   // Debug logging
   React.useEffect(() => {
-    console.log('Auth state:', { user: !!user, profile: !!profile, loading });
+    if (loading) {
+      console.log('Auth state:', { user: !!user, profile: !!profile, loading });
+    }
   }, [user, profile, loading]);
 
   const handleSectionChange = (section: string) => {
