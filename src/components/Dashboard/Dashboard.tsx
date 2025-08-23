@@ -212,9 +212,12 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
         </div>
       </div>
 
+      {/* Separador */}
+      <div className="border-t border-gray-200 my-8"></div>
+
       {/* Sección de Artículos - Bento Layout */}
       <div className="flex items-center justify-between mb-6">
-        <h3 className="font-semibold text-gray-900" style={{ fontSize: '1.875rem' }}>Artículos Destacados</h3>
+        <h3 className="font-bold text-gray-900" style={{ fontSize: '1.875rem', fontWeight: '700' }}>Artículos Destacados</h3>
         <button 
           onClick={() => onSectionChange && onSectionChange('blog')}
           className="inline-flex items-center px-4 py-2 bg-[#FF6200] text-white hover:bg-orange-600 transition-colors text-sm"
