@@ -69,7 +69,7 @@ export function QuoteList() {
             <h3 className="text-lg font-semibold text-gray-900">Cotizaciones</h3>
             <p className="text-sm text-gray-600">Crea y gestiona cotizaciones profesionales</p>
           </div>
-          <button className="inline-flex items-center px-4 py-2 bg-[#FF6200] text-white rounded-lg hover:bg-orange-600 transition-colors">
+          <button className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors">
             <Plus className="w-4 h-4 mr-2" />
             Nueva Cotización
           </button>
