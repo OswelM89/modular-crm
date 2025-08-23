@@ -1,14 +1,7 @@
 import React, { useState } from 'react';
-import { AuthProvider, useAuthContext } from './components/Auth/AuthProvider';
-import { SupabaseLoginPage } from './components/Auth/SupabaseLoginPage';
-import { LoadingScreen } from './components/Auth/LoadingScreen';
-import { AuthProvider, useAuthContext } from './components/Auth/AuthProvider';
-import { SupabaseLoginPage } from './components/Auth/SupabaseLoginPage';
-import { LoadingScreen } from './components/Auth/LoadingScreen';
 import { Header } from './components/Layout/Header';
 import { Footer } from './components/Layout/Footer';
 import { LanguageSelector } from './components/UI/LanguageSelector';
-import { LoginPage } from './components/Auth/LoginPage';
 import { Dashboard } from './components/Dashboard/Dashboard';
 import { ContactList } from './components/Contacts/ContactList';
 import { CompanyList } from './components/Companies/CompanyList';
@@ -18,18 +11,29 @@ import { QuoteBuilder } from './components/Quotes/QuoteBuilder';
 import { SettingsPage } from './components/Settings/SettingsPage';
 import { ProfilePage } from './components/Profile/ProfilePage';
 
-function AppContent() {
-  const { user, profile, loading } = useAuthContext();
-}
-function AppContent() {
-  const { user, profile, loading } = useAuthContext();
+function App() {
   const [activeSection, setActiveSection] = useState(() => {
     return localStorage.getItem('activeSection') || 'dashboard';
   });
+
+  // Usuario mock para desarrollo
+  const mockUser = {
+    id: '1',
+    firstName: 'Usuario',
+    lastName: 'Demo',
+    email: 'demo@modularcrm.com',
+    avatar_url: null
+  };
+
+  const handleSectionChange = (section: string) => {
+    setActiveSection(section);
+    localStorage.setItem('activeSection', section);
+  };
+
   const renderContent = () => {
     switch (activeSection) {
       case 'dashboard':
-        return <Dashboard user={profile} onSectionChange={handleSectionChange} />;
+        return <Dashboard user={mockUser} onSectionChange={handleSectionChange} />;
       case 'contacts':
         return <ContactList />;
       case 'companies':
@@ -50,7 +54,7 @@ function AppContent() {
               </div>
             </div>
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
-            <p className="text-gray-600">Módulo de pipeline en desarrollo</p>
+              <p className="text-gray-600">Módulo de pipeline en desarrollo</p>
             </div>
           </div>
         );
@@ -64,7 +68,7 @@ function AppContent() {
               </div>
             </div>
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
-            <p className="text-gray-600">Módulo de novedades en desarrollo</p>
+              <p className="text-gray-600">Módulo de novedades en desarrollo</p>
             </div>
           </div>
         );
@@ -74,34 +78,19 @@ function AppContent() {
         );
       case 'profile':
         return (
-          <ProfilePage user={profile} onBack={() => handleSectionChange('dashboard')} />
+          <ProfilePage user={mockUser} onBack={() => handleSectionChange('dashboard')} />
         );
       default:
-        return <Dashboard />;
+        return <Dashboard user={mockUser} onSectionChange={handleSectionChange} />;
     }
   };
-
-  // Mostrar loading mientras se verifica la autenticación
-  if (loading) {
-    return <LoadingScreen />;
-  }
-
-  // Si no hay usuario logueado, mostrar página de login de Supabase
-  if (!user || !profile) {
-    return <SupabaseLoginPage />;
-  }
-
-  // Si no hay usuario logueado, mostrar página de login de Supabase
-  if (!user || !profile) {
-    return <SupabaseLoginPage />;
-  }
 
   return (
     <div className="min-h-screen bg-[#F4F4F4] flex flex-col">
       <Header 
         activeSection={activeSection} 
         onSectionChange={handleSectionChange}
-        user={profile}
+        user={mockUser}
       />
       
       {/* Selector de idioma flotante */}
@@ -115,22 +104,6 @@ function AppContent() {
       
       <Footer />
     </div>
-  );
-}
-
-function App() {
-  return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
-  );
-}
-
-function App() {
-  return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
   );
 }
 

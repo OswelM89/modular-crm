@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Search, Bell, User, ChevronDown, Menu, X } from 'lucide-react';
-import { useAuthContext } from '../Auth/AuthProvider';
 import { useTranslation } from '../../hooks/useTranslation';
 
 interface HeaderProps {
@@ -28,11 +27,11 @@ const navigation = [
 export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const { signOut } = useAuthContext();
   const { t } = useTranslation();
 
   const handleLogout = async () => {
-    await signOut();
+    // Mock logout - just reload the page
+    window.location.reload();
     setShowProfileDropdown(false);
   };
 
