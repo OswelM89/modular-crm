@@ -348,8 +348,8 @@ export function LanguageSelector() {
   const [isOpen, setIsOpen] = useState(false);
 
   const languages = [
-    { code: 'es', name: 'Español', flag: '🇨🇴' },
-    { code: 'en', name: 'English', flag: '🇺🇸' }
+    { code: 'es', name: 'CO Español', flag: '🇨🇴' },
+    { code: 'en', name: 'US English', flag: '🇺🇸' }
   ];
 
   const handleLanguageChange = (langCode: string) => {
@@ -368,22 +368,23 @@ export function LanguageSelector() {
       <div className="relative">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="bg-white hover:bg-gray-50 border border-gray-200 rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105"
+          className="bg-white hover:bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 flex items-center gap-2"
         >
-          <span className="text-xl">{currentLanguage.flag}</span>
+          <span className="text-lg">{currentLanguage.flag}</span>
+          <span className="text-sm font-medium text-gray-700">{currentLanguage.name}</span>
         </button>
 
         {isOpen && (
-          <div className="absolute bottom-full left-0 mb-2 bg-white border border-gray-200 rounded-lg shadow-lg min-w-[120px]">
+          <div className="absolute bottom-full left-0 mb-2 bg-white border border-gray-200 rounded-lg shadow-lg min-w-[140px]">
             {languages.map((lang) => (
               <button
                 key={lang.code}
                 onClick={() => handleLanguageChange(lang.code)}
-                className={`w-full px-3 py-2 text-left hover:bg-gray-50 first:rounded-t-lg last:rounded-b-lg flex items-center gap-2 ${
+                className={`w-full px-3 py-2 text-left hover:bg-gray-50 first:rounded-t-lg last:rounded-b-lg flex items-center gap-2 transition-colors ${
                   language === lang.code ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
                 }`}
               >
-                <span>{lang.flag}</span>
+                <span className="text-base">{lang.flag}</span>
                 <span className="text-sm">{lang.name}</span>
               </button>
             ))}
@@ -393,7 +394,7 @@ export function LanguageSelector() {
 
       {isOpen && (
         <div
-          className="fixed inset-0 z-40"
+          className="fixed inset-0 z-40 bg-transparent"
           onClick={() => setIsOpen(false)}
         />
       )}
