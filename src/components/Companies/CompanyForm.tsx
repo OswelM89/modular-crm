@@ -1,0 +1,330 @@
+import React, { useState } from 'react';
+import { X, Building2, Hash, Briefcase, Globe, Mail, Phone, MapPin, Map } from 'lucide-react';
+
+interface CompanyFormProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSubmit: (companyData: CompanyFormData) => void;
+}
+
+export interface CompanyFormData {
+  name: string;
+  nit: string;
+  sector: string;
+  website: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+  country: string;
+}
+
+export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
+  const [formData, setFormData] = useState<CompanyFormData>({
+    name: '',
+    nit: '',
+    sector: '',
+    website: '',
+    email: '',
+    phone: '',
+    address: '',
+    city: '',
+    country: '',
+  });
+
+  const [errors, setErrors] = useState<Partial<CompanyFormData>>({});
+
+  // Bloquear scroll del body cuando el modal está abierto
+  React.useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    // Cleanup al desmontar el componente
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
+  const handleInputChange = (field: keyof CompanyFormData, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
+    }
+  };
+
+  const validateForm = (): boolean => {
+    const newErrors: Partial<CompanyFormData> = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = 'El nombre de la empresa es requerido';
+    }
+
+    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Email inválido';
+    }
+
+    if (formData.website && !formData.website.startsWith('http')) {
+      newErrors.website = 'El sitio web debe comenzar con http:// o https://';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (validateForm()) {
+      onSubmit(formData);
+      // Reset form
+      setFormData({
+        name: '',
+        nit: '',
+        sector: '',
+        website: '',
+        email: '',
+        phone: '',
+        address: '',
+        city: '',
+        country: '',
+      });
+      onClose();
+    }
+  };
+
+  const handleClose = () => {
+    setFormData({
+      name: '',
+      nit: '',
+      sector: '',
+      website: '',
+      email: '',
+      phone: '',
+      address: '',
+      city: '',
+      country: '',
+    });
+    onClose();
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="z-50">
+      {/* Overlay */}
+      <div 
+        className="absolute inset-0 bg-black bg-opacity-50"
+        onClick={handleClose}
+      />
+      
+      {/* Sidebar */}
+      <div className="absolute right-0 inset-y-0 w-full sm:w-96 bg-white flex flex-col">
+          {/* Header */}
+          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 flex-shrink-0">
+            <h2 className="text-xl font-semibold text-gray-900">Nueva Empresa</h2>
+            <button
+              onClick={handleClose}
+              className="text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="flex-1 flex flex-col min-h-0">
+            <div className="flex-1 p-6 space-y-6 overflow-y-auto">
+              {/* Nombre de la empresa */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Nombre de la empresa *
+                </label>
+                <div className="relative">
+                  <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <input
+                    type="text"
+                    value={formData.name}
+                    onChange={(e) => handleInputChange('name', e.target.value)}
+                    className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                      errors.name ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    placeholder="Nombre de la empresa"
+                  />
+                </div>
+                {errors.name && (
+                  <p className="mt-1 text-sm text-red-600">{errors.name}</p>
+                )}
+              </div>
+
+              {/* NIT */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  NIT
+                </label>
+                <div className="relative">
+                  <Hash className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <input
+                    type="text"
+                    value={formData.nit}
+                    onChange={(e) => handleInputChange('nit', e.target.value)}
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                    placeholder="Número de identificación tributaria"
+                  />
+                </div>
+              </div>
+
+              {/* Sector */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Sector
+                </label>
+                <div className="relative">
+                  <Briefcase className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <input
+                    type="text"
+                    value={formData.sector}
+                    onChange={(e) => handleInputChange('sector', e.target.value)}
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                    placeholder="Ej: Tecnología, Manufactura, Servicios"
+                  />
+                </div>
+              </div>
+
+              {/* Sitio Web */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Sitio Web
+                </label>
+                <div className="relative">
+                  <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <input
+                    type="url"
+                    value={formData.website}
+                    onChange={(e) => handleInputChange('website', e.target.value)}
+                    className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                      errors.website ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    placeholder="https://www.empresa.com"
+                  />
+                </div>
+                {errors.website && (
+                  <p className="mt-1 text-sm text-red-600">{errors.website}</p>
+                )}
+              </div>
+
+              {/* Email Principal */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Email Principal
+                </label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => handleInputChange('email', e.target.value)}
+                    className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                      errors.email ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    placeholder="info@empresa.com"
+                  />
+                </div>
+                {errors.email && (
+                  <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+                )}
+              </div>
+
+              {/* Teléfono Principal */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Teléfono Principal
+                </label>
+                <div className="relative">
+                  <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <input
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => handleInputChange('phone', e.target.value)}
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                    placeholder="+52 55 1234 5678"
+                  />
+                </div>
+              </div>
+
+              {/* Dirección Principal */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Dirección Principal
+                </label>
+                <div className="relative">
+                  <MapPin className="absolute left-3 top-3 text-gray-400 w-4 h-4" />
+                  <textarea
+                    rows={3}
+                    value={formData.address}
+                    onChange={(e) => handleInputChange('address', e.target.value)}
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                    placeholder="Dirección completa de la empresa"
+                  />
+                </div>
+              </div>
+
+              {/* Ciudad Principal */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Ciudad Principal
+                </label>
+                <div className="relative">
+                  <Map className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <input
+                    type="text"
+                    value={formData.city}
+                    onChange={(e) => handleInputChange('city', e.target.value)}
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                    placeholder="Ciudad donde opera"
+                  />
+                </div>
+              </div>
+
+              {/* País */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  País
+                </label>
+                <div className="relative">
+                  <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <input
+                    type="text"
+                    value={formData.country}
+                    onChange={(e) => handleInputChange('country', e.target.value)}
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                    placeholder="País de operación"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="p-6 border-t border-gray-200 bg-gray-50 flex-shrink-0">
+              <div className="flex space-x-3">
+                <button
+                  type="button"
+                  onClick={handleClose}
+                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 px-4 py-2 bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+                >
+                  Crear Empresa
+                </button>
+              </div>
+            </div>
+          </form>
+      </div>
+    </div>
+  );
+}

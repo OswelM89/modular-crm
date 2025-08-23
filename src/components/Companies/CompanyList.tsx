@@ -3,12 +3,14 @@ import { Plus, Globe, MapPin, Phone, Users, Mail, Building2 } from 'lucide-react
 import { Company } from '../../types';
 import { SkeletonTable } from '../UI/SkeletonLoader';
 import { mockCompanies } from '../../data/mockData';
+import { CompanyForm, CompanyFormData } from './CompanyForm';
 
 export function CompanyList() {
   const [loading, setLoading] = useState(true);
   const [companies, setCompanies] = useState<Company[]>(mockCompanies);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
+  const [showCompanyForm, setShowCompanyForm] = useState(false);
 
   React.useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1300);
@@ -83,6 +85,23 @@ export function CompanyList() {
     document.body.removeChild(link);
   };
 
+  const handleCreateCompany = (companyData: CompanyFormData) => {
+    const newCompany: Company = {
+      id: Math.random().toString(36).substr(2, 9),
+      name: companyData.name,
+      industry: companyData.sector,
+      size: 'No especificado',
+      website: companyData.website,
+      address: companyData.address,
+      phone: companyData.phone,
+      email: companyData.email,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    
+    setCompanies(prev => [newCompany, ...prev]);
+  };
+
   if (loading) {
     return (
       <div className="space-y-6">
@@ -91,7 +110,10 @@ export function CompanyList() {
             <h3 className="text-lg font-semibold text-gray-900">Empresas</h3>
             <p className="text-sm text-gray-600">Administra tu cartera de clientes empresariales</p>
           </div>
-          <button className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors">
+          <button 
+            onClick={() => setShowCompanyForm(true)}
+            className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+          >
             <Plus className="w-4 h-4 mr-2" />
             Nueva Empresa
           </button>
@@ -134,7 +156,10 @@ export function CompanyList() {
               </button>
             </>
           )}
-          <button className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors">
+          <button 
+            onClick={() => setShowCompanyForm(true)}
+            className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+          >
             <Plus className="w-4 h-4 mr-2" />
             Nueva Empresa
           </button>
@@ -237,6 +262,12 @@ export function CompanyList() {
           </table>
         </div>
       </div>
+
+      <CompanyForm
+        isOpen={showCompanyForm}
+        onClose={() => setShowCompanyForm(false)}
+        onSubmit={handleCreateCompany}
+      />
     </div>
   );
 }
