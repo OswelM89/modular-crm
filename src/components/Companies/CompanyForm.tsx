@@ -63,6 +63,10 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
       newErrors.name = 'El nombre de la empresa es requerido';
     }
 
+    if (!formData.nit.trim()) {
+      newErrors.nit = 'El NIT es requerido';
+    }
+
     if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = 'Email inválido';
     }
@@ -161,7 +165,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
               {/* NIT */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  NIT
+                  NIT *
                 </label>
                 <div className="relative">
                   <Hash className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -169,10 +173,15 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
                     type="text"
                     value={formData.nit}
                     onChange={(e) => handleInputChange('nit', e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                    className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                      errors.nit ? 'border-red-500' : 'border-gray-300'
+                    }`}
                     placeholder="Número de identificación tributaria"
                   />
                 </div>
+                {errors.nit && (
+                  <p className="mt-1 text-sm text-red-600">{errors.nit}</p>
+                )}
               </div>
 
               {/* Sector */}
