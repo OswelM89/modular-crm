@@ -304,11 +304,11 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
 
           {/* Items de la Cotización */}
           <div className="bg-white border border-gray-200 p-6">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-4 sticky top-0 bg-white z-10 py-4 -mx-6 px-6 border-b border-gray-100">
               <h3 className="text-lg font-semibold text-gray-900">Items de la Cotización</h3>
               <button
                 onClick={addItem}
-                className="inline-flex items-center px-3 py-2 bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+                className="inline-flex items-center px-4 py-2 bg-[#FF6200] text-white hover:bg-orange-600 transition-colors shadow-sm"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Agregar Item
