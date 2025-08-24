@@ -4,12 +4,14 @@ import { Quote } from '../../types';
 import { SkeletonTable } from '../UI/SkeletonLoader';
 import { mockQuotes } from '../../data/mockData';
 import { useTranslation } from '../../hooks/useTranslation';
+import { CreateQuotePage } from './CreateQuotePage';
 
 export function QuoteList() {
   const [loading, setLoading] = useState(true);
   const [quotes, setQuotes] = useState<Quote[]>(mockQuotes);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<string>('all');
+  const [showCreateQuote, setShowCreateQuote] = useState(false);
   const { t } = useTranslation();
 
   React.useEffect(() => {
@@ -17,6 +19,10 @@ export function QuoteList() {
     return () => clearTimeout(timer);
   }, []);
 
+  // Si está en modo crear cotización, mostrar esa página
+  if (showCreateQuote) {
+    return <CreateQuotePage onBack={() => setShowCreateQuote(false)} />;
+  }
   const statuses = [
     { value: 'all', label: 'Todos los estados' },
     { value: 'draft', label: 'Borrador' },
@@ -72,6 +78,10 @@ export function QuoteList() {
             <p className="text-sm text-gray-600">{t('quotes.subtitle')}</p>
           </div>
           <button className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors">
+        <button 
+          onClick={() => setShowCreateQuote(true)}
+          className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+        >
             <Plus className="w-4 h-4 mr-2" />
             {t('quotes.new')}
           </button>
@@ -88,7 +98,10 @@ export function QuoteList() {
           <h1 className="text-gray-900" style={{ fontSize: '1.875rem', fontWeight: '700' }}>{t('quotes.title')}</h1>
           <p className="text-sm text-gray-600">{t('quotes.subtitle')}</p>
         </div>
-        <button className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors">
+        <button 
+          onClick={() => setShowCreateQuote(true)}
+          className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+        >
           <Plus className="w-4 h-4 mr-2" />
           {t('quotes.new')}
         </button>
