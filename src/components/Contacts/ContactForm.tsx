@@ -276,7 +276,8 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                               <div>
                                 <div className="font-medium text-gray-900">{company.name}</div>
                                 <div className="text-sm text-gray-500">{company.industry}</div>
-                              <div className="text-sm text-gray-500">{company.sector}</div>
+                                <div className="text-sm text-gray-500">{company.sector}</div>
+                              </div>
                             </div>
                           ))
                         ) : (
