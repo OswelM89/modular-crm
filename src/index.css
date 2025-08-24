@@ -3,8 +3,95 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* Color Palette */
+    --background: 244 244 244;
+    --foreground: 33 40 48;
+    --card: 255 255 255;
+    --card-foreground: 33 40 48;
+    --popover: 255 255 255;
+    --popover-foreground: 33 40 48;
+    --primary: 255 98 0;
+    --primary-foreground: 255 255 255;
+    --secondary: 33 40 48;
+    --secondary-foreground: 255 255 255;
+    --muted: 249 250 251;
+    --muted-foreground: 107 114 128;
+    --accent: 249 250 251;
+    --accent-foreground: 33 40 48;
+    --destructive: 239 68 68;
+    --destructive-foreground: 255 255 255;
+    --border: 229 231 235;
+    --input: 229 231 235;
+    --ring: 255 98 0;
+    --radius: 0.5rem;
+
+    /* Status Colors */
+    --success: 34 197 94;
+    --success-foreground: 255 255 255;
+    --warning: 245 158 11;
+    --warning-foreground: 255 255 255;
+    --info: 59 130 246;
+    --info-foreground: 255 255 255;
+
+    /* Gray Scale */
+    --gray-50: 249 250 251;
+    --gray-100: 243 244 246;
+    --gray-200: 229 231 235;
+    --gray-300: 209 213 219;
+    --gray-400: 156 163 175;
+    --gray-500: 107 114 128;
+    --gray-600: 75 85 99;
+    --gray-700: 55 65 81;
+    --gray-800: 31 41 55;
+    --gray-900: 17 24 39;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(22 100% 45%));
+    --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)), hsl(220 13% 18%));
+    --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(var(--muted)));
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(var(--gray-900) / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(var(--gray-900) / 0.1), 0 2px 4px -1px hsl(var(--gray-900) / 0.06);
+    --shadow-lg: 0 10px 15px -3px hsl(var(--gray-900) / 0.1), 0 4px 6px -2px hsl(var(--gray-900) / 0.05);
+    --shadow-xl: 0 20px 25px -5px hsl(var(--gray-900) / 0.1), 0 10px 10px -5px hsl(var(--gray-900) / 0.04);
+
+    /* Transitions */
+    --transition-base: all 0.2s ease-in-out;
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dark {
+    --background: 17 24 39;
+    --foreground: 249 250 251;
+    --card: 31 41 55;
+    --card-foreground: 249 250 251;
+    --popover: 31 41 55;
+    --popover-foreground: 249 250 251;
+    --primary: 255 98 0;
+    --primary-foreground: 255 255 255;
+    --secondary: 55 65 81;
+    --secondary-foreground: 249 250 251;
+    --muted: 55 65 81;
+    --muted-foreground: 156 163 175;
+    --accent: 55 65 81;
+    --accent-foreground: 249 250 251;
+    --destructive: 239 68 68;
+    --destructive-foreground: 255 255 255;
+    --border: 55 65 81;
+    --input: 55 65 81;
+    --ring: 255 98 0;
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
   }
 }
 

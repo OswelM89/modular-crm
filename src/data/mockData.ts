@@ -38,6 +38,7 @@ export const mockCompanies: Company[] = [
 export const mockContacts: Contact[] = [
   {
     id: '1',
+    organizationId: 'org1',
     firstName: 'María',
     lastName: 'González',
     email: 'maria.gonzalez@techcorp.com',
@@ -52,6 +53,7 @@ export const mockContacts: Contact[] = [
   },
   {
     id: '2',
+    organizationId: 'org1',
     firstName: 'Carlos',
     lastName: 'Rodríguez',
     email: 'carlos@innovatemarketing.com',
@@ -66,6 +68,7 @@ export const mockContacts: Contact[] = [
   },
   {
     id: '3',
+    organizationId: 'org1',
     firstName: 'Ana',
     lastName: 'López',
     email: 'ana.lopez@techcorp.com',
@@ -83,6 +86,7 @@ export const mockContacts: Contact[] = [
 export const mockDeals: Deal[] = [
   {
     id: '1',
+    organizationId: 'org1',
     title: 'Sistema ERP TechCorp',
     value: 150000,
     stage: 'proposal',
@@ -98,6 +102,7 @@ export const mockDeals: Deal[] = [
   },
   {
     id: '2',
+    organizationId: 'org1',
     title: 'Estrategia Digital Innovate',
     value: 75000,
     stage: 'negotiation',
@@ -116,6 +121,7 @@ export const mockDeals: Deal[] = [
 export const mockQuotes: Quote[] = [
   {
     id: '1',
+    organizationId: 'org1',
     quoteNumber: 'COT-2024-001',
     title: 'Cotización Sistema ERP',
     contactId: '1',
@@ -159,6 +165,7 @@ export const mockQuotes: Quote[] = [
   },
   {
     id: '2',
+    organizationId: 'org1',
     quoteNumber: 'COT-2024-002',
     title: 'Cotización Marketing Digital',
     contactId: '2',
