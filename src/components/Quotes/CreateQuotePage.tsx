@@ -9,9 +9,11 @@ interface CreateQuotePageProps {
 interface QuoteItem {
   id: string;
   description: string;
+  detailedDescription?: string;
   quantity: number;
   unitPrice: number;
   total: number;
+  notes?: string;
 }
 
 interface QuoteFormData {
@@ -49,9 +51,11 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
       {
         id: '1',
         description: '',
+        detailedDescription: '',
         quantity: 1,
         unitPrice: 0,
         total: 0,
+        notes: '',
       }
     ],
     showTax: true,
@@ -98,9 +102,11 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
     const newItem: QuoteItem = {
       id: Math.random().toString(36).substr(2, 9),
       description: '',
+      detailedDescription: '',
       quantity: 1,
       unitPrice: 0,
       total: 0,
+      notes: '',
     };
     setFormData(prev => ({
       ...prev,
@@ -311,58 +317,10 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
 
             <div className="space-y-4">
               {formData.items.map((item, index) => (
-                <div key={item.id} className="grid grid-cols-12 gap-4 items-end p-4 bg-gray-50 border border-gray-200">
-                  <div className="col-span-12 md:col-span-5">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Descripción
-                    </label>
-                    <input
-                      type="text"
-                      value={item.description}
-                      onChange={(e) => updateItem(item.id, 'description', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
-                      placeholder="Descripción del producto/servicio"
-                    />
-                  </div>
-                  
-                  <div className="col-span-4 md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Cantidad
-                    </label>
-                    <input
-                      type="number"
-                      value={item.quantity}
-                      onChange={(e) => updateItem(item.id, 'quantity', parseFloat(e.target.value) || 0)}
-                      className="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
-                      min="0"
-                      step="1"
-                    />
-                  </div>
-                  
-                  <div className="col-span-4 md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Precio Unit.
-                    </label>
-                    <input
-                      type="number"
-                      value={item.unitPrice}
-                      onChange={(e) => updateItem(item.id, 'unitPrice', parseFloat(e.target.value) || 0)}
-                      className="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
-                      min="0"
-                      step="0.01"
-                    />
-                  </div>
-                  
-                  <div className="col-span-3 md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Total
-                    </label>
-                    <div className="px-3 py-2 bg-gray-100 border border-gray-300 text-gray-900 font-medium">
-                      {formatCurrency(item.total)}
-                    </div>
-                  </div>
-                  
-                  <div className="col-span-1">
+                <div key={item.id} className="p-6 bg-gray-50 border border-gray-200 rounded-lg">
+                  {/* Título del Item */}
+                  <div className="flex items-center justify-between mb-4">
+                    <h4 className="text-md font-semibold text-gray-900">Item #{index + 1}</h4>
                     <button
                       onClick={() => removeItem(item.id)}
                       className="p-2 text-red-600 hover:text-red-800 transition-colors"
@@ -370,6 +328,104 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
+                  </div>
+
+                  {/* Nombre/Título del Item */}
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Nombre del Item/Producto *
+                    </label>
+                    <input
+                      type="text"
+                      value={item.description}
+                      onChange={(e) => updateItem(item.id, 'description', e.target.value)}
+                      className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                      placeholder="Ej: Tablero para sistema de presión constante con variadores de velocidad Inomax Max500"
+                    />
+                  </div>
+
+                  {/* Descripción Detallada */}
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Descripción Detallada
+                    </label>
+                    <textarea
+                      rows={6}
+                      value={item.detailedDescription || ''}
+                      onChange={(e) => updateItem(item.id, 'detailedDescription', e.target.value)}
+                      className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                      placeholder="Especificaciones detalladas:&#10;• Tablero de 3 x 4 eléctrico&#10;• Variadores Inomax Max500 x 2&#10;• Interruptores termomagnéticos&#10;• Contactores principales&#10;• Etc..."
+                    />
+                    <p className="mt-1 text-xs text-gray-500">
+                      Especifica todos los componentes y características técnicas del item
+                    </p>
+                  </div>
+
+                  {/* Cantidad, Precio y Total en una fila */}
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Cantidad *
+                      </label>
+                      <input
+                        type="number"
+                        value={item.quantity}
+                        onChange={(e) => updateItem(item.id, 'quantity', parseFloat(e.target.value) || 0)}
+                        className="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                        min="0"
+                        step="1"
+                        placeholder="1"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Precio Unitario *
+                      </label>
+                      <div className="relative">
+                        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">
+                          {selectedCurrency.symbol}
+                        </span>
+                        <input
+                          type="number"
+                          value={item.unitPrice}
+                          onChange={(e) => updateItem(item.id, 'unitPrice', parseFloat(e.target.value) || 0)}
+                          className="w-full pl-8 pr-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                          min="0"
+                          step="0.01"
+                          placeholder="0.00"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Total
+                      </label>
+                      <div className="px-3 py-2 bg-white border border-gray-300 text-gray-900 font-semibold rounded">
+                        {formatCurrency(item.total)}
+                      </div>
+                    </div>
+
+                    <div className="flex items-end">
+                      <div className="w-full px-3 py-2 bg-gray-100 border border-gray-200 rounded text-center">
+                        <span className="text-xs text-gray-500">Item #{index + 1}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Notas adicionales del item */}
+                  <div className="mt-4">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Notas Adicionales
+                    </label>
+                    <textarea
+                      rows={2}
+                      value={item.notes || ''}
+                      onChange={(e) => updateItem(item.id, 'notes', e.target.value)}
+                      className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                      placeholder="Tiempo de entrega, garantías, condiciones especiales, etc."
+                    />
                   </div>
                 </div>
               ))}
