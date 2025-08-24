@@ -18,10 +18,13 @@ export interface Company {
   id: string;
   organizationId: string;
   name: string;
-  industry: string;
+  sector: string;
+  taxId?: string;
   size: string;
   website: string;
   address: string;
+  city?: string;
+  country?: string;
   phone: string;
   email: string;
   contacts?: Contact[];

@@ -21,7 +21,7 @@ export function CompanyList() {
 
   const filteredCompanies = companies.filter(company =>
     company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    company.industry.toLowerCase().includes(searchTerm.toLowerCase())
+    company.sector.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleSelectCompany = (companyId: string) => {
@@ -61,17 +61,20 @@ export function CompanyList() {
     );
     
     // Crear CSV
-    const headers = ['Nombre', 'Industria', 'Tamaño', 'Website', 'Teléfono', 'Email', 'Dirección'];
+    const headers = ['Nombre', 'Sector', 'NIT', 'Tamaño', 'Website', 'Teléfono', 'Email', 'Dirección', 'Ciudad', 'País'];
     const csvContent = [
       headers.join(','),
       ...selectedCompaniesData.map(company => [
         company.name,
-        company.industry,
+        company.sector,
+        company.taxId || '',
         company.size,
         company.website || '',
         company.phone || '',
         company.email || '',
-        company.address || ''
+        company.address || '',
+        company.city || '',
+        company.country || ''
       ].join(','))
     ].join('\n');
     
@@ -90,11 +93,15 @@ export function CompanyList() {
   const handleCreateCompany = (companyData: CompanyFormData) => {
     const newCompany: Company = {
       id: Math.random().toString(36).substr(2, 9),
+      organizationId: 'org1', // TODO: Get from current user's organization
       name: companyData.name,
-      industry: companyData.sector,
+      sector: companyData.sector,
+      taxId: companyData.nit,
       size: 'No especificado',
       website: companyData.website,
       address: companyData.address,
+      city: companyData.city,
+      country: companyData.country,
       phone: companyData.phone,
       email: companyData.email,
       createdAt: new Date(),
@@ -195,7 +202,7 @@ export function CompanyList() {
                   Empresa
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Industria
+                  Sector
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Tamaño
@@ -237,7 +244,7 @@ export function CompanyList() {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <Building2 className="w-4 h-4 text-gray-400 mr-2" />
-                      <span className="text-sm text-gray-900">{company.industry}</span>
+                      <span className="text-sm text-gray-900">{company.sector}</span>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
