@@ -74,7 +74,7 @@ function App() {
         );
       case 'settings':
         return (
-          <SettingsPage onSectionChange={handleSectionChange} />
+          <SettingsPage />
         );
       case 'profile':
         return (
