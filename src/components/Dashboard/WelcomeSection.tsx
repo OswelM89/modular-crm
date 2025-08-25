@@ -1,4 +1,3 @@
-import React from 'react';
 import { Users, Building2, Target, FileText, BarChart3, Plus, Settings, BookOpen } from 'lucide-react';
 
 interface WelcomeSectionProps {

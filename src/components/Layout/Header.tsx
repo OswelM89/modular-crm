@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Bell, User, ChevronDown, Menu, X } from 'lucide-react';
+import { Search, Bell, ChevronDown, Menu, X } from 'lucide-react';
 import { useTranslation } from '../../hooks/useTranslation';
 
 interface HeaderProps {

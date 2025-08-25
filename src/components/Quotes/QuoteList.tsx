@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Plus, Calendar, DollarSign, User, Building2, FileText, Edit, Trash2, Eye } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Plus, Calendar, DollarSign, User, Building2, Edit, Trash2, Eye } from 'lucide-react';
 import { Quote } from '../../types';
 import { SkeletonTable } from '../UI/SkeletonLoader';
 import { mockQuotes } from '../../data/mockData';
@@ -8,13 +8,13 @@ import { CreateQuotePage } from './CreateQuotePage';
 
 export function QuoteList() {
   const [loading, setLoading] = useState(true);
-  const [quotes, setQuotes] = useState<Quote[]>(mockQuotes);
+  const [quotes] = useState<Quote[]>(mockQuotes);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [showCreateQuote, setShowCreateQuote] = useState(false);
   const { t } = useTranslation();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1100);
     return () => clearTimeout(timer);
   }, []);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Globe, MapPin, Phone, Users, Mail, Building2 } from 'lucide-react';
+import { Plus, Globe, Phone, Users, Mail, Building2 } from 'lucide-react';
 import { Company } from '../../types';
 import { SkeletonTable } from '../UI/SkeletonLoader';
 import { mockCompanies } from '../../data/mockData';

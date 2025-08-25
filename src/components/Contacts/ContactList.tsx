@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Plus, Mail, Phone, Building2, Edit, Trash2 } from 'lucide-react';
+import { Plus, Mail, Phone, Building2, Trash2 } from 'lucide-react';
 import { Contact } from '../../types';
 import { SkeletonTable } from '../UI/SkeletonLoader';
-import { mockContacts } from '../../data/mockData';
+import { mockContacts, mockCompanies } from '../../data/mockData';
 import { ContactForm, ContactFormData } from './ContactForm';
 import { ContactDetail } from './ContactDetail';
 import { useTranslation } from '../../hooks/useTranslation';
@@ -31,13 +31,14 @@ export function ContactList() {
   const handleCreateContact = (contactData: ContactFormData) => {
     const newContact: Contact = {
       id: Math.random().toString(36).substr(2, 9),
+      organizationId: 'org1',
       firstName: contactData.firstName,
       lastName: contactData.lastName,
       email: contactData.email,
       phone: contactData.phone,
       position: contactData.position,
       companyId: contactData.companyId || undefined,
-      company: contactData.companyId ? mockCompanies.find(c => c.id === contactData.companyId) : undefined,
+      company: contactData.companyId ? mockCompanies.find((c: any) => c.id === contactData.companyId) : undefined,
       idNumber: contactData.idNumber,
       taxDocument: contactData.taxDocument?.name || '',
       createdAt: new Date(),
@@ -115,11 +116,6 @@ export function ContactList() {
 
   const handleBackToList = () => {
     setSelectedContact(null);
-  };
-
-  const handleEditContact = () => {
-    // TODO: Implementar edición de contacto
-    console.log('Editar contacto:', selectedContact);
   };
 
   const handleUpdateContact = (updatedContact: Contact) => {

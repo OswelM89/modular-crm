@@ -71,7 +71,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
     setFormData(prev => ({ ...prev, taxDocument: file }));
     // Clear error when user selects a file
     if (errors.taxDocument) {
-      setErrors(prev => ({ ...prev, taxDocument: '' }));
+      setErrors(prev => ({ ...prev, taxDocument: undefined }));
     }
   };
 
@@ -275,7 +275,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                               <Building2 className="w-4 h-4 text-gray-400 mr-3" />
                               <div>
                                 <div className="font-medium text-gray-900">{company.name}</div>
-                                <div className="text-sm text-gray-500">{company.industry}</div>
+                                <div className="text-sm text-gray-500">{company.sector}</div>
                                 <div className="text-sm text-gray-500">{company.sector}</div>
                               </div>
                             </div>

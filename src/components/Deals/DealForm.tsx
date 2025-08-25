@@ -115,7 +115,7 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
     }
 
     if (!formData.estimatedValue || formData.estimatedValue <= 0) {
-      newErrors.estimatedValue = t('deals.form.valueRequired');
+      newErrors.estimatedValue = 'El valor estimado es requerido' as any;
     }
 
     if (!formData.estimatedCloseDate) {
@@ -171,15 +171,6 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
     });
     setErrors({});
     onClose();
-  };
-
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'alta': return 'text-red-600 bg-red-100';
-      case 'media': return 'text-yellow-600 bg-yellow-100';
-      case 'baja': return 'text-green-600 bg-green-100';
-      default: return 'text-gray-600 bg-gray-100';
-    }
   };
 
   if (!isOpen) return null;
@@ -319,7 +310,7 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
                             <Building2 className="w-4 h-4 text-gray-400 mr-3" />
                             <div>
                               <div className="font-medium text-gray-900">{company.name}</div>
-                              <div className="text-sm text-gray-500">{company.industry}</div>
+                              <div className="text-sm text-gray-500">{company.sector}</div>
                             </div>
                           </div>
                         ))

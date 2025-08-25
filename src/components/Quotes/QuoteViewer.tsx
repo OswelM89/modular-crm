@@ -1,4 +1,3 @@
-import React from 'react';
 import { Download, Mail, Printer } from 'lucide-react';
 import { Quote } from '../../types';
 

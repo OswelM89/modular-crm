@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Plus, Trash2, Save, Send, Calculator } from 'lucide-react';
 import { QuoteItem } from '../../types';
 import { SkeletonForm } from '../UI/SkeletonLoader';
@@ -16,7 +16,7 @@ export function QuoteBuilder() {
   ]);
   const [taxRate, setTaxRate] = useState(16);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1600);
     return () => clearTimeout(timer);
   }, []);
@@ -179,7 +179,7 @@ export function QuoteBuilder() {
             </div>
 
             <div className="space-y-4">
-              {items.map((item, index) => (
+              {items.map((item) => (
                 <div key={item.id} className="grid grid-cols-12 gap-4 items-end p-4 bg-gray-50">
                   <div className="col-span-12 md:col-span-5">
                     <label className="block text-sm font-medium text-gray-700 mb-2">

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ArrowLeft, Save, Send, Plus, Trash2, Calculator, Building2, User, Globe, DollarSign, FileText, Info } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowLeft, Save, Send, Plus, Trash2, Calculator, Building2, User, Info } from 'lucide-react';
 import { mockCompanies, mockContacts } from '../../data/mockData';
 
 interface CreateQuotePageProps {
@@ -341,7 +341,6 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
                       onChange={(e) => updateItem(item.id, 'description', e.target.value)}
                       className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
                       placeholder="Ej: Tablero para sistema de presión constante con variadores de velocidad Inomax Max500"
-                      placeholder="Ej: Servicio de consultoría empresarial, Producto personalizado, etc."
                     />
                   </div>
 
@@ -356,7 +355,6 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
                       onChange={(e) => updateItem(item.id, 'detailedDescription', e.target.value)}
                       className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
                       placeholder="Especificaciones detalladas:&#10;• Tablero de 3 x 4 eléctrico&#10;• Variadores Inomax Max500 x 2&#10;• Interruptores termomagnéticos&#10;• Contactores principales&#10;• Etc..."
-                      placeholder="Especificaciones detalladas:&#10;• Característica 1&#10;• Característica 2&#10;• Incluye instalación&#10;• Soporte técnico&#10;• Garantía incluida"
                     />
                     <p className="mt-1 text-xs text-gray-500">
                       Detalla todas las características, componentes o servicios incluidos en este item

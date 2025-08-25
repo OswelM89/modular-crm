@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ArrowLeft, User, Mail, Phone, Calendar, MapPin, Camera, Save, X, Edit, Shield, Bell, Eye, Lock } from 'lucide-react';
 
 interface ProfilePageProps {
@@ -78,7 +78,7 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
       location: 'Ciudad de México, México',
       bio: 'Especialista en gestión de relaciones con clientes y desarrollo de estrategias de ventas.',
       joinDate: '15 de Enero, 2024',
-      avatar: user.avatar
+      avatar: user?.avatar_url
     });
     setIsEditing(false);
     setNewAvatar(null);
@@ -175,7 +175,7 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
                 <div className="w-24 h-24 bg-orange-100 flex items-center justify-center overflow-hidden">
                   {previewAvatar || profileData.avatar ? (
                     <img 
-                      src={previewAvatar || profileData.avatar} 
+                      src={previewAvatar || profileData.avatar || undefined} 
                       alt="Avatar"
                       className="w-full h-full object-cover"
                     />

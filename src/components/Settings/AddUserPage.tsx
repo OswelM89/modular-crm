@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ArrowLeft, Plus, Mail, Phone, User, Edit, Trash2, X, Eye, EyeOff, Save, Shield } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ArrowLeft, Plus, Mail, User, Edit, Trash2, X, Eye, EyeOff, Shield } from 'lucide-react';
 
 interface AddUserPageProps {
   onBack: () => void;
@@ -153,7 +153,7 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
   };
 
   // Bloquear scroll del body cuando el modal está abierto
-  React.useEffect(() => {
+  useEffect(() => {
     if (showUserForm) {
       document.body.style.overflow = 'hidden';
     } else {

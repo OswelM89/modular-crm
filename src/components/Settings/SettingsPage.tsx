@@ -1,68 +1,81 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { UserPlus, FileText, Settings, Plus, ArrowRight } from 'lucide-react';
 import { AddUserPage } from './AddUserPage';
 import { QuoteConfigPage } from './QuoteConfigPage';
 import { PreferencesPage } from './PreferencesPage';
 
-interface SettingsPageProps {
-  onSectionChange?: (section: string) => void;
-}
-
-export function SettingsPage({ onSectionChange }: SettingsPageProps) {
-  const [currentPage, setCurrentPage] = React.useState<string>(() => {
+export function SettingsPage() {
+  const [currentPage, setCurrentPage] = useState<string>(() => {
     return localStorage.getItem('settingsCurrentPage') || 'main';
   });
 
-  // Guardar la página actual en localStorage cuando cambie
-  React.useEffect(() => {
+  useEffect(() => {
     localStorage.setItem('settingsCurrentPage', currentPage);
   }, [currentPage]);
 
   const settingsCards = [
     {
-      id: 'add-user',
-      title: 'Agregar Usuario',
-      description: 'Invita nuevos miembros a tu equipo y gestiona permisos',
+      id: 'users',
+      title: 'Gestión de Usuarios',
+      description: 'Administra los usuarios de tu equipo y sus permisos',
       icon: UserPlus,
-      color: '',
+      color: 'bg-blue-500',
       available: true,
-      action: () => setCurrentPage('add-user')
+      action: () => setCurrentPage('users')
     },
     {
-      id: 'quote-config',
-      title: 'Configurar Cotización',
-      description: 'Personaliza plantillas, términos y configuración de cotizaciones',
+      id: 'quotes',
+      title: 'Configuración de Cotizaciones',
+      description: 'Personaliza plantillas y configuraciones de cotizaciones',
       icon: FileText,
-      color: '',
+      color: 'bg-green-500',
       available: true,
-      action: () => setCurrentPage('quote-config')
+      action: () => setCurrentPage('quotes')
     },
     {
       id: 'preferences',
-      title: 'Preferencias',
-      description: 'Ajusta idioma, notificaciones y configuración personal',
+      title: 'Preferencias Generales',
+      description: 'Configura idioma, zona horaria y otras preferencias',
       icon: Settings,
-      color: '',
+      color: 'bg-purple-500',
       available: true,
       action: () => setCurrentPage('preferences')
     },
     {
-      id: 'new-features',
-      title: 'Nuevas Funciones',
-      description: 'Descubre las próximas características que estamos desarrollando',
+      id: 'integrations',
+      title: 'Integraciones',
+      description: 'Conecta con herramientas externas y APIs',
       icon: Plus,
-      color: '',
+      color: 'bg-gray-400',
       available: false,
-      action: () => console.log('Nuevas funciones')
+      action: () => {}
+    },
+    {
+      id: 'security',
+      title: 'Seguridad',
+      description: 'Configuraciones de seguridad y acceso',
+      icon: Plus,
+      color: 'bg-gray-400',
+      available: false,
+      action: () => {}
+    },
+    {
+      id: 'billing',
+      title: 'Facturación',
+      description: 'Gestiona tu suscripción y métodos de pago',
+      icon: Plus,
+      color: 'bg-gray-400',
+      available: false,
+      action: () => {}
     }
   ];
 
   // Renderizar páginas específicas
-  if (currentPage === 'add-user') {
+  if (currentPage === 'users') {
     return <AddUserPage onBack={() => setCurrentPage('main')} />;
   }
 
-  if (currentPage === 'quote-config') {
+  if (currentPage === 'quotes') {
     return <QuoteConfigPage onBack={() => setCurrentPage('main')} />;
   }
 
@@ -70,61 +83,49 @@ export function SettingsPage({ onSectionChange }: SettingsPageProps) {
     return <PreferencesPage onBack={() => setCurrentPage('main')} />;
   }
 
+  // Vista principal de configuraciones
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-gray-900" style={{ fontSize: '1.875rem', fontWeight: '700' }}>
-            Configuración
-          </h1>
-          <p className="text-sm text-gray-600">
-            Personaliza tu experiencia y gestiona la configuración del sistema
-          </p>
-        </div>
+      <div>
+        <h1 className="text-gray-900" style={{ fontSize: '1.875rem', fontWeight: '700' }}>
+          Configuración
+        </h1>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {settingsCards.map((card) => {
           const Icon = card.icon;
           return (
-            <div
+            <div 
               key={card.id}
-              className={`bg-white border border-gray-200 p-6 ${
+              onClick={card.available ? card.action : undefined}
+              className={`bg-white border border-gray-200 p-6 transition-all duration-200 ${
                 card.available 
-                  ? 'cursor-pointer' 
+                  ? 'cursor-pointer hover:shadow-md hover:border-[#FF6200]' 
                   : 'cursor-not-allowed opacity-60'
               }`}
-              onClick={() => card.available && card.action()}
             >
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-12 h-12 bg-[#FF6200] flex items-center justify-center">
+              <div className="flex items-center mb-4">
+                <div className={`${card.color} p-3 mr-4`}>
                   <Icon className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                    {card.title}
+                  </h3>
                 </div>
                 {card.available && (
                   <ArrowRight className="w-5 h-5 text-gray-400" />
                 )}
               </div>
               
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                {card.title}
-              </h3>
-              
-              <p className="text-sm text-gray-600 mb-4">
+              <p className="text-gray-600 text-sm mb-4">
                 {card.description}
               </p>
               
               {!card.available && (
-                <div className="flex items-center">
-                  <span className="inline-flex items-center px-2 py-1 bg-gray-100 text-gray-600 text-xs font-medium">
-                    Próximamente
-                  </span>
-                </div>
-              )}
-              
-              {card.available && (
-                <div className="flex items-center text-[#FF6200] text-sm font-medium">
-                  Configurar
-                  <ArrowRight className="w-4 h-4 ml-1" />
+                <div className="flex items-center justify-center py-2">
+                  <span className="text-sm text-gray-400 font-medium">Próximamente</span>
                 </div>
               )}
             </div>
@@ -132,31 +133,27 @@ export function SettingsPage({ onSectionChange }: SettingsPageProps) {
         })}
       </div>
 
-      {/* Información adicional */}
-      <div className="bg-blue-50 border border-blue-200 p-6">
-        <div className="flex items-start">
-          <div className="flex-shrink-0">
-            <div className="w-8 h-8 bg-blue-500 flex items-center justify-center">
-              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-          </div>
-          <div className="ml-4">
-            <h4 className="text-sm font-medium text-blue-900 mb-1">
-              ¿Necesitas ayuda?
-            </h4>
-            <p className="text-sm text-blue-700">
-              Si tienes dudas sobre alguna configuración, consulta nuestra documentación o contacta al soporte técnico.
-            </p>
-            <div className="mt-3 flex space-x-3">
-              <button className="text-sm text-blue-600 font-medium">
-                Ver documentación
-              </button>
-              <button className="text-sm text-blue-600 font-medium">
-                Contactar soporte
-              </button>
-            </div>
+      <div className="bg-white border border-gray-200 p-6">
+        <div className="max-w-2xl">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            ¿Necesitas ayuda?
+          </h2>
+          <p className="text-gray-600 mb-4">
+            Si tienes preguntas sobre la configuración o necesitas asistencia técnica, no dudes en contactarnos.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <a 
+              href="#" 
+              className="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
+            >
+              Ver Documentación
+            </a>
+            <a 
+              href="#" 
+              className="inline-flex items-center px-4 py-2 bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+            >
+              Contactar Soporte
+            </a>
           </div>
         </div>
       </div>

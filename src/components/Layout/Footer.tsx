@@ -1,8 +1,4 @@
-import { useTranslation } from '../../hooks/useTranslation';
-
 export function Footer() {
-  const { t } = useTranslation();
-
   return (
     <footer className="bg-[#0D1117] text-white mt-12">
       <div className="px-6 py-8">

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Calendar, DollarSign, User, Building2, Edit, Trash2 } from 'lucide-react';
+import { Plus, Calendar, DollarSign, User, Building2, Trash2 } from 'lucide-react';
 import { Deal } from '../../types';
 import { SkeletonTable } from '../UI/SkeletonLoader';
 import { mockDeals } from '../../data/mockData';
@@ -134,6 +134,7 @@ export function DealList() {
   const handleCreateDeal = (dealData: DealFormData) => {
     const newDeal: Deal = {
       id: Math.random().toString(36).substr(2, 9),
+      organizationId: 'org1',
       title: dealData.title,
       value: dealData.estimatedValue,
       stage: 'prospecting',

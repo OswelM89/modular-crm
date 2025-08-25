@@ -77,7 +77,7 @@ export function PreferencesPage({ onBack }: PreferencesPageProps) {
     setPreferences(prev => ({
       ...prev,
       [section]: {
-        ...prev[section as keyof typeof prev],
+        ...((prev as any)[section] || {}),
         [field]: value
       }
     }));
