@@ -86,14 +86,9 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
           <div className="flex items-center">
             <div className="flex items-center">
               <img 
-                src="/Logo modular CRM.svg" 
-                alt="Modular CRM" 
-                className="h-6 w-auto"
-                style={{ height: '1.5rem' }}
-                onError={(e) => {
-                  console.log('Error loading logo:', e);
-                  e.currentTarget.style.display = 'none';
-                }}
+                src="/Cotizalow-logo.png" 
+                alt="Cotizalow CRM" 
+                className="h-8 w-auto"
               />
             </div>
           </div>

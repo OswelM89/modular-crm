@@ -1,4 +1,4 @@
-import { Users, Building2, Target, FileText, BarChart3, Plus, Settings, BookOpen } from 'lucide-react';
+import { Settings, BookOpen } from 'lucide-react';
 
 interface WelcomeSectionProps {
   userName: string;
@@ -22,50 +22,6 @@ export function WelcomeSection({ userName, onSectionChange }: WelcomeSectionProp
     return welcomeMessages[dayOfYear % welcomeMessages.length];
   };
 
-  const quickActions = [
-    {
-      id: 'contacts',
-      name: 'Contactos',
-      icon: Users,
-      color: 'bg-blue-500',
-      available: true
-    },
-    {
-      id: 'companies',
-      name: 'Empresas',
-      icon: Building2,
-      color: 'bg-green-500',
-      available: true
-    },
-    {
-      id: 'deals',
-      name: 'Negocios',
-      icon: Target,
-      color: 'bg-orange-500',
-      available: true
-    },
-    {
-      id: 'quotes',
-      name: 'Cotizaciones',
-      icon: FileText,
-      color: 'bg-purple-500',
-      available: true
-    },
-    {
-      id: 'pipeline',
-      name: 'Pipeline',
-      icon: BarChart3,
-      color: 'bg-gray-400',
-      available: true
-    },
-    {
-      id: 'new-features',
-      name: 'Nuevas Funciones',
-      icon: Plus,
-      color: 'bg-gray-400',
-      available: false
-    }
-  ];
 
   return (
     <div className="mb-8">
@@ -97,36 +53,6 @@ export function WelcomeSection({ userName, onSectionChange }: WelcomeSectionProp
         </div>
       </div>
 
-      {/* Acciones rápidas */}
-      <div className="grid grid-cols-3 gap-4 mb-6">
-        {quickActions.map((action) => {
-          const Icon = action.icon;
-          return (
-            <button
-              key={action.id}
-              onClick={() => action.available && onSectionChange(action.id)}
-              disabled={!action.available}
-              className={`flex flex-col items-center p-4 bg-[#212830] ${
-                action.available 
-                  ? 'cursor-pointer' 
-                  : 'cursor-not-allowed opacity-60'
-              }`}
-            >
-              <div className="w-12 h-12 bg-[#212830] flex items-center justify-center mb-3">
-                <Icon className="w-6 h-6 text-[#FF6200]" />
-              </div>
-              <span className={`text-sm font-medium ${
-                action.available ? 'text-white' : 'text-gray-500'
-              }`}>
-                {action.name}
-              </span>
-              {!action.available && (
-                <span className="text-xs text-gray-400 mt-1">Próximamente</span>
-              )}
-            </button>
-          );
-        })}
-      </div>
     </div>
   );
 }
