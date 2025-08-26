@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Plus, Globe, Phone, Users, Mail, Building2 } from 'lucide-react';
 import { Company } from '../../types';
-import { SkeletonTable } from '../UI/SkeletonLoader';
+import { SkeletonHeader, SkeletonTable } from '../UI/SkeletonLoader';
 import { mockCompanies } from '../../data/mockData';
 import { CompanyForm, CompanyFormData } from './CompanyForm';
 import { useTranslation } from '../../hooks/useTranslation';
@@ -114,19 +114,7 @@ export function CompanyList() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <h1 className="text-gray-900" style={{ fontSize: '1.875rem', fontWeight: '700' }}>{t('companies.title')}</h1>
-            <p className="text-sm text-gray-600">{t('companies.subtitle')}</p>
-          </div>
-          <button 
-            onClick={() => setShowCompanyForm(true)}
-            className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            {t('companies.new')}
-          </button>
-        </div>
+        <SkeletonHeader />
         <SkeletonTable />
       </div>
     );
@@ -136,8 +124,8 @@ export function CompanyList() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-gray-900" style={{ fontSize: '1.875rem', fontWeight: '700' }}>{t('companies.title')}</h1>
-          <p className="text-sm text-gray-600">{t('companies.subtitle')}</p>
+          <h1 className="text-gray-900 mb-0" style={{ fontSize: '1.875rem', fontWeight: '700' }}>{t('companies.title')}</h1>
+          <p className="text-gray-600" style={{ fontSize: '18px' }}>{t('companies.subtitle')}</p>
         </div>
         <div className="flex items-center gap-3">
           {selectedCompanies.length > 0 && (

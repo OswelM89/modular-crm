@@ -2,7 +2,7 @@ import React from 'react';
 import { Users, Building2, Target, FileText, DollarSign, TrendingUp } from 'lucide-react';
 import { StatsCard } from './StatsCard';
 import { WelcomeSection } from './WelcomeSection';
-import { SkeletonCard } from '../UI/SkeletonLoader';
+import { SkeletonStats } from '../UI/SkeletonLoader';
 import { mockDashboardStats, mockDeals, mockQuotes } from '../../data/mockData';
 import { useTranslation } from '../../hooks/useTranslation';
 
@@ -61,86 +61,86 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
   if (loading) {
     return (
       <div className="space-y-6">
-        {/* Mensaje de bienvenida */}
+        {/* Mensaje de bienvenida skeleton */}
         <div className="mb-8">
           <div className="mb-6 flex items-start justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                Hola {user?.firstName || 'Usuario'}
-              </h1>
-              <p className="text-lg text-gray-600">
-                ¡Bienvenido de vuelta! Hoy es un gran día para hacer crecer tu negocio.
-              </p>
+              <div className="h-8 bg-gray-200 rounded w-64 mb-2 animate-pulse"></div>
+              <div className="h-5 bg-gray-200 rounded w-96 animate-pulse"></div>
             </div>
             <div className="flex items-center gap-3">
-              <button
-                onClick={() => onSectionChange && onSectionChange('tutoriales')}
-                className="inline-flex items-center px-6 py-3 text-base bg-[#212830] text-white hover:bg-gray-700 transition-colors"
-              >
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                </svg>
-                Tutoriales
-              </button>
-              <button
-                onClick={() => onSectionChange && onSectionChange('settings')}
-                className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
-              >
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                Configuración
-              </button>
+              <div className="h-12 bg-gray-200 rounded w-32 animate-pulse"></div>
+              <div className="h-12 bg-gray-200 rounded w-36 animate-pulse"></div>
             </div>
-          </div>
-
-          {/* Acciones rápidas skeleton */}
-          <div className="grid grid-cols-3 gap-4 mb-6">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="flex flex-col items-center p-4 bg-[#212830]">
-                <div className="w-12 h-12 bg-gray-600 rounded mb-3 animate-pulse"></div>
-                <div className="h-4 bg-gray-600 rounded w-16 mb-1 animate-pulse"></div>
-                <div className="h-3 bg-gray-600 rounded w-20 animate-pulse"></div>
-              </div>
-            ))}
           </div>
         </div>
         
         {/* Stats Cards Skeleton */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <SkeletonCard key={i} />
-          ))}
-        </div>
+        <SkeletonStats />
         
         {/* Recent sections skeleton */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <SkeletonCard />
-          <SkeletonCard />
+          <div className="bg-white border border-gray-200 rounded-lg p-6">
+            <div className="h-6 bg-gray-200 rounded w-40 mb-4 animate-pulse"></div>
+            <div className="space-y-4">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="bg-gray-50 p-4 rounded">
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <div className="h-4 bg-gray-200 rounded w-32 mb-2 animate-pulse"></div>
+                      <div className="h-3 bg-gray-200 rounded w-24 animate-pulse"></div>
+                    </div>
+                    <div className="text-right">
+                      <div className="h-4 bg-gray-200 rounded w-20 mb-1 animate-pulse"></div>
+                      <div className="h-3 bg-gray-200 rounded w-16 animate-pulse"></div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="bg-white border border-gray-200 rounded-lg p-6">
+            <div className="h-6 bg-gray-200 rounded w-40 mb-4 animate-pulse"></div>
+            <div className="space-y-4">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="bg-gray-50 p-4 rounded">
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <div className="h-4 bg-gray-200 rounded w-32 mb-2 animate-pulse"></div>
+                      <div className="h-3 bg-gray-200 rounded w-24 animate-pulse"></div>
+                    </div>
+                    <div className="text-right">
+                      <div className="h-4 bg-gray-200 rounded w-20 mb-1 animate-pulse"></div>
+                      <div className="h-3 bg-gray-200 rounded w-16 animate-pulse"></div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
         
         {/* Articles section skeleton */}
-        <div className="bg-white border border-gray-200 p-6">
+        <div className="bg-white border border-gray-200 rounded-lg p-6">
           <div className="flex items-center justify-between mb-6">
-            <div className="h-6 bg-gray-200 w-48 animate-pulse"></div>
-            <div className="h-10 bg-gray-200 w-24 animate-pulse"></div>
+            <div className="h-8 bg-gray-200 rounded w-48 animate-pulse"></div>
+            <div className="h-12 bg-gray-200 rounded w-24 animate-pulse"></div>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-1">
-              <div className="h-80 bg-gray-200 animate-pulse"></div>
+              <div className="h-80 bg-gray-200 rounded animate-pulse"></div>
             </div>
             <div className="lg:col-span-2 space-y-4">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="bg-gray-50 p-6">
+                <div key={i} className="bg-gray-50 p-6 rounded">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <div className="h-4 bg-gray-200 w-16 mb-2 animate-pulse"></div>
-                      <div className="h-5 bg-gray-200 w-3/4 mb-2 animate-pulse"></div>
-                      <div className="h-4 bg-gray-200 w-full mb-3 animate-pulse"></div>
-                      <div className="h-3 bg-gray-200 w-1/2 animate-pulse"></div>
+                      <div className="h-4 bg-gray-200 rounded w-16 mb-2 animate-pulse"></div>
+                      <div className="h-5 bg-gray-200 rounded w-3/4 mb-2 animate-pulse"></div>
+                      <div className="h-4 bg-gray-200 rounded w-full mb-3 animate-pulse"></div>
+                      <div className="h-3 bg-gray-200 rounded w-1/2 animate-pulse"></div>
                     </div>
-                    <div className="w-16 h-16 bg-gray-200 ml-4 animate-pulse"></div>
+                    <div className="w-16 h-16 bg-gray-200 rounded ml-4 animate-pulse"></div>
                   </div>
                 </div>
               ))}
@@ -247,7 +247,7 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
 
       {/* Sección de Artículos - Bento Layout */}
       <div className="flex items-start justify-between mb-6">
-        <h3 className="font-bold text-gray-900" style={{ fontSize: '1.875rem', fontWeight: '700' }}>Artículos Destacados</h3>
+        <h3 className="font-bold text-gray-900 mb-0" style={{ fontSize: '1.875rem', fontWeight: '700' }}>Artículos Destacados</h3>
         <button 
           onClick={() => onSectionChange && onSectionChange('blog')}
           className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"

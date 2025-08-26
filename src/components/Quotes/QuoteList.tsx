@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Plus, Calendar, DollarSign, User, Building2, Edit, Trash2, Eye } from 'lucide-react';
 import { Quote } from '../../types';
-import { SkeletonTable } from '../UI/SkeletonLoader';
+import { SkeletonHeader, SkeletonTable } from '../UI/SkeletonLoader';
 import { mockQuotes } from '../../data/mockData';
 import { useTranslation } from '../../hooks/useTranslation';
 import { CreateQuotePage } from './CreateQuotePage';
@@ -72,19 +72,7 @@ export function QuoteList() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <h1 className="text-gray-900" style={{ fontSize: '1.875rem', fontWeight: '700' }}>{t('quotes.title')}</h1>
-            <p className="text-sm text-gray-600">{t('quotes.subtitle')}</p>
-          </div>
-          <button 
-            onClick={() => setShowCreateQuote(true)}
-            className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            {t('quotes.new')}
-          </button>
-        </div>
+        <SkeletonHeader />
         <SkeletonTable />
       </div>
     );
@@ -94,8 +82,8 @@ export function QuoteList() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-gray-900" style={{ fontSize: '1.875rem', fontWeight: '700' }}>{t('quotes.title')}</h1>
-          <p className="text-sm text-gray-600">{t('quotes.subtitle')}</p>
+          <h1 className="text-gray-900 mb-0" style={{ fontSize: '1.875rem', fontWeight: '700' }}>{t('quotes.title')}</h1>
+          <p className="text-gray-600" style={{ fontSize: '18px' }}>{t('quotes.subtitle')}</p>
         </div>
         <button 
           onClick={() => setShowCreateQuote(true)}

@@ -28,10 +28,10 @@ export function WelcomeSection({ userName, onSectionChange }: WelcomeSectionProp
       {/* Mensaje de bienvenida */}
       <div className="mb-6 flex items-start justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl font-bold text-gray-900 mb-0">
             Hola {userName}
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-gray-600" style={{ fontSize: '18px' }}>
             {getDailyMessage()}
           </p>
         </div>
