@@ -86,8 +86,8 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
           <div className="flex items-center">
             <div className="flex items-center">
               <img 
-                src="/Cotizalow-logo.png" 
-                alt="Cotizalow CRM" 
+                src="/Logo modular CRM.svg" 
+                alt="Modular CRM" 
                 className="h-8 w-auto"
               />
             </div>
