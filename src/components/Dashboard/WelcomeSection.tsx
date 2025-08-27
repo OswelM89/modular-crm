@@ -28,19 +28,15 @@ export function WelcomeSection({ userName, onSectionChange }: WelcomeSectionProp
       {/* Mensaje de bienvenida */}
       <div className="mb-6 flex items-start justify-between">
         <div>
-          <h1 className="text-3xl font-bold mb-0">
-            <span className="text-gray-900 drop-shadow-lg" style={{ 
-              textShadow: '0 0 20px rgba(0,0,0,0.3), 0 0 40px rgba(0,0,0,0.1)' 
-            }}>
+          <h1 className="font-bold mb-0" style={{ fontSize: '33px' }}>
+            <span className="text-gray-900">
               Hola 
             </span>
-            <span className="ml-2 bg-gradient-to-r from-primary via-primary-light to-primary-dark bg-clip-text text-transparent drop-shadow-lg" style={{ 
-              textShadow: '0 0 30px hsl(var(--primary) / 0.5), 0 0 60px hsl(var(--primary-light) / 0.3)' 
-            }}>
+            <span className="ml-2 bg-gradient-to-r from-primary via-primary-light to-primary-dark bg-clip-text text-transparent">
               {userName}
             </span>
           </h1>
-          <p className="text-gray-600" style={{ fontSize: '18px' }}>
+          <p className="text-gray-600" style={{ fontSize: '20px' }}>
             {getDailyMessage()}
           </p>
         </div>
