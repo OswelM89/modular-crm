@@ -5,7 +5,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        mono: ['"__GeistMono_c1e5c9"', 'ui-monospace', 'SFMono-Regular', 'Roboto Mono', 'Menlo', 'Monaco', 'Liberation Mono', 'DejaVu Sans Mono', 'Courier New', 'monospace'],
+        sans: ['Geist Sans', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Noto Sans', 'sans-serif'],
       },
       colors: {
         border: 'hsl(var(--border))',

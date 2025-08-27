@@ -1,3 +1,8 @@
+@import '@fontsource/geist-sans/400.css';
+@import '@fontsource/geist-sans/500.css';
+@import '@fontsource/geist-sans/600.css';
+@import '@fontsource/geist-sans/700.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -91,7 +96,7 @@
   }
 
   body {
-    font-family: "__GeistMono_c1e5c9", ui-monospace, SFMono-Regular, "Roboto Mono", Menlo, Monaco, "Liberation Mono", "DejaVu Sans Mono", "Courier New", monospace;
+    font-family: 'Geist Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
   }
