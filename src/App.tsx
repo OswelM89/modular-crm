@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Sidebar } from './components/Layout/Sidebar';
+import { Header } from './components/Layout/Header';
+import { Footer } from './components/Layout/Footer';
 import { LanguageSelector } from './components/UI/LanguageSelector';
 import { Dashboard } from './components/Dashboard/Dashboard';
 import { ContactList } from './components/Contacts/ContactList';
@@ -85,25 +86,23 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex">
-      <Sidebar 
+    <div className="min-h-screen bg-background flex flex-col">
+      <Header 
         activeSection={activeSection} 
         onSectionChange={handleSectionChange}
         user={mockUser}
       />
       
-      <div className="flex-1 flex flex-col ml-64">
-        {/* Selector de idioma flotante - movido a la derecha */}
-        <div className="fixed top-4 right-4 z-30">
-          <LanguageSelector />
+      {/* Selector de idioma flotante */}
+      <LanguageSelector />
+      
+      <main className="flex-1 px-6 py-8">
+        <div className="max-w-[1150px] mx-auto">
+          {renderContent()}
         </div>
-        
-        <main className="flex-1 px-6 py-8">
-          <div className="max-w-[1150px] mx-auto">
-            {renderContent()}
-          </div>
-        </main>
-      </div>
+      </main>
+      
+      <Footer />
     </div>
   );
 }

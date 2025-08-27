@@ -247,7 +247,7 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
 
       {/* Sección de Artículos - Bento Layout */}
       <div className="flex items-start justify-between mb-6">
-        <h3 className="font-bold text-gray-900 mb-0" style={{ fontSize: '33px', fontWeight: '700' }}>Artículos Destacados</h3>
+        <h3 className="font-bold text-gray-900 mb-0" style={{ fontSize: '1.875rem', fontWeight: '700' }}>Artículos Destacados</h3>
         <button 
           onClick={() => onSectionChange && onSectionChange('blog')}
           className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
