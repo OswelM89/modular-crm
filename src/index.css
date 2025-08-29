@@ -33,12 +33,6 @@
     --ring: 22 100% 50%;
     --radius: 0.5rem;
 
-    /* Teal Theme Colors */
-    --teal-primary: 174 78% 35%;
-    --teal-primary-foreground: 0 0% 100%;
-    --teal-secondary: 174 78% 45%;
-    --teal-dark: 174 78% 25%;
-
     /* Status Colors */
     --success: 142 76% 36%;
     --success-foreground: 0 0% 100%;

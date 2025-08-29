@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Search, Bell, ChevronDown, Menu, X } from 'lucide-react';
 import { useTranslation } from '../../hooks/useTranslation';
-import { LanguageSelector } from '../UI/LanguageSelector';
 
 interface HeaderProps {
   activeSection: string;
@@ -80,24 +79,18 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
     };
   }, [showMobileMenu]);
   return (
-    <div className="bg-teal-primary text-white shadow-lg">
+    <div className="bg-[#0D1117] text-white">
       {/* Top Header */}
       <div className="px-6 py-4">
         <div className="max-w-[1150px] mx-auto flex items-center justify-between">
           <div className="flex items-center">
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center">
               <img 
                 src="/Logo modular CRM.svg" 
                 alt="Modular CRM" 
                 className="h-8 w-auto"
               />
-              <span className="text-xl font-bold">TalentaSync</span>
             </div>
-          </div>
-
-          {/* Language Selector */}
-          <div className="hidden sm:block">
-            <LanguageSelector />
           </div>
 
           {/* Right Actions */}
@@ -108,7 +101,7 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
               <input
                 type="text"
                 placeholder={t('search.placeholder')}
-               className="pl-10 pr-4 py-2 bg-white bg-opacity-20 border-0 rounded-lg focus:ring-2 focus:ring-white focus:bg-opacity-30 text-white placeholder-gray-200 w-48 lg:w-64"
+               className="pl-10 pr-4 py-2 bg-[#21262d] border border-gray-600 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent text-white placeholder-gray-400 w-48 lg:w-64"
               />
             </div>
             
@@ -126,10 +119,10 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
               className="relative profile-dropdown"
             >
               <div 
-                className="flex items-center space-x-2 sm:space-x-3 cursor-pointer hover:bg-white hover:bg-opacity-10 px-2 sm:px-3 py-2 rounded-lg transition-colors"
+                className="flex items-center space-x-2 sm:space-x-3 cursor-pointer hover:bg-[#21262d] px-2 sm:px-3 py-2 transition-colors"
                 onClick={toggleProfileDropdown}
               >
-                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-primary rounded-full flex items-center justify-center">
+                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-[#FF6200] flex items-center justify-center">
                   {user?.avatar_url ? (
                     <img 
                       src={user.avatar_url} 
@@ -193,17 +186,17 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
       </div>
 
       {/* Navigation Bar */}
-      <div className="bg-teal-secondary px-6 hidden lg:block">
+      <div className="bg-[#212830] px-6 hidden lg:block">
         <nav className="max-w-[1150px] mx-auto flex items-center justify-center">
-          <div className="flex space-x-1">
+          <div className="flex space-x-8">
             {navigation.map((item) => (
               <button
                 key={item.id}
                 onClick={() => onSectionChange(item.id)}
-                className={`py-3 px-4 text-sm font-medium transition-all duration-200 rounded-lg ${
+                className={`py-4 px-2 text-sm font-medium transition-all duration-200 border-b-2 ${
                   activeSection === item.id
-                    ? 'text-white bg-white bg-opacity-20'
-                    : 'text-white text-opacity-80 hover:text-white hover:bg-white hover:bg-opacity-10'
+                    ? 'text-white border-white'
+                    : 'text-gray-300 border-transparent hover:text-white hover:border-gray-400'
                 }`}
               >
                 {t(item.nameKey)}
@@ -215,7 +208,7 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
 
       {/* Mobile Navigation Menu */}
       {showMobileMenu && (
-        <div className="lg:hidden bg-teal-secondary mobile-menu">
+        <div className="lg:hidden bg-[#212830] mobile-menu">
           <nav className="px-6 py-4">
             <div className="space-y-2">
               {navigation.map((item) => (
@@ -225,10 +218,10 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
                     onSectionChange(item.id);
                     setShowMobileMenu(false);
                   }}
-                  className={`block w-full text-left py-3 px-4 text-sm font-medium rounded-lg transition-all duration-200 ${
+                  className={`block w-full text-left py-3 px-4 text-sm font-medium transition-all duration-200 ${
                     activeSection === item.id
-                      ? 'text-white bg-white bg-opacity-20'
-                      : 'text-white text-opacity-80 hover:text-white hover:bg-white hover:bg-opacity-10'
+                      ? 'text-white bg-gray-600'
+                      : 'text-gray-300 hover:text-white hover:bg-gray-600'
                   }`}
                 >
                   {t(item.nameKey)}

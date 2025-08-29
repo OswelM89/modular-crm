@@ -1,3 +1,5 @@
+import { Settings, BookOpen } from 'lucide-react';
+
 interface WelcomeSectionProps {
   userName: string;
   onSectionChange: (section: string) => void;
@@ -26,29 +28,36 @@ export function WelcomeSection({ userName, onSectionChange }: WelcomeSectionProp
       {/* Mensaje de bienvenida */}
       <div className="mb-6 flex items-start justify-between">
         <div>
-          <p className="text-gray-600 text-sm font-medium mb-2">Good Morning</p>
-          <h1 className="text-4xl font-bold mb-3 text-gray-900">
-            {userName}
+          <h1 className="font-bold mb-0" style={{ fontSize: '33px' }}>
+            <span className="text-gray-900">
+              Hola 
+            </span>
+            <span className="ml-2 bg-gradient-to-r from-primary via-primary-light to-primary-dark bg-clip-text text-transparent">
+              {userName}
+            </span>
           </h1>
-          <p className="text-gray-600 text-base">
+          <p className="text-gray-600" style={{ fontSize: '20px' }}>
             {getDailyMessage()}
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="bg-white rounded-lg border border-gray-200 px-4 py-2 flex items-center gap-2 text-sm">
-            <span className="text-gray-600">2024</span>
-            <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </div>
+          <button
+            onClick={() => onSectionChange('tutoriales')}
+            className="inline-flex items-center px-6 py-3 text-base bg-[#212830] text-white hover:bg-gray-700 transition-colors"
+          >
+            <BookOpen className="w-4 h-4 mr-2" />
+            Tutoriales
+          </button>
           <button
             onClick={() => onSectionChange('settings')}
-            className="inline-flex items-center px-4 py-2 text-sm bg-teal-primary text-white rounded-lg hover:bg-teal-dark transition-colors"
+            className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
           >
-            Export Data
+            <Settings className="w-4 h-4 mr-2" />
+            Configuración
           </button>
         </div>
       </div>
+
     </div>
   );
 }

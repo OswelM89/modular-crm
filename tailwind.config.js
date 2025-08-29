@@ -67,11 +67,6 @@ export default {
           800: 'hsl(var(--gray-800))',
           900: 'hsl(var(--gray-900))',
         },
-        teal: {
-          primary: 'hsl(var(--teal-primary))',
-          secondary: 'hsl(var(--teal-secondary))',
-          dark: 'hsl(var(--teal-dark))',
-        },
       },
       borderRadius: {
         lg: 'var(--radius)',
