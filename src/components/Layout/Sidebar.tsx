@@ -97,14 +97,13 @@ export function Sidebar({ activeSection, onSectionChange, user }: SidebarProps) 
 
       {/* Sidebar */}
       <div className={`
-        fixed inset-y-0 left-0 z-40
-        w-64 flex flex-col h-screen
+        fixed lg:relative inset-y-0 left-0 z-40
+        w-64 bg-white border-r border-gray-200 flex flex-col
         transform transition-transform duration-300 ease-in-out
         ${isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-      `}
-      style={{ backgroundColor: '#0D1117' }}>
+      `}>
         {/* Logo */}
-        <div className="flex items-center h-16 px-6 border-b border-gray-700">
+        <div className="flex items-center h-16 px-6 border-b border-gray-200">
           <img 
             src="/Logo modular CRM.svg" 
             alt="Modular CRM" 
@@ -126,7 +125,7 @@ export function Sidebar({ activeSection, onSectionChange, user }: SidebarProps) 
                   w-full flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors
                   ${isActive 
                     ? 'bg-primary text-primary-foreground' 
-                    : 'text-gray-300 hover:bg-gray-800'
+                    : 'text-gray-700 hover:bg-gray-100'
                   }
                 `}
               >
@@ -138,11 +137,11 @@ export function Sidebar({ activeSection, onSectionChange, user }: SidebarProps) 
         </nav>
 
         {/* User Profile */}
-        <div className="p-4 border-t border-gray-700">
+        <div className="p-4 border-t border-gray-200">
           <div className="relative" ref={profileDropdownRef}>
             <button
               onClick={() => setIsProfileOpen(!isProfileOpen)}
-              className="w-full flex items-center px-3 py-2 text-sm rounded-lg hover:bg-gray-800 transition-colors"
+              className="w-full flex items-center px-3 py-2 text-sm rounded-lg hover:bg-gray-100 transition-colors"
             >
               <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground text-xs font-medium mr-3">
                 {user.avatar_url ? (
@@ -152,19 +151,19 @@ export function Sidebar({ activeSection, onSectionChange, user }: SidebarProps) 
                 )}
               </div>
               <div className="flex-1 text-left">
-                <p className="font-medium text-white">{user.firstName} {user.lastName}</p>
-                <p className="text-xs text-gray-400 truncate">{user.email}</p>
+                <p className="font-medium text-gray-900">{user.firstName} {user.lastName}</p>
+                <p className="text-xs text-gray-500 truncate">{user.email}</p>
               </div>
             </button>
 
             {isProfileOpen && (
-              <div className="absolute bottom-full left-0 right-0 mb-2 bg-gray-800 rounded-lg shadow-lg border border-gray-600 py-1">
+              <div className="absolute bottom-full left-0 right-0 mb-2 bg-white rounded-lg shadow-lg border border-gray-200 py-1">
                 <button
                   onClick={() => {
                     handleNavClick('profile');
                     setIsProfileOpen(false);
                   }}
-                  className="w-full flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-700"
+                  className="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
                   <User className="mr-3 h-4 w-4" />
                   {t('nav.profile')}
@@ -174,18 +173,18 @@ export function Sidebar({ activeSection, onSectionChange, user }: SidebarProps) 
                     handleNavClick('settings');
                     setIsProfileOpen(false);
                   }}
-                  className="w-full flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-700"
+                  className="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
                   <Settings className="mr-3 h-4 w-4" />
                   {t('nav.settings')}
                 </button>
-                <div className="border-t border-gray-600 my-1"></div>
+                <div className="border-t border-gray-100 my-1"></div>
                 <button
                   onClick={() => {
                     handleLogout();
                     setIsProfileOpen(false);
                   }}
-                  className="w-full flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-700"
+                  className="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
                   <LogOut className="mr-3 h-4 w-4" />
                   {t('nav.logout')}

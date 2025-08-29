@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Sidebar } from './components/Layout/Sidebar';
+import { Footer } from './components/Layout/Footer';
 import { LanguageSelector } from './components/UI/LanguageSelector';
 import { Dashboard } from './components/Dashboard/Dashboard';
 import { ContactList } from './components/Contacts/ContactList';
@@ -92,7 +93,7 @@ function App() {
         user={mockUser}
       />
       
-      <div className="flex-1 flex flex-col ml-64">
+      <div className="flex-1 flex flex-col lg:ml-0">
         {/* Selector de idioma flotante - movido a la derecha */}
         <div className="fixed top-4 right-4 z-30">
           <LanguageSelector />
@@ -103,6 +104,8 @@ function App() {
             {renderContent()}
           </div>
         </main>
+        
+        <Footer />
       </div>
     </div>
   );
