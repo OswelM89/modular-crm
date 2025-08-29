@@ -1,10 +1,8 @@
 import React from 'react';
-import { Users, Building2, Target, FileText, DollarSign, TrendingUp } from 'lucide-react';
+import { Users, Building2, Target, FileText } from 'lucide-react';
 import { StatsCard } from './StatsCard';
 import { WelcomeSection } from './WelcomeSection';
 import { SkeletonStats } from '../UI/SkeletonLoader';
-import { mockDashboardStats, mockDeals, mockQuotes } from '../../data/mockData';
-import { useTranslation } from '../../hooks/useTranslation';
 
 interface DashboardProps {
   user?: {
@@ -19,44 +17,11 @@ interface DashboardProps {
 
 export function Dashboard({ user, onSectionChange }: DashboardProps) {
   const [loading, setLoading] = React.useState(true);
-  const recentDeals = mockDeals.slice(0, 3);
-  const recentQuotes = mockQuotes.slice(0, 3);
-  const { t } = useTranslation();
 
   React.useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1500);
     return () => clearTimeout(timer);
   }, []);
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('es-MX', {
-      style: 'currency',
-      currency: 'MXN',
-    }).format(amount);
-  };
-
-  const getStageColor = (stage: string) => {
-    const colors = {
-      'prospecting': 'bg-gray-100 text-gray-800',
-      'qualification': 'bg-blue-100 text-blue-800',
-      'proposal': 'bg-yellow-100 text-yellow-800',
-      'negotiation': 'bg-orange-100 text-orange-800',
-      'closed-won': 'bg-green-100 text-green-800',
-      'closed-lost': 'bg-red-100 text-red-800',
-    };
-    return colors[stage as keyof typeof colors] || colors.prospecting;
-  };
-
-  const getStatusColor = (status: string) => {
-    const colors = {
-      'draft': 'bg-gray-100 text-gray-800',
-      'sent': 'bg-blue-100 text-blue-800',
-      'accepted': 'bg-green-100 text-green-800',
-      'rejected': 'bg-red-100 text-red-800',
-      'expired': 'bg-yellow-100 text-yellow-800',
-    };
-    return colors[status as keyof typeof colors] || colors.draft;
-  };
 
   if (loading) {
     return (
@@ -158,214 +123,146 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
         onSectionChange={onSectionChange || (() => {})}
       />
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatsCard
-          title={t('dashboard.totalContacts')}
-          value={mockDashboardStats.totalContacts}
+          title="Total Employees"
+          value="310"
           icon={Users}
           color="primary"
-          trend={{ value: 12, isPositive: true }}
+          trend={{ value: 3.12, isPositive: true }}
         />
         <StatsCard
-          title={t('dashboard.companies')}
-          value={mockDashboardStats.totalCompanies}
+          title="Total Applicants"
+          value="1,244"
           icon={Building2}
           color="success"
-          trend={{ value: 8, isPositive: true }}
+          trend={{ value: 3.00, isPositive: true }}
         />
         <StatsCard
-          title={t('dashboard.activeDeals')}
-          value={mockDashboardStats.activeDeals}
+          title="New Employees"
+          value="1,298K"
           icon={Target}
           color="warning"
+          trend={{ value: 3.12, isPositive: true }}
         />
         <StatsCard
-          title={t('dashboard.pendingQuotes')}
-          value={mockDashboardStats.pendingQuotes}
+          title="Resigned Employees"
+          value="1,298K"
           icon={FileText}
           color="info"
+          trend={{ value: 3.12, isPositive: true }}
         />
-        <StatsCard
-          title={t('dashboard.monthlyRevenue')}
-          value={formatCurrency(mockDashboardStats.monthlyRevenue)}
-          icon={DollarSign}
-          color="success"
-          trend={{ value: 25, isPositive: true }}
-        />
-        <StatsCard
-          title={t('dashboard.wonDeals')}
-          value={mockDashboardStats.wonDeals}
-          icon={TrendingUp}
-          color="primary"
-        />
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('dashboard.recentDeals')}</h3>
-          <div className="space-y-4">
-            {recentDeals.map((deal) => (
-              <div key={deal.id} className="flex items-center justify-between p-4 bg-gray-50">
-                <div className="flex-1">
-                  <h4 className="font-medium text-gray-900">{deal.title}</h4>
-                  <p className="text-sm text-gray-600">{deal.company?.name}</p>
-                </div>
-                <div className="text-right">
-                  <p className="font-medium text-gray-900">{formatCurrency(deal.value)}</p>
-                  <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getStageColor(deal.stage)}`}>
-                    {deal.stage}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="bg-white border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('dashboard.recentQuotes')}</h3>
-          <div className="space-y-4">
-            {recentQuotes.map((quote) => (
-              <div key={quote.id} className="flex items-center justify-between p-4 bg-gray-50">
-                <div className="flex-1">
-                  <h4 className="font-medium text-gray-900">{quote.quoteNumber}</h4>
-                  <p className="text-sm text-gray-600">{quote.company?.name}</p>
-                </div>
-                <div className="text-right">
-                  <p className="font-medium text-gray-900">{formatCurrency(quote.total)}</p>
-                  <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(quote.status)}`}>
-                    {quote.status}
-                  </span>
-                </div>
-              </div>
-            ))}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex items-center justify-center hover:shadow-md transition-shadow duration-200 cursor-pointer">
+          <div className="text-center">
+            <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-2">
+              <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+            </div>
+            <p className="text-sm text-gray-500 font-medium">Add new widget</p>
           </div>
         </div>
       </div>
 
-      {/* Separador */}
-      <div className="border-t border-gray-200" style={{ marginTop: '2rem', marginBottom: '2rem' }}></div>
-
-      {/* Sección de Artículos - Bento Layout */}
-      <div className="flex items-start justify-between mb-6">
-        <h3 className="font-bold text-gray-900 mb-0" style={{ fontSize: '1.875rem', fontWeight: '700' }}>Artículos Destacados</h3>
-        <button 
-          onClick={() => onSectionChange && onSectionChange('blog')}
-          className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
-        >
-          Ver Blog
-        </button>
-      </div>
-      
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Artículo Principal - Izquierda */}
-          <div className="lg:col-span-1">
-            <div className="bg-gradient-to-br from-[#FF6200] to-orange-600 p-6 text-white h-full min-h-[300px] flex flex-col justify-between">
-              <div>
-                <span className="inline-block px-3 py-1 bg-white bg-opacity-20 text-xs font-medium mb-4">
-                  DESTACADO
-                </span>
-                <h4 className="text-xl font-bold mb-3 leading-tight">
-                  Cómo optimizar tu pipeline de ventas en 2024
-                </h4>
-                <p className="text-orange-100 text-sm leading-relaxed">
-                  Descubre las mejores estrategias para aumentar tus conversiones y acelerar tu ciclo de ventas con técnicas probadas.
-                </p>
-              </div>
-              <div className="flex items-center justify-between mt-6">
-                <span className="text-orange-200 text-xs">5 min de lectura</span>
-                <button className="text-white hover:text-orange-200 transition-colors">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </button>
-              </div>
-            </div>
+        {/* Active Jobs Widget */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-gray-900">Active Jobs</h3>
+            <button className="text-gray-400 hover:text-gray-600">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+              </svg>
+            </button>
           </div>
-          
-          {/* Artículos Secundarios - Derecha */}
-          <div className="lg:col-span-2 space-y-4">
-            {/* Artículo 1 */}
-            <div className="bg-gray-50 p-6 hover:bg-gray-100 transition-colors cursor-pointer">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <span className="inline-block px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium mb-2">
-                    CRM
-                  </span>
-                  <h4 className="font-semibold text-gray-900 mb-2">
-                    10 funciones de CRM que debes usar diariamente
-                  </h4>
-                  <p className="text-gray-600 text-sm mb-3">
-                    Maximiza el potencial de tu CRM con estas funciones esenciales que todo vendedor debe dominar.
-                  </p>
-                  <div className="flex items-center text-xs text-gray-500">
-                    <span>3 min de lectura</span>
-                    <span className="mx-2">•</span>
-                    <span>Hace 2 días</span>
-                  </div>
+          <div className="space-y-3">
+            <div className="text-3xl font-bold text-gray-900">24</div>
+            <div className="text-sm text-gray-500">Jobs</div>
+            <div className="space-y-3 mt-4">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <span className="text-blue-600 font-semibold text-sm">PD</span>
                 </div>
-                <img 
-                  src="/Modular cover.jpg" 
-                  alt="CRM Functions" 
-                  className="w-16 h-16 ml-4 flex-shrink-0 object-cover rounded"
-                />
+                <div className="flex-1">
+                  <div className="font-medium text-sm">Senior Product Designer</div>
+                  <div className="text-xs text-gray-500">On-Site</div>
+                </div>
               </div>
-            </div>
-            
-            {/* Artículo 2 */}
-            <div className="bg-gray-50 p-6 hover:bg-gray-100 transition-colors cursor-pointer">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <span className="inline-block px-2 py-1 bg-green-100 text-green-800 text-xs font-medium mb-2">
-                    VENTAS
-                  </span>
-                  <h4 className="font-semibold text-gray-900 mb-2">
-                    Automatización de seguimiento: Guía completa
-                  </h4>
-                  <p className="text-gray-600 text-sm mb-3">
-                    Aprende a configurar flujos automáticos que nutran tus leads sin esfuerzo manual.
-                  </p>
-                  <div className="flex items-center text-xs text-gray-500">
-                    <span>7 min de lectura</span>
-                    <span className="mx-2">•</span>
-                    <span>Hace 1 semana</span>
-                  </div>
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                  <span className="text-green-600 font-semibold text-sm">ND</span>
                 </div>
-                <img 
-                  src="/Modular cover.jpg" 
-                  alt="Sales Automation" 
-                  className="w-16 h-16 ml-4 flex-shrink-0 object-cover rounded"
-                />
-              </div>
-            </div>
-            
-            {/* Artículo 3 */}
-            <div className="bg-gray-50 p-6 hover:bg-gray-100 transition-colors cursor-pointer">
-              <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <span className="inline-block px-2 py-1 bg-purple-100 text-purple-800 text-xs font-medium mb-2">
-                    PRODUCTIVIDAD
-                  </span>
-                  <h4 className="font-semibold text-gray-900 mb-2">
-                    Métricas clave para medir el éxito de tu equipo
-                  </h4>
-                  <p className="text-gray-600 text-sm mb-3">
-                    Identifica los KPIs más importantes para evaluar el rendimiento de tu equipo de ventas.
-                  </p>
-                  <div className="flex items-center text-xs text-gray-500">
-                    <span>4 min de lectura</span>
-                    <span className="mx-2">•</span>
-                    <span>Hace 2 semanas</span>
-                  </div>
+                  <div className="font-medium text-sm">NodeJs Developer</div>
+                  <div className="text-xs text-gray-500">Remote</div>
                 </div>
-                <img 
-                  src="/Modular cover.jpg" 
-                  alt="Team Metrics" 
-                  className="w-16 h-16 ml-4 flex-shrink-0 object-cover rounded"
-                />
               </div>
             </div>
           </div>
         </div>
+
+        {/* Upcoming Interviews Widget */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-gray-900">Upcoming Interviews</h3>
+            <button className="text-gray-400 hover:text-gray-600">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+              </svg>
+            </button>
+          </div>
+          <div className="space-y-3">
+            <div className="text-3xl font-bold text-gray-900">12</div>
+            <div className="text-sm text-gray-500">Interviews</div>
+            <div className="space-y-3 mt-4">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-gray-200 rounded-full"></div>
+                <div className="flex-1">
+                  <div className="font-medium text-sm">Bjorn Phillips</div>
+                  <div className="text-xs text-gray-500">UX/UI Designer • Mon 12, 2023 - 10:00 AM</div>
+                </div>
+              </div>
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-gray-200 rounded-full"></div>
+                <div className="flex-1">
+                  <div className="font-medium text-sm">Emery Donin</div>
+                  <div className="text-xs text-gray-500">Product Manager • Mon 12, 2023 - 10:00 AM</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Employment Status Widget */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-gray-900">Employment Status</h3>
+            <button className="text-gray-400 hover:text-gray-600">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+              </svg>
+            </button>
+          </div>
+          <div className="space-y-3">
+            <div className="text-sm text-gray-500 mb-2">Total Employees</div>
+            <div className="text-3xl font-bold text-gray-900">3109</div>
+            <div className="space-y-2 mt-4">
+              {[
+                { label: 'Permanent Employees', count: '3109' },
+                { label: 'Contract Employees', count: '3109' },
+                { label: 'Temporary Employees', count: '3109' },
+                { label: 'Freelancers', count: '3109' },
+                { label: 'Interns', count: '3109' }
+              ].map((item, index) => (
+                <div key={index} className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">{item.label}</span>
+                  <span className="text-sm font-semibold text-gray-900">{item.count}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

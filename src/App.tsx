@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Header } from './components/Layout/Header';
 import { Footer } from './components/Layout/Footer';
-import { LanguageSelector } from './components/UI/LanguageSelector';
 import { Dashboard } from './components/Dashboard/Dashboard';
 import { ContactList } from './components/Contacts/ContactList';
 import { CompanyList } from './components/Companies/CompanyList';
@@ -93,8 +92,7 @@ function App() {
         user={mockUser}
       />
       
-      {/* Selector de idioma flotante */}
-      <LanguageSelector />
+      {/* Selector de idioma flotante - ya no necesario */}
       
       <main className="flex-1 px-6 py-8">
         <div className="max-w-[1150px] mx-auto">
