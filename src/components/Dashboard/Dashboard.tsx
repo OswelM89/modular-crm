@@ -7,7 +7,7 @@ import { Badge } from '../ui/badge';
 import { Card, CardContent } from '../ui/card';
 import { mockDashboardStats, mockDeals, mockQuotes } from '../../data/mockData';
 import { useTranslation } from '../../hooks/useTranslation';
-import { formatCurrency as formatCurrencyUtil } from '../../lib/utils';
+import { formatCurrency } from '../../lib/utils';
 
 interface DashboardProps {
   user?: {
@@ -30,10 +30,6 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
     const timer = setTimeout(() => setLoading(false), 1500);
     return () => clearTimeout(timer);
   }, []);
-
-  const formatCurrency = (amount: number) => {
-    return formatCurrencyUtil(amount);
-  };
 
   const getStageVariant = (stage: string) => {
     const variants = {
