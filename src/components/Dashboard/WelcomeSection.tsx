@@ -1,4 +1,5 @@
 import { Settings, BookOpen } from 'lucide-react';
+import { Button } from '../ui/button';
 
 interface WelcomeSectionProps {
   userName: string;
@@ -26,39 +27,39 @@ export function WelcomeSection({ userName, onSectionChange }: WelcomeSectionProp
   return (
     <div className="mb-8">
       {/* Mensaje de bienvenida */}
-      <div className="mb-6 flex items-start justify-between">
-        <div>
-          <h1 className="text-3xl font-bold mb-0">
-            <span className="text-gray-900 drop-shadow-lg" style={{ 
-              textShadow: '0 0 20px rgba(0,0,0,0.3), 0 0 40px rgba(0,0,0,0.1)' 
-            }}>
+      <div className="mb-6 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6 animate-fade-in">
+        <div className="flex-1">
+          <h1 className="text-display-lg mb-2">
+            <span className="text-foreground">
               Hola 
             </span>
-            <span className="ml-2 bg-gradient-to-r from-primary via-primary-light to-primary-dark bg-clip-text text-transparent drop-shadow-lg" style={{ 
-              textShadow: '0 0 30px hsl(var(--primary) / 0.5), 0 0 60px hsl(var(--primary-light) / 0.3)' 
-            }}>
+            <span className="ml-2 bg-gradient-primary bg-clip-text text-transparent">
               {userName}
             </span>
           </h1>
-          <p className="text-gray-600" style={{ fontSize: '18px' }}>
+          <p className="text-muted-foreground text-lg">
             {getDailyMessage()}
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <button
+          <Button
             onClick={() => onSectionChange('tutoriales')}
-            className="inline-flex items-center px-6 py-3 text-base bg-[#212830] text-white hover:bg-gray-700 transition-colors"
+            variant="secondary"
+            size="lg"
+            className="hover-scale"
           >
             <BookOpen className="w-4 h-4 mr-2" />
             Tutoriales
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => onSectionChange('settings')}
-            className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+            variant="default"
+            size="lg"
+            className="hover-scale"
           >
             <Settings className="w-4 h-4 mr-2" />
             Configuración
-          </button>
+          </Button>
         </div>
       </div>
 

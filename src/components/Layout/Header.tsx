@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Search, Bell, ChevronDown, Menu, X } from 'lucide-react';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
 import { useTranslation } from '../../hooks/useTranslation';
+import { getInitials } from '../../lib/utils';
 
 interface HeaderProps {
   activeSection: string;
@@ -79,7 +82,7 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
     };
   }, [showMobileMenu]);
   return (
-    <div className="bg-[#0D1117] text-white">
+    <div className="bg-secondary text-secondary-foreground">
       {/* Top Header */}
       <div className="px-6 py-4">
         <div className="max-w-[1150px] mx-auto flex items-center justify-between">
@@ -97,32 +100,40 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
           <div className="flex items-center space-x-2 sm:space-x-4">
             {/* Search - Hidden on mobile */}
             <div className="relative hidden sm:block">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-              <input
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+              <Input
                 type="text"
                 placeholder={t('search.placeholder')}
-               className="pl-10 pr-4 py-2 bg-[#21262d] border border-gray-600 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent text-white placeholder-gray-400 w-48 lg:w-64"
+                className="pl-10 pr-4 py-2 bg-muted border-input focus:ring-2 focus:ring-ring focus:border-transparent text-foreground placeholder-muted-foreground w-48 lg:w-64"
               />
             </div>
             
             {/* Search icon for mobile */}
-            <button className="sm:hidden p-2 text-gray-300 hover:text-white transition-colors">
+            <Button 
+              variant="ghost" 
+              size="icon"
+              className="sm:hidden text-muted-foreground hover:text-foreground"
+            >
               <Search className="w-5 h-5" />
-            </button>
+            </Button>
             
-            <button className="relative p-1 sm:p-2 text-gray-300 hover:text-white transition-colors">
+            <Button 
+              variant="ghost" 
+              size="icon"
+              className="relative text-muted-foreground hover:text-foreground"
+            >
               <Bell className="w-5 h-5" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-[#FF6200] rounded-full"></span>
-            </button>
+              <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full"></span>
+            </Button>
             
             <div 
               className="relative profile-dropdown"
             >
               <div 
-                className="flex items-center space-x-2 sm:space-x-3 cursor-pointer hover:bg-[#21262d] px-2 sm:px-3 py-2 transition-colors"
+                className="flex items-center space-x-2 sm:space-x-3 cursor-pointer hover:bg-muted px-2 sm:px-3 py-2 rounded-md transition-colors"
                 onClick={toggleProfileDropdown}
               >
-                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-[#FF6200] flex items-center justify-center">
+                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-primary rounded-full flex items-center justify-center">
                   {user?.avatar_url ? (
                     <img 
                       src={user.avatar_url} 
@@ -130,77 +141,83 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
                       className="w-full h-full rounded-full object-cover"
                     />
                   ) : (
-                    <span className="text-xs font-medium text-white">
-                      {user?.firstName?.charAt(0) || 'U'}{user?.lastName?.charAt(0) || 'U'}
+                    <span className="text-xs font-medium text-primary-foreground">
+                      {getInitials(user?.firstName, user?.lastName)}
                     </span>
                   )}
                 </div>
                 <div className="text-left hidden sm:block">
-                  <div className="text-sm font-medium text-white">
+                  <div className="text-sm font-medium text-foreground">
                     {user?.firstName || 'Usuario'} {user?.lastName || ''}
                   </div>
                 </div>
-                <ChevronDown className="w-4 h-4 text-gray-300 hidden sm:block" />
+                <ChevronDown className="w-4 h-4 text-muted-foreground hidden sm:block" />
               </div>
               
               {showProfileDropdown && (
-               <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-200 py-2 z-50">
-                  <div className="px-4 py-2 border-b border-gray-200">
-                    <div className="text-sm font-medium text-gray-900">
+               <div className="absolute right-0 top-full mt-2 w-48 bg-card border border-border shadow-lg rounded-md py-2 z-50 animate-scale-in">
+                  <div className="px-4 py-2 border-b border-border">
+                    <div className="text-sm font-medium text-card-foreground">
                       {user?.firstName || 'Usuario'} {user?.lastName || ''}
                     </div>
-                    <div className="text-xs text-gray-500">{user?.email || ''}</div>
+                    <div className="text-xs text-muted-foreground">{user?.email || ''}</div>
                   </div>
-                  <button 
+                  <Button 
                     onClick={() => onSectionChange('profile')}
-                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                    variant="ghost"
+                    className="w-full justify-start px-4 py-2 text-sm text-card-foreground hover:bg-muted"
                   >
                     Perfil
-                  </button>
-                  <button 
+                  </Button>
+                  <Button 
                     onClick={() => onSectionChange('settings')}
-                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                    variant="ghost"
+                    className="w-full justify-start px-4 py-2 text-sm text-card-foreground hover:bg-muted"
                   >
                     {t('profile.settings')}
-                  </button>
-                  <hr className="my-1 border-gray-200" />
-                  <button 
+                  </Button>
+                  <hr className="my-1 border-border" />
+                  <Button 
                     onClick={handleLogout}
-                    className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                    variant="ghost"
+                    className="w-full justify-start px-4 py-2 text-sm text-destructive hover:bg-destructive/10"
                   >
                     {t('profile.logout')}
-                  </button>
+                  </Button>
                 </div>
               )}
             </div>
 
             {/* Mobile menu button */}
-            <button 
-              className="lg:hidden mobile-menu-button p-2 text-gray-300 hover:text-white transition-colors"
+            <Button 
+              variant="ghost"
+              size="icon"
+              className="lg:hidden mobile-menu-button text-muted-foreground hover:text-foreground"
               onClick={toggleMobileMenu}
             >
               {showMobileMenu ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
+            </Button>
           </div>
         </div>
       </div>
 
       {/* Navigation Bar */}
-      <div className="bg-[#212830] px-6 hidden lg:block">
+      <div className="bg-muted px-6 hidden lg:block border-t border-border">
         <nav className="max-w-[1150px] mx-auto flex items-center justify-center">
           <div className="flex space-x-8">
             {navigation.map((item) => (
-              <button
+              <Button
                 key={item.id}
                 onClick={() => onSectionChange(item.id)}
-                className={`py-4 px-2 text-sm font-medium transition-all duration-200 border-b-2 ${
+                variant="ghost"
+                className={`py-4 px-2 text-sm font-medium transition-all duration-200 border-b-2 rounded-none ${
                   activeSection === item.id
-                    ? 'text-white border-white'
-                    : 'text-gray-300 border-transparent hover:text-white hover:border-gray-400'
+                    ? 'text-primary border-primary bg-primary/5'
+                    : 'text-muted-foreground border-transparent hover:text-foreground hover:border-muted-foreground/50'
                 }`}
               >
                 {t(item.nameKey)}
-              </button>
+              </Button>
             ))}
           </div>
         </nav>
@@ -208,24 +225,25 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
 
       {/* Mobile Navigation Menu */}
       {showMobileMenu && (
-        <div className="lg:hidden bg-[#212830] mobile-menu">
+        <div className="lg:hidden bg-muted mobile-menu border-t border-border animate-slide-in-right">
           <nav className="px-6 py-4">
             <div className="space-y-2">
               {navigation.map((item) => (
-                <button
+                <Button
                   key={item.id}
                   onClick={() => {
                     onSectionChange(item.id);
                     setShowMobileMenu(false);
                   }}
-                  className={`block w-full text-left py-3 px-4 text-sm font-medium transition-all duration-200 ${
+                  variant="ghost"
+                  className={`w-full justify-start py-3 px-4 text-sm font-medium transition-all duration-200 ${
                     activeSection === item.id
-                      ? 'text-white bg-gray-600'
-                      : 'text-gray-300 hover:text-white hover:bg-gray-600'
+                      ? 'text-primary bg-primary/10'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
                   }`}
                 >
                   {t(item.nameKey)}
-                </button>
+                </Button>
               ))}
             </div>
           </nav>
