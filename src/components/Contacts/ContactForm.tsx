@@ -80,36 +80,26 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
 
     // ID Number validation - required and format check
     if (!formData.idNumber.trim()) {
-      newErrors.idNumber = 'Cédula de identidad es requerida';
+      newErrors.idNumber = 'Cédula/RUT es requerido';
     } else if (formData.idNumber.length < 8) {
-      newErrors.idNumber = 'Cédula debe tener al menos 8 caracteres';
+      newErrors.idNumber = 'Cédula/RUT debe tener al menos 8 caracteres';
     }
 
-    // Company selection validation - optional for now
+    // Company selection validation - optional
 
-    // Position validation - required
-    if (!formData.position.trim()) {
-      newErrors.position = 'Cargo es requerido';
-    }
+    // Position validation - optional
 
-    // Email validation - required and format check
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email es requerido';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    // Email validation - optional but format check if provided
+    if (formData.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = t('contacts.form.invalidEmail');
     }
 
-    // Phone validation - required and basic format check
-    if (!formData.phone.trim()) {
-      newErrors.phone = 'Teléfono es requerido';
-    } else if (!/^[\+]?[0-9\s\-\(\)]{10,}$/.test(formData.phone.replace(/\s/g, ''))) {
+    // Phone validation - optional but format check if provided
+    if (formData.phone.trim() && !/^[\+]?[0-9\s\-\(\)]{10,}$/.test(formData.phone.replace(/\s/g, ''))) {
       newErrors.phone = 'Formato de teléfono inválido';
     }
 
-    // Tax document validation - required
-    if (!formData.taxDocument) {
-      newErrors.taxDocument = 'Documento fiscal es requerido';
-    }
+    // Tax document validation - optional
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -269,7 +259,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
               {/* Cargo */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('contacts.form.position')} *
+                  {t('contacts.form.position')}
                 </label>
                 <div className="relative">
                   <Briefcase className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -291,7 +281,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
               {/* Email */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('contacts.form.email')} *
+                  {t('contacts.form.email')}
                 </label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -313,7 +303,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
               {/* Teléfono */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('contacts.form.phone')} *
+                  {t('contacts.form.phone')}
                 </label>
                 <div className="relative">
                   <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -335,7 +325,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
               {/* Documento Fiscal */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('contacts.form.taxDocument')} *
+                  {t('contacts.form.taxDocument')}
                 </label>
                 <div className={`border-2 border-dashed p-4 hover:border-[#FF6200] transition-colors ${
                   errors.taxDocument ? 'border-red-500' : 'border-gray-300'
