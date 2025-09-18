@@ -105,9 +105,26 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
     setEditedContact(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleDownloadDocument = async (filePath: string) => {
+  const handleDownloadDocument = async (urlOrPath: string) => {
     try {
-      console.log('Downloading file from path:', filePath);
+      console.log('Downloading file from:', urlOrPath);
+      
+      let filePath: string;
+      
+      // Detectar si es una URL completa o solo un path
+      if (urlOrPath.includes('supabase.co/storage')) {
+        // Es una URL completa, extraer el path
+        const urlParts = urlOrPath.split('/tax-documents/');
+        if (urlParts.length < 2) {
+          throw new Error('URL de documento inválida');
+        }
+        filePath = urlParts[1];
+      } else {
+        // Es solo un path
+        filePath = urlOrPath;
+      }
+      
+      console.log('Using file path:', filePath);
       
       // Descargar usando el cliente de Supabase
       const { data, error } = await supabase.storage
@@ -115,7 +132,7 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
         .download(filePath);
 
       if (error) {
-        console.error('Error downloading from Supabase:', error);
+        console.error('Supabase storage error:', error);
         throw error;
       }
 
@@ -129,7 +146,7 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
       link.href = downloadUrl;
       
       // Extraer el nombre del archivo original
-      const fileName = filePath.split('/').pop() || 'documento-fiscal';
+      const fileName = filePath.split('/').pop() || `documento-fiscal-${Date.now()}`;
       link.download = fileName;
       
       // Hacer clic automáticamente en el enlace
@@ -139,6 +156,8 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
       // Limpiar
       document.body.removeChild(link);
       window.URL.revokeObjectURL(downloadUrl);
+      
+      console.log('Download completed successfully');
     } catch (error) {
       console.error('Error downloading document:', error);
       alert('Error al descargar el documento. Por favor intenta de nuevo.');
