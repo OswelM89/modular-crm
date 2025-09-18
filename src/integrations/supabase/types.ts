@@ -14,6 +14,60 @@ export type Database = {
   }
   public: {
     Tables: {
+      companies: {
+        Row: {
+          address: string | null
+          city: string | null
+          country: string | null
+          created_at: string
+          email: string | null
+          id: string
+          name: string
+          nit: string
+          organization_id: string
+          phone: string | null
+          sector: string | null
+          tax_document_url: string | null
+          updated_at: string
+          user_id: string
+          website: string | null
+        }
+        Insert: {
+          address?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name: string
+          nit: string
+          organization_id: string
+          phone?: string | null
+          sector?: string | null
+          tax_document_url?: string | null
+          updated_at?: string
+          user_id: string
+          website?: string | null
+        }
+        Update: {
+          address?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string
+          nit?: string
+          organization_id?: string
+          phone?: string | null
+          sector?: string | null
+          tax_document_url?: string | null
+          updated_at?: string
+          user_id?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
       contacts: {
         Row: {
           company_id: string | null
