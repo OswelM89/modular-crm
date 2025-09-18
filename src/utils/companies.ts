@@ -88,7 +88,7 @@ export const createCompany = async (companyData: CompanyFormData): Promise<Compa
   // Upload tax document if provided
   if (companyData.taxDocument) {
     const fileExt = companyData.taxDocument.name.split('.').pop();
-    const fileName = `companies/${user.data.user.id}/${Date.now()}.${fileExt}`;
+    const fileName = `${user.data.user.id}/companies/${Date.now()}.${fileExt}`;
     
     const { error: uploadError } = await supabase.storage
       .from('tax-documents')
@@ -146,7 +146,7 @@ export const updateCompanyWithDocument = async (
   // Upload new tax document if provided
   if (newTaxDocument) {
     const fileExt = newTaxDocument.name.split('.').pop();
-    const fileName = `companies/${user.data.user.id}/${Date.now()}.${fileExt}`;
+    const fileName = `${user.data.user.id}/companies/${Date.now()}.${fileExt}`;
     
     const { error: uploadError } = await supabase.storage
       .from('tax-documents')
