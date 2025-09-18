@@ -1,24 +1,12 @@
 import React, { useState } from 'react';
 import { X, Building2, Hash, Briefcase, Globe, Mail, Phone, MapPin, Map, Upload, File } from 'lucide-react';
 import { useTranslation } from '../../hooks/useTranslation';
+import { CompanyFormData } from '../../utils/companies';
 
 interface CompanyFormProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (companyData: CompanyFormData) => void;
-}
-
-export interface CompanyFormData {
-  name: string;
-  nit: string;
-  sector: string;
-  website: string;
-  email: string;
-  phone: string;
-  address: string;
-  city: string;
-  country: string;
-  taxDocument: File | null;
+  onSubmit: (companyData: CompanyFormData) => Promise<void>;
 }
 
 export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
@@ -94,24 +82,29 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      onSubmit(formData);
-      // Reset form
-      setFormData({
-        name: '',
-        nit: '',
-        sector: '',
-        website: '',
-        email: '',
-        phone: '',
-        address: '',
-        city: '',
-        country: '',
-        taxDocument: null,
-      });
-      onClose();
+      try {
+        await onSubmit(formData);
+        // Reset form
+        setFormData({
+          name: '',
+          nit: '',
+          sector: '',
+          website: '',
+          email: '',
+          phone: '',
+          address: '',
+          city: '',
+          country: '',
+          taxDocument: null,
+        });
+        onClose();
+      } catch (error) {
+        console.error('Error creating company:', error);
+        alert('Error al crear la empresa. Por favor intenta de nuevo.');
+      }
     }
   };
 

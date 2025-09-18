@@ -1,27 +1,39 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Plus, Globe, Phone, Users, Mail, Building2 } from 'lucide-react';
-import { Company } from '../../types';
 import { SkeletonHeader, SkeletonTable } from '../UI/SkeletonLoader';
-import { mockCompanies } from '../../data/mockData';
-import { CompanyForm, CompanyFormData } from './CompanyForm';
+import { CompanyForm } from './CompanyForm';
+import { CompanyFormData } from '../../utils/companies';
 import { useTranslation } from '../../hooks/useTranslation';
+import { fetchCompanies, createCompany, deleteCompany, type Company } from '../../utils/companies';
 
 export function CompanyList() {
   const [loading, setLoading] = useState(true);
-  const [companies, setCompanies] = useState<Company[]>(mockCompanies);
+  const [companies, setCompanies] = useState<Company[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
   const [showCompanyForm, setShowCompanyForm] = useState(false);
   const { t } = useTranslation();
 
-  React.useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1300);
-    return () => clearTimeout(timer);
+  useEffect(() => {
+    loadCompanies();
   }, []);
+
+  const loadCompanies = async () => {
+    try {
+      setLoading(true);
+      const companiesData = await fetchCompanies();
+      setCompanies(companiesData);
+    } catch (error) {
+      console.error('Error loading companies:', error);
+      alert('Error al cargar las empresas. Por favor intenta de nuevo.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filteredCompanies = companies.filter(company =>
     company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    company.sector.toLowerCase().includes(searchTerm.toLowerCase())
+    (company.sector && company.sector.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const handleSelectCompany = (companyId: string) => {
@@ -40,7 +52,7 @@ export function CompanyList() {
     }
   };
 
-  const handleDeleteSelected = () => {
+  const handleDeleteSelected = async () => {
     if (selectedCompanies.length === 0) return;
     
     const confirmDelete = window.confirm(
@@ -48,8 +60,14 @@ export function CompanyList() {
     );
     
     if (confirmDelete) {
-      setCompanies(prev => prev.filter(company => !selectedCompanies.includes(company.id)));
-      setSelectedCompanies([]);
+      try {
+        await Promise.all(selectedCompanies.map(id => deleteCompany(id)));
+        setCompanies(prev => prev.filter(company => !selectedCompanies.includes(company.id)));
+        setSelectedCompanies([]);
+      } catch (error) {
+        console.error('Error deleting companies:', error);
+        alert('Error al eliminar empresas. Por favor intenta de nuevo.');
+      }
     }
   };
 
@@ -61,17 +79,16 @@ export function CompanyList() {
     );
     
     // Crear CSV
-    const headers = ['Nombre', 'Sector', 'NIT', 'Tamaño', 'Website', 'Teléfono', 'Email', 'Dirección', 'Ciudad', 'País'];
+    const headers = ['Nombre', 'NIT', 'Sector', 'Website', 'Email', 'Teléfono', 'Dirección', 'Ciudad', 'País'];
     const csvContent = [
       headers.join(','),
       ...selectedCompaniesData.map(company => [
         company.name,
-        company.sector,
-        company.taxId || '',
-        company.size,
+        company.nit,
+        company.sector || '',
         company.website || '',
-        company.phone || '',
         company.email || '',
+        company.phone || '',
         company.address || '',
         company.city || '',
         company.country || ''
@@ -90,25 +107,14 @@ export function CompanyList() {
     document.body.removeChild(link);
   };
 
-  const handleCreateCompany = (companyData: CompanyFormData) => {
-    const newCompany: Company = {
-      id: Math.random().toString(36).substr(2, 9),
-      organizationId: 'org1', // TODO: Get from current user's organization
-      name: companyData.name,
-      sector: companyData.sector,
-      taxId: companyData.nit,
-      size: 'No especificado',
-      website: companyData.website,
-      address: companyData.address,
-      city: companyData.city,
-      country: companyData.country,
-      phone: companyData.phone,
-      email: companyData.email,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-    
-    setCompanies(prev => [newCompany, ...prev]);
+  const handleCreateCompany = async (companyData: CompanyFormData) => {
+    try {
+      const newCompany = await createCompany(companyData);
+      setCompanies(prev => [newCompany, ...prev]);
+    } catch (error) {
+      console.error('Error creating company:', error);
+      alert('Error al crear la empresa. Por favor intenta de nuevo.');
+    }
   };
 
   if (loading) {
@@ -193,7 +199,7 @@ export function CompanyList() {
                   Sector
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Tamaño
+                  NIT
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Contacto
@@ -224,7 +230,7 @@ export function CompanyList() {
                         </div>
                         <div className="flex items-center text-sm text-gray-600">
                           <Globe className="w-4 h-4 mr-1" />
-                          {company.website}
+                          {company.website || 'Sin sitio web'}
                         </div>
                       </div>
                     </div>
@@ -232,24 +238,24 @@ export function CompanyList() {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <Building2 className="w-4 h-4 text-gray-400 mr-2" />
-                      <span className="text-sm text-gray-900">{company.sector}</span>
+                      <span className="text-sm text-gray-900">{company.sector || 'Sin especificar'}</span>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <Users className="w-4 h-4 text-gray-400 mr-2" />
-                      <span className="text-sm text-gray-900">{company.size}</span>
+                      <span className="text-sm text-gray-900">{company.nit}</span>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="space-y-1">
                       <div className="flex items-center text-sm text-gray-600">
                         <Mail className="w-4 h-4 mr-2" />
-                        {company.email}
+                        {company.email || 'Sin email'}
                       </div>
                       <div className="flex items-center text-sm text-gray-600">
                         <Phone className="w-4 h-4 mr-2" />
-                        {company.phone}
+                        {company.phone || 'Sin teléfono'}
                       </div>
                     </div>
                   </td>
