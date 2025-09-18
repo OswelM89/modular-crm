@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Header } from './components/Layout/Header';
 import { Footer } from './components/Layout/Footer';
 import { LanguageSelector } from './components/UI/LanguageSelector';
@@ -10,20 +10,31 @@ import { QuoteList } from './components/Quotes/QuoteList';
 import { QuoteBuilder } from './components/Quotes/QuoteBuilder';
 import { SettingsPage } from './components/Settings/SettingsPage';
 import { ProfilePage } from './components/Profile/ProfilePage';
+import { AuthPage } from './components/Auth/AuthPage';
+import { useAuth } from './contexts/AuthContext';
+import { getDefaultOrganization } from './utils/org';
 
 function App() {
+  const { user, loading } = useAuth();
   const [activeSection, setActiveSection] = useState(() => {
     return localStorage.getItem('activeSection') || 'dashboard';
   });
 
-  // Usuario mock para desarrollo
-  const mockUser = {
-    id: '1',
-    firstName: 'Usuario',
-    lastName: 'Demo',
-    email: 'demo@modularcrm.com',
-    avatar_url: null
-  };
+  // Initialize user's default organization on first login
+  useEffect(() => {
+    if (user) {
+      getDefaultOrganization().catch(console.error);
+    }
+  }, [user]);
+
+  // Transform auth user to match existing interface
+  const transformedUser = user ? {
+    id: user.id,
+    firstName: user.user_metadata?.first_name || 'Usuario',
+    lastName: user.user_metadata?.last_name || '',
+    email: user.email || '',
+    avatar_url: user.user_metadata?.avatar_url || null
+  } : null;
 
   const handleSectionChange = (section: string) => {
     setActiveSection(section);
@@ -33,7 +44,7 @@ function App() {
   const renderContent = () => {
     switch (activeSection) {
       case 'dashboard':
-        return <Dashboard user={mockUser} onSectionChange={handleSectionChange} />;
+        return <Dashboard user={transformedUser} onSectionChange={handleSectionChange} />;
       case 'contacts':
         return <ContactList />;
       case 'companies':
@@ -49,12 +60,12 @@ function App() {
           <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <h1 className="text-gray-900" style={{ fontSize: '1.875rem', fontWeight: '700' }}>Pipeline</h1>
-                <p className="text-sm text-gray-600">Administra tu pipeline de ventas</p>
+                <h1 className="text-display-lg text-foreground">Pipeline</h1>
+                <p className="text-muted-foreground">Administra tu pipeline de ventas</p>
               </div>
             </div>
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
-              <p className="text-gray-600">Módulo de pipeline en desarrollo</p>
+            <div className="bg-card rounded-xl shadow-sm border border-border p-8 text-center">
+              <p className="text-muted-foreground">Módulo de pipeline en desarrollo</p>
             </div>
           </div>
         );
@@ -63,12 +74,12 @@ function App() {
           <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <h1 className="text-gray-900" style={{ fontSize: '1.875rem', fontWeight: '700' }}>Novedades</h1>
-                <p className="text-sm text-gray-600">Últimas novedades y actualizaciones</p>
+                <h1 className="text-display-lg text-foreground">Novedades</h1>
+                <p className="text-muted-foreground">Últimas novedades y actualizaciones</p>
               </div>
             </div>
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
-              <p className="text-gray-600">Módulo de novedades en desarrollo</p>
+            <div className="bg-card rounded-xl shadow-sm border border-border p-8 text-center">
+              <p className="text-muted-foreground">Módulo de novedades en desarrollo</p>
             </div>
           </div>
         );
@@ -78,19 +89,36 @@ function App() {
         );
       case 'profile':
         return (
-          <ProfilePage user={mockUser} onBack={() => handleSectionChange('dashboard')} />
+          <ProfilePage user={transformedUser} onBack={() => handleSectionChange('dashboard')} />
         );
       default:
-        return <Dashboard user={mockUser} onSectionChange={handleSectionChange} />;
+        return <Dashboard user={transformedUser} onSectionChange={handleSectionChange} />;
     }
   };
+
+  // Show loading spinner while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <p className="text-muted-foreground">Cargando...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show auth page if user is not authenticated
+  if (!user) {
+    return <AuthPage />;
+  }
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header 
         activeSection={activeSection} 
         onSectionChange={handleSectionChange}
-        user={mockUser}
+        user={transformedUser}
       />
       
       {/* Selector de idioma flotante */}

@@ -3,6 +3,7 @@ import { Search, Bell, ChevronDown, Menu, X } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { useTranslation } from '../../hooks/useTranslation';
+import { useAuth } from '../../contexts/AuthContext';
 import { getInitials } from '../../lib/utils';
 
 interface HeaderProps {
@@ -31,11 +32,15 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const { t } = useTranslation();
+  const { signOut } = useAuth();
 
   const handleLogout = async () => {
-    // Mock logout - just reload the page
-    window.location.reload();
-    setShowProfileDropdown(false);
+    try {
+      await signOut();
+      setShowProfileDropdown(false);
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+    }
   };
 
   const toggleProfileDropdown = () => {
