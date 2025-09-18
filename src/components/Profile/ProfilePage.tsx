@@ -26,6 +26,7 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
 
   const [isEditing, setIsEditing] = useState(false);
   const [isEditingOrg, setIsEditingOrg] = useState(false);
+  const [isLoadingOrg, setIsLoadingOrg] = useState(true);
   const [organization, setOrganization] = useState<Organization | null>(null);
   const [orgData, setOrgData] = useState({
     name: '',
@@ -52,17 +53,26 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
   useEffect(() => {
     const loadOrganization = async () => {
       try {
+        setIsLoadingOrg(true);
+        console.log('Cargando organizaciones...');
         const orgs = await fetchMyOrganizations();
+        console.log('Organizaciones cargadas:', orgs);
+        
         if (orgs.length > 0) {
           const org = orgs[0];
+          console.log('Organización seleccionada:', org);
           setOrganization(org);
           setOrgData({
             name: org.name,
             organization_type: org.organization_type || 'Empresa'
           });
+        } else {
+          console.log('No se encontraron organizaciones');
         }
       } catch (error) {
         console.error('Error loading organization:', error);
+      } finally {
+        setIsLoadingOrg(false);
       }
     };
     
@@ -272,7 +282,7 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
                 </label>
                 {!isEditingOrg ? (
                   <p className="text-gray-900 bg-gray-50 px-3 py-2 rounded-md">
-                    {organization?.name || 'Cargando...'}
+                    {isLoadingOrg ? 'Cargando...' : (organization?.name || 'Sin organización')}
                   </p>
                 ) : (
                   <input
