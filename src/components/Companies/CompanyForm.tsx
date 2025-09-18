@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Building2, Hash, Briefcase, Globe, Mail, Phone, MapPin, Map } from 'lucide-react';
+import { X, Building2, Hash, Briefcase, Globe, Mail, Phone, MapPin, Map, Upload, File } from 'lucide-react';
 import { useTranslation } from '../../hooks/useTranslation';
 
 interface CompanyFormProps {
@@ -18,6 +18,7 @@ export interface CompanyFormData {
   address: string;
   city: string;
   country: string;
+  taxDocument: File | null;
 }
 
 export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
@@ -31,9 +32,10 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
     address: '',
     city: '',
     country: '',
+    taxDocument: null,
   });
 
-  const [errors, setErrors] = useState<Partial<CompanyFormData>>({});
+  const [errors, setErrors] = useState<Partial<CompanyFormData & {taxDocument?: string}>>({});
   const { t } = useTranslation();
 
   // Bloquear scroll del body cuando el modal está abierto
@@ -58,8 +60,16 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
     }
   };
 
+  const handleFileChange = (file: File | null) => {
+    setFormData(prev => ({ ...prev, taxDocument: file }));
+    // Clear error when user selects a file
+    if (errors.taxDocument) {
+      setErrors(prev => ({ ...prev, taxDocument: undefined }));
+    }
+  };
+
   const validateForm = (): boolean => {
-    const newErrors: Partial<CompanyFormData> = {};
+    const newErrors: Partial<CompanyFormData & {taxDocument?: string}> = {};
 
     if (!formData.name.trim()) {
       newErrors.name = t('companies.form.nameRequired');
@@ -76,6 +86,9 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
     if (formData.website && !formData.website.startsWith('http')) {
       newErrors.website = t('companies.form.invalidWebsite');
     }
+
+    // Tax document validation - optional
+    // No validation needed as it's optional
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -96,6 +109,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
         address: '',
         city: '',
         country: '',
+        taxDocument: null,
       });
       onClose();
     }
@@ -112,6 +126,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
       address: '',
       city: '',
       country: '',
+      taxDocument: null,
     });
     onClose();
   };
@@ -313,6 +328,53 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
                     placeholder={t('companies.form.countryPlaceholder')}
                   />
                 </div>
+              </div>
+
+              {/* Documento Fiscal */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Documento Fiscal
+                </label>
+                <div className={`border-2 border-dashed p-4 hover:border-[#FF6200] transition-colors ${
+                  errors.taxDocument ? 'border-red-500' : 'border-gray-300'
+                }`}>
+                  <input
+                    type="file"
+                    id="companyTaxDocument"
+                    accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                    onChange={(e) => handleFileChange(e.target.files?.[0] || null)}
+                    className="hidden"
+                  />
+                  <label
+                    htmlFor="companyTaxDocument"
+                    className="cursor-pointer flex flex-col items-center justify-center space-y-2"
+                  >
+                    {formData.taxDocument ? (
+                      <div className="flex items-center space-x-2 text-green-600">
+                        <File className="w-5 h-5" />
+                        <span className="text-sm font-medium">{formData.taxDocument.name}</span>
+                      </div>
+                    ) : (
+                      <>
+                        <Upload className="w-8 h-8 text-gray-400" />
+                        <div className="text-center">
+                          <p className="text-sm font-medium text-gray-600">
+                            Subir documento fiscal
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            RUT, Certificado de constitución, etc. (Opcional)
+                          </p>
+                          <p className="text-xs text-gray-400 mt-1">
+                            PDF, JPG, PNG, DOC hasta 10MB
+                          </p>
+                        </div>
+                      </>
+                    )}
+                  </label>
+                </div>
+                {errors.taxDocument && (
+                  <p className="mt-1 text-sm text-red-600">{errors.taxDocument}</p>
+                )}
               </div>
             </div>
 
