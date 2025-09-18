@@ -110,7 +110,7 @@ export const createContact = async (contactData: ContactFormData): Promise<Conta
       first_name: contactData.firstName,
       last_name: contactData.lastName,
       id_number: contactData.idNumber || null,
-      company_id: contactData.companyId || null,
+      company_id: null, // Por ahora siempre null hasta que se implemente módulo de empresas
       position: contactData.position || null,
       email: contactData.email,
       phone: contactData.phone,
