@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Mail, Phone, MapPin, Camera, Save, X, Edit, Building2 } from 'lucide-react';
+import { ArrowLeft, Mail, Phone, MapPin, Camera, Save, X, Edit } from 'lucide-react';
 import { fetchMyOrganizations, updateOrganization, type Organization } from '../../utils/org';
 import { supabase } from '../../lib/supabase';
 
@@ -444,8 +444,7 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
         <div className="space-y-6">
           {/* Tarjeta de Organización */}
           <div className="bg-white border border-gray-200 p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <Building2 className="w-5 h-5 text-[#FF6200]" />
+            <div className="flex items-center mb-4">
               <h3 className="text-lg font-semibold text-gray-900">Mi Organización</h3>
             </div>
             
