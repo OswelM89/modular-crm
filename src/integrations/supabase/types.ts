@@ -19,7 +19,7 @@ export type Database = {
           created_at: string | null
           id: string
           organization_id: string
-          role: Database["public"]["Enums"]["organization_role"]
+          role: Database["public"]["Enums"]["user_role"]
           updated_at: string | null
           user_id: string
         }
@@ -27,7 +27,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           organization_id: string
-          role?: Database["public"]["Enums"]["organization_role"]
+          role?: Database["public"]["Enums"]["user_role"]
           updated_at?: string | null
           user_id: string
         }
@@ -35,7 +35,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           organization_id?: string
-          role?: Database["public"]["Enums"]["organization_role"]
+          role?: Database["public"]["Enums"]["user_role"]
           updated_at?: string | null
           user_id?: string
         }
@@ -119,6 +119,7 @@ export type Database = {
     }
     Enums: {
       organization_role: "owner" | "admin" | "member"
+      user_role: "admin" | "gestor"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -247,6 +248,7 @@ export const Constants = {
   public: {
     Enums: {
       organization_role: ["owner", "admin", "member"],
+      user_role: ["admin", "gestor"],
     },
   },
 } as const
