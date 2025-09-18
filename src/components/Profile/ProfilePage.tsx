@@ -14,6 +14,8 @@ interface ProfilePageProps {
 }
 
 export function ProfilePage({ user, onBack }: ProfilePageProps) {
+  console.log('ProfilePage renderizado con usuario:', user);
+  
   if (!user) {
     return (
       <div className="space-y-6">
@@ -51,28 +53,34 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
 
   // Cargar organización al montar componente
   useEffect(() => {
+    console.log('useEffect ejecutándose para cargar organización...');
     const loadOrganization = async () => {
       try {
         setIsLoadingOrg(true);
-        console.log('Cargando organizaciones...');
-        const orgs = await fetchMyOrganizations();
-        console.log('Organizaciones cargadas:', orgs);
+        console.log('Iniciando carga de organizaciones...');
         
-        if (orgs.length > 0) {
+        const orgs = await fetchMyOrganizations();
+        console.log('Organizaciones recibidas:', orgs);
+        
+        if (orgs && orgs.length > 0) {
           const org = orgs[0];
-          console.log('Organización seleccionada:', org);
+          console.log('Primera organización:', org);
+          console.log('Nombre de la organización:', org.name);
+          
           setOrganization(org);
           setOrgData({
             name: org.name,
             organization_type: org.organization_type || 'Empresa'
           });
+          console.log('Estado actualizado con organización:', org.name);
         } else {
-          console.log('No se encontraron organizaciones');
+          console.log('No se encontraron organizaciones para el usuario');
         }
       } catch (error) {
-        console.error('Error loading organization:', error);
+        console.error('ERROR cargando organización:', error);
       } finally {
         setIsLoadingOrg(false);
+        console.log('Carga de organización finalizada');
       }
     };
     
@@ -282,7 +290,7 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
                 </label>
                 {!isEditingOrg ? (
                   <p className="text-gray-900 bg-gray-50 px-3 py-2 rounded-md">
-                    {isLoadingOrg ? 'Cargando...' : (organization?.name || 'Sin organización')}
+                    {isLoadingOrg ? 'Cargando...' : (organization?.name || 'ERROR: No se cargó el nombre')}
                   </p>
                 ) : (
                   <input
