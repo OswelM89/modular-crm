@@ -154,13 +154,13 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
       email: user.email,
       phone: '+52 55 1234 5678',
       position: 'Gerente de Ventas',
-      
       location: 'Ciudad de México, México',
       bio: 'Especialista en gestión de relaciones con clientes y desarrollo de estrategias de ventas.',
       joinDate: '15 de Enero, 2024',
       avatar: user?.avatar_url
     });
     setIsEditing(false);
+    setIsEditingOrg(false);
     setNewAvatar(null);
     setPreviewAvatar(null);
   };
@@ -184,7 +184,10 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
         </div>
         {!isEditing ? (
           <button
-            onClick={() => setIsEditing(true)}
+            onClick={() => {
+              setIsEditing(true);
+              setIsEditingOrg(true);
+            }}
             className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
           >
             <Edit className="w-4 h-4 mr-2" />
@@ -193,14 +196,22 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
         ) : (
           <div className="flex gap-3">
             <button
-              onClick={handleCancel}
+              onClick={() => {
+                handleCancel();
+                handleOrgCancel();
+              }}
               className="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
             >
               <X className="w-4 h-4 mr-2" />
               Cancelar
             </button>
             <button
-              onClick={handleSave}
+              onClick={() => {
+                handleSave();
+                if (isEditingOrg) {
+                  handleOrgSave();
+                }
+              }}
               className="inline-flex items-center px-4 py-2 bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
             >
               <Save className="w-4 h-4 mr-2" />
@@ -301,17 +312,6 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
                         rows={3}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
                         placeholder="Describe tu experiencia y habilidades..."
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Biografía
-                      </label>
-                      <textarea
-                        rows={3}
-                        value={profileData.bio}
-                        onChange={(e) => handleInputChange('bio', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
                       />
                     </div>
                   </div>
