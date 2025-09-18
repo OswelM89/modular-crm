@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { Bell, ChevronDown, Menu, X } from 'lucide-react';
+import { Bell, ChevronDown } from 'lucide-react';
 import { Button } from '../ui/button';
 import { useTranslation } from '../../hooks/useTranslation';
 import { useAuth } from '../../contexts/AuthContext';
 import { getInitials } from '../../lib/utils';
+import { SidebarTrigger } from '../UI/sidebar';
 
 interface HeaderProps {
-  activeSection: string;
-  onSectionChange: (section: string) => void;
   user: {
     id: string;
     firstName: string;
@@ -17,19 +16,8 @@ interface HeaderProps {
   } | null;
 }
 
-const navigation = [
-  { id: 'dashboard', nameKey: 'nav.dashboard' },
-  { id: 'contacts', nameKey: 'nav.contacts' },
-  { id: 'companies', nameKey: 'nav.companies' },
-  { id: 'deals', nameKey: 'nav.deals' },
-  { id: 'quotes', nameKey: 'nav.quotes' },
-  { id: 'pipeline', nameKey: 'nav.pipeline' },
-  { id: 'reports', nameKey: 'nav.reports' },
-];
-
-export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
+export function Header({ user }: HeaderProps) {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
-  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const { t } = useTranslation();
   const { signOut } = useAuth();
 
@@ -44,10 +32,6 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
 
   const toggleProfileDropdown = () => {
     setShowProfileDropdown(!showProfileDropdown);
-  };
-
-  const toggleMobileMenu = () => {
-    setShowMobileMenu(!showMobileMenu);
   };
 
   // Close dropdown when clicking outside
@@ -67,30 +51,13 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
       document.removeEventListener('click', handleClickOutside);
     };
   }, [showProfileDropdown]);
-
-  // Close mobile menu when clicking outside
-  React.useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Element;
-      if (!target.closest('.mobile-menu') && !target.closest('.mobile-menu-button')) {
-        setShowMobileMenu(false);
-      }
-    };
-
-    if (showMobileMenu) {
-      document.addEventListener('click', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, [showMobileMenu]);
   return (
     <div className="bg-secondary text-secondary-foreground">
-      {/* Top Header */}
-      <div className="px-6 py-4">
+      {/* Header */}
+      <div className="px-6 py-4 border-b border-border">
         <div className="max-w-[1150px] mx-auto flex items-center justify-between">
-          <div className="flex items-center">
+          <div className="flex items-center gap-3">
+            <SidebarTrigger />
             <div className="flex items-center">
               <img 
                 src="/Logo modular CRM.svg" 
@@ -148,14 +115,12 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
                     <div className="text-xs text-muted-foreground">{user?.email || ''}</div>
                   </div>
                   <Button 
-                    onClick={() => onSectionChange('profile')}
                     variant="ghost"
                     className="w-full justify-start px-4 py-2 text-sm text-card-foreground hover:bg-muted"
                   >
                     Perfil
                   </Button>
                   <Button 
-                    onClick={() => onSectionChange('settings')}
                     variant="ghost"
                     className="w-full justify-start px-4 py-2 text-sm text-card-foreground hover:bg-muted"
                   >
@@ -172,68 +137,9 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
                 </div>
               )}
             </div>
-
-            {/* Mobile menu button */}
-            <Button 
-              variant="ghost"
-              size="icon"
-              className="lg:hidden mobile-menu-button text-muted-foreground hover:text-foreground"
-              onClick={toggleMobileMenu}
-            >
-              {showMobileMenu ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </Button>
           </div>
         </div>
       </div>
-
-      {/* Navigation Bar */}
-      <div className="bg-muted px-6 hidden lg:block border-t border-border">
-        <nav className="max-w-[1150px] mx-auto flex items-center justify-center">
-          <div className="flex space-x-8">
-            {navigation.map((item) => (
-              <Button
-                key={item.id}
-                onClick={() => onSectionChange(item.id)}
-                variant="ghost"
-                className={`py-4 px-2 text-sm font-medium transition-all duration-200 border-b-2 rounded-none ${
-                  activeSection === item.id
-                    ? 'text-primary border-primary bg-primary/5'
-                    : 'text-muted-foreground border-transparent hover:text-foreground hover:border-muted-foreground/50'
-                }`}
-              >
-                {t(item.nameKey)}
-              </Button>
-            ))}
-          </div>
-        </nav>
-      </div>
-
-      {/* Mobile Navigation Menu */}
-      {showMobileMenu && (
-        <div className="lg:hidden bg-muted mobile-menu border-t border-border animate-slide-in-right">
-          <nav className="px-6 py-4">
-            <div className="space-y-2">
-              {navigation.map((item) => (
-                <Button
-                  key={item.id}
-                  onClick={() => {
-                    onSectionChange(item.id);
-                    setShowMobileMenu(false);
-                  }}
-                  variant="ghost"
-                  className={`w-full justify-start py-3 px-4 text-sm font-medium transition-all duration-200 ${
-                    activeSection === item.id
-                      ? 'text-primary bg-primary/10'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
-                  }`}
-                >
-                  {t(item.nameKey)}
-                </Button>
-              ))}
-            </div>
-          </nav>
-        </div>
-      )}
     </div>
   );
 }

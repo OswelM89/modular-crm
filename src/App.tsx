@@ -13,6 +13,8 @@ import { ProfilePage } from './components/Profile/ProfilePage';
 import { AuthPage } from './components/Auth/AuthPage';
 import { useAuth } from './contexts/AuthContext';
 import { getDefaultOrganization } from './utils/org';
+import { SidebarProvider, SidebarInset } from './components/UI/sidebar';
+import { AppSidebar } from './components/AppSidebar';
 
 function App() {
   const { user, loading } = useAuth();
@@ -114,24 +116,29 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <Header 
-        activeSection={activeSection} 
-        onSectionChange={handleSectionChange}
-        user={transformedUser}
-      />
-      
-      {/* Selector de idioma flotante */}
-      <LanguageSelector />
-      
-      <main className="flex-1 px-6 py-8">
-        <div className="max-w-[1150px] mx-auto">
-          {renderContent()}
-        </div>
-      </main>
-      
-      <Footer />
-    </div>
+    <SidebarProvider>
+      <div className="min-h-screen bg-background flex w-full">
+        <AppSidebar 
+          activeSection={activeSection} 
+          onSectionChange={handleSectionChange}
+        />
+        
+        <SidebarInset className="flex flex-col flex-1">
+          <Header user={transformedUser} />
+          
+          {/* Selector de idioma flotante */}
+          <LanguageSelector />
+          
+          <main className="flex-1 px-6 py-8">
+            <div className="max-w-[1150px] mx-auto">
+              {renderContent()}
+            </div>
+          </main>
+          
+          <Footer />
+        </SidebarInset>
+      </div>
+    </SidebarProvider>
   );
 }
 
