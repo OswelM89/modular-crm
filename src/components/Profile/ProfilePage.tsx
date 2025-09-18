@@ -315,15 +315,10 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
                   <select
                     value={orgData.organization_type}
                     onChange={(e) => setOrgData({ ...orgData, organization_type: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF6200] focus:border-transparent bg-white z-50 shadow-sm"
                   >
                     <option value="Empresa">Empresa</option>
-                    <option value="Corporación">Corporación</option>
-                    <option value="Startup">Startup</option>
-                    <option value="ONG">ONG</option>
-                    <option value="Institución">Institución</option>
-                    <option value="Freelance">Freelance</option>
-                    <option value="Otro">Otro</option>
+                    <option value="Persona">Persona</option>
                   </select>
                 )}
               </div>
