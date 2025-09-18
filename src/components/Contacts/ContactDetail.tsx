@@ -104,6 +104,33 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
     setEditedContact(prev => ({ ...prev, [field]: value }));
   };
 
+  const handleDownloadDocument = async (url: string) => {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      
+      // Crear un enlace temporal para descargar
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      
+      // Extraer el nombre del archivo de la URL o usar un nombre por defecto
+      const fileName = url.split('/').pop() || 'documento-fiscal';
+      link.download = fileName;
+      
+      // Hacer clic automáticamente en el enlace
+      document.body.appendChild(link);
+      link.click();
+      
+      // Limpiar
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(downloadUrl);
+    } catch (error) {
+      console.error('Error downloading document:', error);
+      alert('Error al descargar el documento. Por favor intenta de nuevo.');
+    }
+  };
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return new Intl.DateTimeFormat('es-MX', {
@@ -416,14 +443,12 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
                       ) : (
                         <>
                           {contact.tax_document_url ? (
-                            <a
-                              href={contact.tax_document_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
+                            <button
+                              onClick={() => handleDownloadDocument(contact.tax_document_url!)}
                               className="text-sm text-blue-600 hover:text-blue-800 transition-colors cursor-pointer"
                             >
-                              Ver documento fiscal
-                            </a>
+                              Descargar documento fiscal
+                            </button>
                           ) : (
                             <p className="text-sm text-gray-600">No disponible</p>
                           )}
