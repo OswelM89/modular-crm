@@ -40,7 +40,7 @@ export function RegistrationSuccessPage({ onGoToLogin }: RegistrationSuccessPage
 
             <div className="bg-primary/10 border border-primary/20 rounded-md p-4">
               <p className="text-sm text-primary">
-                ✨ Se ha creado automáticamente tu organización y estás listo para comenzar
+                ✨ Se ha creado automáticamente tu organización y tienes rol administrador. Los usuarios que invites tendrán rol gestor.
               </p>
             </div>
 

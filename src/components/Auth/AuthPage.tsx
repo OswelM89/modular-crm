@@ -218,7 +218,7 @@ export function AuthPage() {
               {mode === 'register' && (
                 <div className="bg-primary/10 border border-primary/20 rounded-md p-3">
                   <p className="text-xs text-primary">
-                    💡 Se creará automáticamente tu organización al registrarte
+                    💡 Se creará automáticamente tu organización y tendrás rol administrador
                   </p>
                 </div>
               )}

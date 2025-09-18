@@ -48,7 +48,7 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
       firstName: 'María',
       lastName: 'García',
       email: 'maria.garcia@empresa.com',
-      role: 'user',
+      role: 'gestor',
       status: 'active',
       createdAt: new Date('2024-01-20')
     },
@@ -57,7 +57,7 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
       firstName: 'Carlos',
       lastName: 'López',
       email: 'carlos.lopez@empresa.com',
-      role: 'manager',
+      role: 'gestor',
       status: 'inactive',
       createdAt: new Date('2024-01-25')
     }
@@ -72,7 +72,7 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
     email: '',
     password: '',
     confirmPassword: '',
-    role: 'user',
+        role: 'gestor',
     permissions: {
       contacts: false,
       companies: false,
@@ -88,9 +88,7 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
 
   const roles = [
     { value: 'admin', label: 'Administrador', description: 'Acceso completo al sistema' },
-    { value: 'manager', label: 'Gerente', description: 'Acceso a reportes y gestión de equipo' },
-    { value: 'user', label: 'Usuario', description: 'Acceso básico a funciones principales' },
-    { value: 'viewer', label: 'Solo lectura', description: 'Solo puede ver información' }
+    { value: 'gestor', label: 'Gestor', description: 'Acceso a funciones principales de gestión' }
   ];
 
   const permissions = [
@@ -235,7 +233,7 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
         email: '',
         password: '',
         confirmPassword: '',
-        role: 'user',
+        role: 'gestor',
         permissions: {
           contacts: false,
           companies: false,
@@ -257,7 +255,7 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
       email: '',
       password: '',
       confirmPassword: '',
-      role: 'user',
+        role: 'gestor',
       permissions: {
         contacts: false,
         companies: false,
@@ -285,7 +283,7 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
             Gestión de Usuarios
           </h1>
           <p className="text-sm text-gray-600">
-            Administra los usuarios de tu equipo
+            Administra los usuarios de tu equipo. Los usuarios invitados ingresan como gestores.
           </p>
         </div>
         <button 

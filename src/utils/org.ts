@@ -54,3 +54,15 @@ export const getDefaultOrganization = async (): Promise<Organization | null> => 
     return null
   }
 }
+
+// Función para invitar usuarios a una organización (rol gestor automático)
+export const inviteToOrg = async (organizationId: string, userId: string): Promise<void> => {
+  const { error } = await supabase
+    .from('organization_members')
+    .insert([{ organization_id: organizationId, user_id: userId }]) // role omitido - trigger lo fijará a 'gestor'
+  
+  if (error) {
+    console.error('Error inviting user to organization:', error)
+    throw error
+  }
+}
