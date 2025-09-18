@@ -55,7 +55,7 @@ export const fetchCompanies = async (): Promise<Company[]> => {
     .from('companies')
     .select(`
       *,
-      profiles!companies_user_id_fkey(first_name, last_name)
+      profiles:user_id(first_name, last_name)
     `)
     .eq('organization_id', orgMember.organization_id)
     .order('created_at', { ascending: false });
@@ -66,7 +66,7 @@ export const fetchCompanies = async (): Promise<Company[]> => {
   }
 
   // Transform data to include responsible_name
-  return data?.map(company => ({
+  return data?.map((company: any) => ({
     ...company,
     responsible_name: company.profiles 
       ? `${company.profiles.first_name || ''} ${company.profiles.last_name || ''}`.trim()

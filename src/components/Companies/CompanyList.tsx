@@ -241,12 +241,12 @@ export function CompanyList() {
                       <span className="text-sm text-gray-900">{company.sector || 'Sin especificar'}</span>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      <Users className="w-4 h-4 text-gray-400 mr-2" />
-                      <span className="text-sm text-gray-900">{company.nit}</span>
-                    </div>
-                  </td>
+                   <td className="px-6 py-4 whitespace-nowrap">
+                     <div className="flex items-center">
+                       <Users className="w-4 h-4 text-gray-400 mr-2" />
+                       <span className="text-sm text-gray-900">{company.responsible_name || 'Usuario desconocido'}</span>
+                     </div>
+                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="space-y-1">
                       <div className="flex items-center text-sm text-gray-600">
