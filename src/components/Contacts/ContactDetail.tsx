@@ -15,6 +15,13 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
   const [editedContact, setEditedContact] = React.useState<Contact>(contact);
   const [newTaxDocument, setNewTaxDocument] = React.useState<File | null>(null);
 
+  // Debug: Log contact data
+  React.useEffect(() => {
+    console.log('Contact data in ContactDetail:', contact);
+    console.log('Position:', contact.position);
+    console.log('Tax document URL:', contact.tax_document_url);
+  }, [contact]);
+
   // Close dropdown when clicking outside
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -294,27 +301,26 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
                   </div>
                 )}
 
-                {(isEditing || contact.position) && (
-                  <div className="flex items-center">
-                    <div className="w-10 h-10 bg-purple-100 flex items-center justify-center mr-4">
-                      <Briefcase className="w-5 h-5 text-purple-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">Cargo</p>
-                      {isEditing ? (
-                        <input
-                          type="text"
-                          value={editedContact.position || ''}
-                          onChange={(e) => handleInputChange('position', e.target.value)}
-                          className="text-sm text-gray-600 bg-transparent border-b border-gray-300 focus:outline-none focus:border-[#FF6200]"
-                          placeholder="Cargo o posición"
-                        />
-                      ) : (
-                        <p className="text-sm text-gray-600">{contact.position}</p>
-                      )}
-                    </div>
+                {/* Mostrar siempre el cargo */}
+                <div className="flex items-center">
+                  <div className="w-10 h-10 bg-purple-100 flex items-center justify-center mr-4">
+                    <Briefcase className="w-5 h-5 text-purple-600" />
                   </div>
-                )}
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">Cargo</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editedContact.position || ''}
+                        onChange={(e) => handleInputChange('position', e.target.value)}
+                        className="text-sm text-gray-600 bg-transparent border-b border-gray-300 focus:outline-none focus:border-[#FF6200]"
+                        placeholder="Cargo o posición"
+                      />
+                    ) : (
+                      <p className="text-sm text-gray-600">{contact.position || 'No especificado'}</p>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -345,65 +351,66 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
                     </div>
                   )}
 
-                  {(isEditing || contact.tax_document_url) && (
-                    <div className="flex items-center">
-                      <div className="w-10 h-10 bg-red-100 flex items-center justify-center mr-4">
-                        <FileText className="w-5 h-5 text-red-600" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium text-gray-900">Documento Fiscal</p>
-                        {isEditing ? (
-                          <div className="space-y-2">
-                            <div className="border-2 border-dashed border-gray-300 p-3 hover:border-[#FF6200] transition-colors">
-                              <input
-                                type="file"
-                                id="editTaxDocument"
-                                accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
-                                onChange={(e) => setNewTaxDocument(e.target.files?.[0] || null)}
-                                className="hidden"
-                              />
-                              <label
-                                htmlFor="editTaxDocument"
-                                className="cursor-pointer flex items-center space-x-2"
-                              >
-                                {newTaxDocument ? (
-                                  <div className="flex items-center space-x-2 text-green-600">
-                                    <File className="w-4 h-4" />
-                                    <span className="text-xs font-medium">{newTaxDocument.name}</span>
-                                  </div>
-                                ) : (
-                                  <>
-                                    <Upload className="w-4 h-4 text-gray-400" />
-                                    <span className="text-xs text-gray-600">
-                                      {contact.tax_document_url ? 'Cambiar archivo' : 'Subir documento'}
-                                    </span>
-                                  </>
-                                )}
-                              </label>
-                            </div>
-                            {contact.tax_document_url && !newTaxDocument && (
-                              <p className="text-xs text-gray-500">
-                                Actual: Documento fiscal
-                              </p>
-                            )}
+                  {/* Mostrar siempre el documento fiscal */}
+                  <div className="flex items-center">
+                    <div className="w-10 h-10 bg-red-100 flex items-center justify-center mr-4">
+                      <FileText className="w-5 h-5 text-red-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">Documento Fiscal</p>
+                      {isEditing ? (
+                        <div className="space-y-2">
+                          <div className="border-2 border-dashed border-gray-300 p-3 hover:border-[#FF6200] transition-colors">
+                            <input
+                              type="file"
+                              id="editTaxDocument"
+                              accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                              onChange={(e) => setNewTaxDocument(e.target.files?.[0] || null)}
+                              className="hidden"
+                            />
+                            <label
+                              htmlFor="editTaxDocument"
+                              className="cursor-pointer flex items-center space-x-2"
+                            >
+                              {newTaxDocument ? (
+                                <div className="flex items-center space-x-2 text-green-600">
+                                  <File className="w-4 h-4" />
+                                  <span className="text-xs font-medium">{newTaxDocument.name}</span>
+                                </div>
+                              ) : (
+                                <>
+                                  <Upload className="w-4 h-4 text-gray-400" />
+                                  <span className="text-xs text-gray-600">
+                                    {contact.tax_document_url ? 'Cambiar archivo' : 'Subir documento'}
+                                  </span>
+                                </>
+                              )}
+                            </label>
                           </div>
-                        ) : (
-                          <>
-                            {contact.tax_document_url && (
-                              <a
-                                href={contact.tax_document_url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-sm text-blue-600 hover:text-blue-800 transition-colors cursor-pointer"
-                              >
-                                Ver documento fiscal
-                              </a>
-                            )}
-                          </>
-                        )}
-                       </div>
+                          {contact.tax_document_url && !newTaxDocument && (
+                            <p className="text-xs text-gray-500">
+                              Actual: Documento fiscal
+                            </p>
+                          )}
+                        </div>
+                      ) : (
+                        <>
+                          {contact.tax_document_url ? (
+                            <a
+                              href={contact.tax_document_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-sm text-blue-600 hover:text-blue-800 transition-colors cursor-pointer"
+                            >
+                              Ver documento fiscal
+                            </a>
+                          ) : (
+                            <p className="text-sm text-gray-600">No disponible</p>
+                          )}
+                        </>
+                      )}
                      </div>
-                  )}
+                   </div>
                 </div>
               </div>
             )}
