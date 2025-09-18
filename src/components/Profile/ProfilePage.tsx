@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, User, Mail, Phone, Calendar, MapPin, Camera, Save, X, Edit, Shield, Bell, Eye, Lock, Building2 } from 'lucide-react';
+import { ArrowLeft, User, Mail, Phone, Calendar, MapPin, Camera, Save, X, Edit, Building2 } from 'lucide-react';
 import { fetchMyOrganizations, updateOrganization, type Organization } from '../../utils/org';
 
 interface ProfilePageProps {
@@ -164,33 +164,6 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
     setNewAvatar(null);
     setPreviewAvatar(null);
   };
-
-  const activityData = [
-    {
-      id: '1',
-      type: 'contact',
-      action: 'Creó contacto',
-      target: 'María González',
-      time: 'Hace 2 horas',
-      icon: User
-    },
-    {
-      id: '2',
-      type: 'deal',
-      action: 'Actualizó negocio',
-      target: 'Sistema ERP TechCorp',
-      time: 'Hace 4 horas',
-      icon: Shield
-    },
-    {
-      id: '3',
-      type: 'quote',
-      action: 'Envió cotización',
-      target: 'COT-2024-001',
-      time: 'Ayer',
-      icon: Mail
-    }
-  ];
 
   return (
     <div className="space-y-6">
@@ -543,71 +516,17 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
 
         {/* Sidebar */}
         <div className="space-y-6">
-          {/* Actividad Reciente */}
-          <div className="bg-white border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Actividad Reciente</h3>
-            <div className="space-y-4">
-              {activityData.map((activity) => {
-                const Icon = activity.icon;
-                return (
-                  <div key={activity.id} className="flex items-start gap-3">
-                    <div className="w-8 h-8 bg-gray-100 flex items-center justify-center flex-shrink-0">
-                      <Icon className="w-4 h-4 text-gray-600" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm text-gray-900">
-                        <span className="font-medium">{activity.action}</span>
-                        <span className="text-gray-600"> {activity.target}</span>
-                      </p>
-                      <p className="text-xs text-gray-500">{activity.time}</p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Configuración Rápida */}
-          <div className="bg-white border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Configuración Rápida</h3>
-            <div className="space-y-3">
-              <button className="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 transition-colors">
-                <div className="flex items-center">
-                  <Bell className="w-4 h-4 text-gray-600 mr-3" />
-                  <span className="text-sm text-gray-900">Notificaciones</span>
-                </div>
-                <div className="w-4 h-4 bg-green-500"></div>
-              </button>
-
-              <button className="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 transition-colors">
-                <div className="flex items-center">
-                  <Eye className="w-4 h-4 text-gray-600 mr-3" />
-                  <span className="text-sm text-gray-900">Privacidad</span>
-                </div>
-                <div className="w-4 h-4 bg-yellow-500"></div>
-              </button>
-
-              <button className="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 transition-colors">
-                <div className="flex items-center">
-                  <Lock className="w-4 h-4 text-gray-600 mr-3" />
-                  <span className="text-sm text-gray-900">Seguridad</span>
-                </div>
-                <div className="w-4 h-4 bg-red-500"></div>
-              </button>
-            </div>
-          </div>
-
           {/* Cambiar Contraseña */}
           <div className="bg-white border border-gray-200 p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Seguridad</h3>
             <div className="space-y-3">
-              <button className="w-full px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors">
+              <button className="w-full px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors rounded-md">
                 Cambiar Contraseña
               </button>
-              <button className="w-full px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors">
+              <button className="w-full px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors rounded-md">
                 Autenticación de Dos Factores
               </button>
-              <button className="w-full px-4 py-2 border border-red-300 text-red-600 hover:bg-red-50 transition-colors">
+              <button className="w-full px-4 py-2 border border-red-300 text-red-600 hover:bg-red-50 transition-colors rounded-md">
                 Desactivar Cuenta
               </button>
             </div>
