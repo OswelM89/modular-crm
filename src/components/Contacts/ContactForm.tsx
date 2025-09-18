@@ -2,22 +2,12 @@ import React, { useState } from 'react';
 import { X, User, Building2, Mail, Phone, Briefcase, Upload, File, Search, ChevronDown } from 'lucide-react';
 import { mockCompanies } from '../../data/mockData';
 import { useTranslation } from '../../hooks/useTranslation';
+import { createContact, type ContactFormData } from '../../utils/contacts';
 
 interface ContactFormProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (contactData: ContactFormData) => void;
-}
-
-export interface ContactFormData {
-  firstName: string;
-  lastName: string;
-  idNumber: string;
-  companyId: string;
-  position: string;
-  email: string;
-  phone: string;
-  taxDocument: File | null;
+  onSubmit: (contactData: import('../../utils/contacts').Contact) => void;
 }
 
 interface ContactFormErrors {
@@ -148,22 +138,28 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      onSubmit(formData);
-      // Reset form
-      setFormData({
-        firstName: '',
-        lastName: '',
-        idNumber: '',
-        companyId: '',
-        position: '',
-        email: '',
-        phone: '',
-        taxDocument: null,
-      });
-      onClose();
+      try {
+        const newContact = await createContact(formData);
+        onSubmit(newContact);
+        // Reset form
+        setFormData({
+          firstName: '',
+          lastName: '',
+          idNumber: '',
+          companyId: '',
+          position: '',
+          email: '',
+          phone: '',
+          taxDocument: null,
+        });
+        onClose();
+      } catch (error) {
+        console.error('Error creating contact:', error);
+        alert('Error al crear el contacto. Por favor intenta de nuevo.');
+      }
     }
   };
 

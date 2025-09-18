@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      contacts: {
+        Row: {
+          company_id: string | null
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          id_number: string | null
+          last_name: string
+          organization_id: string
+          phone: string
+          position: string | null
+          tax_document_url: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          company_id?: string | null
+          created_at?: string
+          email: string
+          first_name: string
+          id?: string
+          id_number?: string | null
+          last_name: string
+          organization_id: string
+          phone: string
+          position?: string | null
+          tax_document_url?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          company_id?: string | null
+          created_at?: string
+          email?: string
+          first_name?: string
+          id?: string
+          id_number?: string | null
+          last_name?: string
+          organization_id?: string
+          phone?: string
+          position?: string | null
+          tax_document_url?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       organization_members: {
         Row: {
           created_at: string | null

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowLeft, Mail, Phone, Building2, Briefcase, Calendar, User, FileText, MoreVertical, Edit, Trash2, Save, X, Upload, File } from 'lucide-react';
-import { Contact } from '../../types';
+import { Contact } from '../../utils/contacts';
 
 interface ContactDetailProps {
   contact: Contact;
@@ -41,7 +41,7 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
   const handleDelete = () => {
     setShowDropdown(false);
     const confirmDelete = window.confirm(
-      `¿Estás seguro de que quieres eliminar el contacto ${contact.firstName} ${contact.lastName}?`
+      `¿Estás seguro de que quieres eliminar el contacto ${contact.first_name} ${contact.last_name}?`
     );
     
     if (confirmDelete) {
@@ -52,8 +52,7 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
   const handleSave = () => {
     const updatedContact = {
       ...editedContact,
-      taxDocument: newTaxDocument || editedContact.taxDocument,
-      updatedAt: new Date(),
+      updated_at: new Date().toISOString(),
     };
     onUpdate(updatedContact);
     setIsEditing(false);
@@ -70,14 +69,8 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
     setEditedContact(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleCompanyChange = (field: string, value: string) => {
-    setEditedContact(prev => ({
-      ...prev,
-      company: prev.company ? { ...prev.company, [field]: value } : undefined
-    }));
-  };
-
-  const formatDate = (date: Date) => {
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
     return new Intl.DateTimeFormat('es-MX', {
       year: 'numeric',
       month: 'long',
@@ -157,7 +150,7 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
           <div className="flex items-center">
             <div className="w-16 h-16 bg-orange-100 flex items-center justify-center">
               <span className="text-xl font-semibold text-[#FF6200]">
-                {(isEditing ? editedContact : contact).firstName.charAt(0)}{(isEditing ? editedContact : contact).lastName.charAt(0)}
+                {(isEditing ? editedContact : contact).first_name.charAt(0)}{(isEditing ? editedContact : contact).last_name.charAt(0)}
               </span>
             </div>
             <div className="ml-6 flex-1">
@@ -168,15 +161,15 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
                   <div className="flex gap-3">
                     <input
                       type="text"
-                      value={editedContact.firstName}
-                      onChange={(e) => handleInputChange('firstName', e.target.value)}
+                      value={editedContact.first_name}
+                      onChange={(e) => handleInputChange('first_name', e.target.value)}
                       className="text-2xl font-bold bg-transparent border-b-2 border-[#FF6200] focus:outline-none"
                       placeholder="Nombre"
                     />
                     <input
                       type="text"
-                      value={editedContact.lastName}
-                      onChange={(e) => handleInputChange('lastName', e.target.value)}
+                      value={editedContact.last_name}
+                      onChange={(e) => handleInputChange('last_name', e.target.value)}
                       className="text-2xl font-bold bg-transparent border-b-2 border-[#FF6200] focus:outline-none"
                       placeholder="Apellido"
                     />
@@ -192,7 +185,7 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
               ) : (
                 <>
                   <h1 className="text-2xl font-bold text-gray-900">
-                    {contact.firstName} {contact.lastName}
+                    {contact.first_name} {contact.last_name}
                   </h1>
                   {contact.position && (
                     <p className="text-lg text-gray-600 mt-1">{contact.position}</p>
@@ -272,7 +265,7 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
                   </div>
                 )}
 
-                {(isEditing || contact.company) && (
+                {(isEditing || contact.company_id) && (
                   <div className="flex items-center">
                     <div className="w-10 h-10 bg-orange-100 flex items-center justify-center mr-4">
                       <Building2 className="w-5 h-5 text-[#FF6200]" />
@@ -282,13 +275,12 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
                       {isEditing ? (
                         <input
                           type="text"
-                          value={editedContact.company?.name || ''}
-                          onChange={(e) => handleCompanyChange('name', e.target.value)}
+                          value=""
                           className="text-sm text-gray-600 bg-transparent border-b border-gray-300 focus:outline-none focus:border-[#FF6200]"
                           placeholder="Nombre de la empresa"
                         />
                       ) : (
-                        <p className="text-sm text-gray-600">{contact.company?.name}</p>
+                        <p className="text-sm text-gray-600">-</p>
                       )}
                     </div>
                   </div>
@@ -319,11 +311,11 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
             </div>
 
             {/* Información Adicional */}
-            {(isEditing || contact.idNumber || contact.taxDocument) && (
+            {(isEditing || contact.id_number || contact.tax_document_url) && (
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Información Adicional</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {(isEditing || contact.idNumber) && (
+                  {(isEditing || contact.id_number) && (
                     <div className="flex items-center">
                       <div className="w-10 h-10 bg-yellow-100 flex items-center justify-center mr-4">
                         <User className="w-5 h-5 text-yellow-600" />
@@ -333,19 +325,19 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
                         {isEditing ? (
                           <input
                             type="text"
-                            value={editedContact.idNumber || ''}
-                            onChange={(e) => handleInputChange('idNumber', e.target.value)}
+                            value={editedContact.id_number || ''}
+                            onChange={(e) => handleInputChange('id_number', e.target.value)}
                             className="text-sm text-gray-600 bg-transparent border-b border-gray-300 focus:outline-none focus:border-[#FF6200]"
                             placeholder="Número de cédula"
                           />
                         ) : (
-                          <p className="text-sm text-gray-600">{contact.idNumber}</p>
+                          <p className="text-sm text-gray-600">{contact.id_number}</p>
                         )}
                       </div>
                     </div>
                   )}
 
-                  {(isEditing || contact.taxDocument) && (
+                  {(isEditing || contact.tax_document_url) && (
                     <div className="flex items-center">
                       <div className="w-10 h-10 bg-red-100 flex items-center justify-center mr-4">
                         <FileText className="w-5 h-5 text-red-600" />
@@ -375,25 +367,34 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
                                   <>
                                     <Upload className="w-4 h-4 text-gray-400" />
                                     <span className="text-xs text-gray-600">
-                                      {contact.taxDocument ? 'Cambiar archivo' : 'Subir documento'}
+                                      {contact.tax_document_url ? 'Cambiar archivo' : 'Subir documento'}
                                     </span>
                                   </>
                                 )}
                               </label>
                             </div>
-                            {contact.taxDocument && !newTaxDocument && (
+                            {contact.tax_document_url && !newTaxDocument && (
                               <p className="text-xs text-gray-500">
-                                Actual: {typeof contact.taxDocument === 'string' ? contact.taxDocument : 'Documento cargado'}
+                                Actual: Documento fiscal
                               </p>
                             )}
                           </div>
                         ) : (
-                          <p className="text-sm text-blue-600 hover:text-blue-800 transition-colors cursor-pointer">
-                            {typeof contact.taxDocument === 'string' ? contact.taxDocument : 'Documento cargado'}
-                          </p>
+                          <>
+                            {contact.tax_document_url && (
+                              <a
+                                href={contact.tax_document_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-sm text-blue-600 hover:text-blue-800 transition-colors cursor-pointer"
+                              >
+                                Ver documento fiscal
+                              </a>
+                            )}
+                          </>
                         )}
-                      </div>
-                    </div>
+                       </div>
+                     </div>
                   )}
                 </div>
               </div>
@@ -407,11 +408,11 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
             <div className="flex items-center text-sm text-gray-500">
               <Calendar className="w-4 h-4 mr-2" />
-              Creado el {formatDate(contact.createdAt)}
+              Creado el {formatDate(contact.created_at)}
             </div>
             <div className="flex items-center text-sm text-gray-500">
               <Calendar className="w-4 h-4 mr-2" />
-              Actualizado el {formatDate(contact.updatedAt)}
+              Actualizado el {formatDate(contact.updated_at)}
             </div>
           </div>
         </div>

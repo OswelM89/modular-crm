@@ -1,50 +1,44 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Plus, Mail, Phone, Building2, Trash2 } from 'lucide-react';
-import { Contact } from '../../types';
 import { SkeletonHeader, SkeletonTable } from '../UI/SkeletonLoader';
-import { mockContacts, mockCompanies } from '../../data/mockData';
-import { ContactForm, ContactFormData } from './ContactForm';
+import { ContactForm } from './ContactForm';
 import { ContactDetail } from './ContactDetail';
 import { useTranslation } from '../../hooks/useTranslation';
+import { fetchContacts, deleteContact, type Contact } from '../../utils/contacts';
 
 export function ContactList() {
-  const [loading, setLoading] = useState(true);
-  const [contacts, setContacts] = useState<Contact[]>(mockContacts);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [showContactForm, setShowContactForm] = useState(false);
-  const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
-  const [selectedContacts, setSelectedContacts] = useState<string[]>([]);
+  const [loading, setLoading] = React.useState(true);
+  const [contacts, setContacts] = React.useState<Contact[]>([]);
+  const [searchTerm, setSearchTerm] = React.useState('');
+  const [showContactForm, setShowContactForm] = React.useState(false);
+  const [selectedContact, setSelectedContact] = React.useState<Contact | null>(null);
+  const [selectedContacts, setSelectedContacts] = React.useState<string[]>([]);
   const { t } = useTranslation();
 
+  // Load contacts from database
   React.useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1200);
-    return () => clearTimeout(timer);
+    const loadContacts = async () => {
+      try {
+        setLoading(true);
+        const contactsData = await fetchContacts();
+        setContacts(contactsData);
+      } catch (error) {
+        console.error('Error loading contacts:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadContacts();
   }, []);
 
   const filteredContacts = contacts.filter(contact =>
-    contact.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    contact.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    contact.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    contact.company?.name.toLowerCase().includes(searchTerm.toLowerCase())
+    contact.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    contact.last_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    contact.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleCreateContact = (contactData: ContactFormData) => {
-    const newContact: Contact = {
-      id: Math.random().toString(36).substr(2, 9),
-      organizationId: 'org1',
-      firstName: contactData.firstName,
-      lastName: contactData.lastName,
-      email: contactData.email,
-      phone: contactData.phone,
-      position: contactData.position,
-      companyId: contactData.companyId || undefined,
-      company: contactData.companyId ? mockCompanies.find((c: any) => c.id === contactData.companyId) : undefined,
-      idNumber: contactData.idNumber,
-      taxDocument: contactData.taxDocument?.name || '',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-    
+  const handleCreateContact = (newContact: Contact) => {
     setContacts(prev => [newContact, ...prev]);
   };
 
@@ -64,7 +58,7 @@ export function ContactList() {
     }
   };
 
-  const handleDeleteSelected = () => {
+  const handleDeleteSelected = async () => {
     if (selectedContacts.length === 0) return;
     
     const confirmDelete = window.confirm(
@@ -72,8 +66,16 @@ export function ContactList() {
     );
     
     if (confirmDelete) {
-      setContacts(prev => prev.filter(contact => !selectedContacts.includes(contact.id)));
-      setSelectedContacts([]);
+      try {
+        // Delete from database
+        await Promise.all(selectedContacts.map(id => deleteContact(id)));
+        // Update local state
+        setContacts(prev => prev.filter(contact => !selectedContacts.includes(contact.id)));
+        setSelectedContacts([]);
+      } catch (error) {
+        console.error('Error deleting contacts:', error);
+        alert('Error al eliminar los contactos. Por favor intenta de nuevo.');
+      }
     }
   };
 
@@ -89,13 +91,13 @@ export function ContactList() {
     const csvContent = [
       headers.join(','),
       ...selectedContactsData.map(contact => [
-        contact.firstName,
-        contact.lastName,
+        contact.first_name,
+        contact.last_name,
         contact.email || '',
         contact.phone || '',
-        contact.company?.name || '',
+        '', // company name - not available in current structure
         contact.position || '',
-        contact.idNumber || ''
+        contact.id_number || ''
       ].join(','))
     ].join('\n');
     
@@ -122,9 +124,15 @@ export function ContactList() {
     setContacts(prev => prev.map(c => c.id === updatedContact.id ? updatedContact : c));
   };
 
-  const handleDeleteContact = (contactId: string) => {
-    setContacts(prev => prev.filter(c => c.id !== contactId));
-    setSelectedContact(null);
+  const handleDeleteContact = async (contactId: string) => {
+    try {
+      await deleteContact(contactId);
+      setContacts(prev => prev.filter(c => c.id !== contactId));
+      setSelectedContact(null);
+    } catch (error) {
+      console.error('Error deleting contact:', error);
+      alert('Error al eliminar el contacto. Por favor intenta de nuevo.');
+    }
   };
 
   // Si hay un contacto seleccionado, mostrar la vista de detalle
@@ -241,7 +249,7 @@ export function ContactList() {
                     <div className="flex items-center">
                       <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
                         <span className="text-sm font-medium text-[#FF6200]">
-                          {contact.firstName.charAt(0)}{contact.lastName.charAt(0)}
+                          {contact.first_name.charAt(0)}{contact.last_name.charAt(0)}
                         </span>
                       </div>
                       <div className="ml-4">
@@ -249,7 +257,7 @@ export function ContactList() {
                           onClick={() => handleContactClick(contact)}
                           className="text-sm font-medium text-gray-900 hover:text-[#FF6200] transition-colors cursor-pointer"
                         >
-                          {contact.firstName} {contact.lastName}
+                          {contact.first_name} {contact.last_name}
                         </button>
                       </div>
                     </div>
@@ -257,11 +265,11 @@ export function ContactList() {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <Building2 className="w-4 h-4 text-gray-400 mr-2" />
-                      <span className="text-sm text-gray-900">{contact.company?.name}</span>
+                      <span className="text-sm text-gray-900">-</span>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="text-sm text-gray-900">{contact.position}</span>
+                    <span className="text-sm text-gray-900">{contact.position || '-'}</span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="space-y-1">
