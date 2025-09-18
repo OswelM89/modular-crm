@@ -41,7 +41,6 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
     email: user.email,
     phone: '+52 55 1234 5678',
     position: 'Gerente de Ventas',
-    department: 'Ventas',
     location: 'Ciudad de México, México',
     bio: 'Especialista en gestión de relaciones con clientes y desarrollo de estrategias de ventas.',
     joinDate: '15 de Enero, 2024',
@@ -155,7 +154,7 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
       email: user.email,
       phone: '+52 55 1234 5678',
       position: 'Gerente de Ventas',
-      department: 'Ventas',
+      
       location: 'Ciudad de México, México',
       bio: 'Especialista en gestión de relaciones con clientes y desarrollo de estrategias de ventas.',
       joinDate: '15 de Enero, 2024',
@@ -191,13 +190,6 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
       time: 'Ayer',
       icon: Mail
     }
-  ];
-
-  const statsData = [
-    { label: 'Contactos creados', value: '47', color: 'text-blue-600' },
-    { label: 'Negocios cerrados', value: '12', color: 'text-green-600' },
-    { label: 'Cotizaciones enviadas', value: '23', color: 'text-orange-600' },
-    { label: 'Ingresos generados', value: '$125,000', color: 'text-purple-600' }
   ];
 
   return (
@@ -398,7 +390,20 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
                         type="text"
                         value={profileData.position}
                         onChange={(e) => handleInputChange('position', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                        placeholder="Tu cargo o posición"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Biografía
+                      </label>
+                      <textarea
+                        value={profileData.bio}
+                        onChange={(e) => handleInputChange('bio', e.target.value)}
+                        rows={3}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                        placeholder="Describe tu experiencia y habilidades..."
                       />
                     </div>
                     <div>
@@ -433,9 +438,9 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
           {/* Información de Contacto */}
           <div className="bg-white border border-gray-200 p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Información de Contacto</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="flex items-center">
-                <div className="w-10 h-10 bg-blue-100 flex items-center justify-center mr-4">
+                <div className="w-10 h-10 bg-blue-100 flex items-center justify-center mr-4 rounded-lg">
                   <Mail className="w-5 h-5 text-blue-600" />
                 </div>
                 <div className="flex-1">
@@ -445,7 +450,7 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
                       type="email"
                       value={profileData.email}
                       onChange={(e) => handleInputChange('email', e.target.value)}
-                      className="w-full px-3 py-1 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent text-sm"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF6200] focus:border-transparent text-sm"
                     />
                   ) : (
                     <p className="text-sm text-blue-600">{profileData.email}</p>
@@ -454,7 +459,7 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
               </div>
 
               <div className="flex items-center">
-                <div className="w-10 h-10 bg-green-100 flex items-center justify-center mr-4">
+                <div className="w-10 h-10 bg-green-100 flex items-center justify-center mr-4 rounded-lg">
                   <Phone className="w-5 h-5 text-green-600" />
                 </div>
                 <div className="flex-1">
@@ -464,7 +469,7 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
                       type="tel"
                       value={profileData.phone}
                       onChange={(e) => handleInputChange('phone', e.target.value)}
-                      className="w-full px-3 py-1 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent text-sm"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF6200] focus:border-transparent text-sm"
                     />
                   ) : (
                     <p className="text-sm text-green-600">{profileData.phone}</p>
@@ -473,26 +478,7 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
               </div>
 
               <div className="flex items-center">
-                <div className="w-10 h-10 bg-purple-100 flex items-center justify-center mr-4">
-                  <Shield className="w-5 h-5 text-purple-600" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-900">Departamento</p>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      value={profileData.department}
-                      onChange={(e) => handleInputChange('department', e.target.value)}
-                      className="w-full px-3 py-1 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent text-sm"
-                    />
-                  ) : (
-                    <p className="text-sm text-gray-600">{profileData.department}</p>
-                  )}
-                </div>
-              </div>
-
-              <div className="flex items-center">
-                <div className="w-10 h-10 bg-yellow-100 flex items-center justify-center mr-4">
+                <div className="w-10 h-10 bg-yellow-100 flex items-center justify-center mr-4 rounded-lg">
                   <MapPin className="w-5 h-5 text-yellow-600" />
                 </div>
                 <div className="flex-1">
@@ -502,30 +488,55 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
                       type="text"
                       value={profileData.location}
                       onChange={(e) => handleInputChange('location', e.target.value)}
-                      className="w-full px-3 py-1 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent text-sm"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF6200] focus:border-transparent text-sm"
                     />
                   ) : (
                     <p className="text-sm text-gray-600">{profileData.location}</p>
                   )}
                 </div>
               </div>
-            </div>
-          </div>
 
-          {/* Estadísticas */}
-          <div className="bg-white border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Estadísticas</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {statsData.map((stat, index) => (
-                <div key={index} className="text-center p-4 bg-gray-50">
-                  <div className={`text-2xl font-bold ${stat.color} mb-1`}>
-                    {stat.value}
-                  </div>
-                  <div className="text-sm text-gray-600">
-                    {stat.label}
-                  </div>
+              <div className="flex items-center">
+                <div className="w-10 h-10 bg-purple-100 flex items-center justify-center mr-4 rounded-lg">
+                  <User className="w-5 h-5 text-purple-600" />
                 </div>
-              ))}
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-900">Cargo</p>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={profileData.position}
+                      onChange={(e) => handleInputChange('position', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF6200] focus:border-transparent text-sm"
+                    />
+                  ) : (
+                    <p className="text-sm text-gray-600">{profileData.position}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Biografía */}
+            <div className="mt-6">
+              <div className="flex items-start">
+                <div className="w-10 h-10 bg-indigo-100 flex items-center justify-center mr-4 rounded-lg">
+                  <User className="w-5 h-5 text-indigo-600" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-900 mb-2">Biografía</p>
+                  {isEditing ? (
+                    <textarea
+                      value={profileData.bio}
+                      onChange={(e) => handleInputChange('bio', e.target.value)}
+                      rows={3}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF6200] focus:border-transparent text-sm"
+                      placeholder="Describe tu experiencia y habilidades..."
+                    />
+                  ) : (
+                    <p className="text-sm text-gray-600">{profileData.bio}</p>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>
