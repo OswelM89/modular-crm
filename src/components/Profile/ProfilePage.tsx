@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ArrowLeft, User, Mail, Phone, Calendar, MapPin, Camera, Save, X, Edit, Building2 } from 'lucide-react';
 import { fetchMyOrganizations, updateOrganization, type Organization } from '../../utils/org';
+import { supabase } from '../../lib/supabase';
 
 interface ProfilePageProps {
   user: {
@@ -102,18 +103,78 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     console.log('Guardar perfil:', profileData);
-    if (newAvatar) {
-      console.log('Nueva imagen:', newAvatar);
+    
+    try {
+      let avatarUrl = profileData.avatar;
+      
+      // Upload new avatar if selected
+      if (newAvatar && user) {
+        const fileExt = newAvatar.name.split('.').pop();
+        const fileName = `${user.id}/${Date.now()}.${fileExt}`;
+        
+        console.log('Subiendo avatar:', fileName);
+        
+        const { error: uploadError } = await supabase.storage
+          .from('avatars')
+          .upload(fileName, newAvatar, {
+            upsert: true
+          });
+
+        if (uploadError) {
+          console.error('Error uploading avatar:', uploadError);
+          alert('Error al subir la imagen. Intenta de nuevo.');
+          return;
+        }
+
+        // Get public URL
+        const { data: urlData } = supabase.storage
+          .from('avatars')
+          .getPublicUrl(fileName);
+        
+        avatarUrl = urlData.publicUrl;
+        console.log('Avatar URL:', avatarUrl);
+
+        // Update profile in database
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .update({
+            first_name: profileData.firstName,
+            last_name: profileData.lastName,
+            email: profileData.email,
+            phone: profileData.phone,
+            position: profileData.position,
+            location: profileData.location,
+            bio: profileData.bio,
+            avatar_url: avatarUrl
+          })
+          .eq('id', user.id);
+
+        if (profileError) {
+          console.error('Error updating profile:', profileError);
+          alert('Error al actualizar el perfil. Intenta de nuevo.');
+          return;
+        }
+      }
+      
+      // Update local state
+      setProfileData(prev => ({ ...prev, avatar: avatarUrl }));
+      
+      // Also save organization data
+      if (organization) {
+        await handleOrgSave();
+      }
+      
+      setIsEditing(false);
+      setNewAvatar(null);
+      setPreviewAvatar(null);
+      
+      console.log('Perfil guardado exitosamente');
+    } catch (error) {
+      console.error('Error saving profile:', error);
+      alert('Error al guardar el perfil. Intenta de nuevo.');
     }
-    // Also save organization data
-    if (organization) {
-      handleOrgSave();
-    }
-    setIsEditing(false);
-    setNewAvatar(null);
-    setPreviewAvatar(null);
   };
 
   const handleOrgSave = async () => {
