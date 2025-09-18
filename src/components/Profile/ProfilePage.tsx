@@ -454,7 +454,7 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
                   Nombre de la Organización
                 </label>
                 {!isEditing ? (
-                  <p className="text-gray-900 bg-gray-50 px-3 py-2 rounded-md">
+                  <p className="text-gray-900 px-3 py-2 rounded-md">
                     {isLoadingOrg ? 'Cargando...' : (organization?.name || 'ERROR: No se cargó el nombre')}
                   </p>
                 ) : (
@@ -473,7 +473,7 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
                   Tipo de Organización
                 </label>
                 {!isEditing ? (
-                  <p className="text-gray-900 bg-gray-50 px-3 py-2 rounded-md">
+                  <p className="text-gray-900 px-3 py-2 rounded-md">
                     {organization?.organization_type || 'Empresa'}
                   </p>
                 ) : (
