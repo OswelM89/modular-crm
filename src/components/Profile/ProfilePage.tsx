@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, User, Mail, Phone, Calendar, MapPin, Camera, Save, X, Edit, Building2 } from 'lucide-react';
+import { ArrowLeft, User, Mail, Phone, MapPin, Camera, Save, X, Edit, Building2 } from 'lucide-react';
 import { fetchMyOrganizations, updateOrganization, type Organization } from '../../utils/org';
 import { supabase } from '../../lib/supabase';
 
@@ -369,11 +369,7 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
                       {profileData.firstName} {profileData.lastName}
                     </h2>
                     <p className="text-lg text-gray-600 mb-3">{profileData.position}</p>
-                    <p className="text-sm text-gray-600 mb-4">{profileData.bio}</p>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <Calendar className="w-4 h-4 mr-2" />
-                      Se unió el {profileData.joinDate}
-                    </div>
+                    <p className="text-sm text-gray-600">{profileData.bio}</p>
                   </div>
                 )}
               </div>
