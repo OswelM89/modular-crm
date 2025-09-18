@@ -39,16 +39,54 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
-    phone: '+52 55 1234 5678',
-    position: 'Gerente de Ventas',
-    location: 'Ciudad de México, México',
-    bio: 'Especialista en gestión de relaciones con clientes y desarrollo de estrategias de ventas.',
+    phone: '',
+    position: '',
+    location: '',
+    bio: '',
     joinDate: '15 de Enero, 2024',
     avatar: user.avatar_url
   });
 
   const [newAvatar, setNewAvatar] = useState<File | null>(null);
   const [previewAvatar, setPreviewAvatar] = useState<string | null>(null);
+
+  // Cargar perfil completo de la base de datos
+  useEffect(() => {
+    const loadProfile = async () => {
+      if (!user?.id) return;
+      
+      try {
+        const { data: profileData, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+
+        if (error) {
+          console.error('Error loading profile:', error);
+          return;
+        }
+
+        if (profileData) {
+          setProfileData(prev => ({
+            ...prev,
+            firstName: profileData.first_name || user.firstName,
+            lastName: profileData.last_name || user.lastName,
+            email: profileData.email || user.email,
+            phone: profileData.phone || '',
+            position: profileData.position || '',
+            location: profileData.location || '',
+            bio: profileData.bio || '',
+            avatar: profileData.avatar_url || user.avatar_url
+          }));
+        }
+      } catch (error) {
+        console.error('Error loading profile:', error);
+      }
+    };
+
+    loadProfile();
+  }, [user]);
 
   // Cargar organización al montar componente
   useEffect(() => {
@@ -201,17 +239,42 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
   };
 
   const handleCancel = () => {
-    setProfileData({
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      phone: '+52 55 1234 5678',
-      position: 'Gerente de Ventas',
-      location: 'Ciudad de México, México',
-      bio: 'Especialista en gestión de relaciones con clientes y desarrollo de estrategias de ventas.',
-      joinDate: '15 de Enero, 2024',
-      avatar: user?.avatar_url
-    });
+    // Reset to current database values, not hardcoded values
+    const loadCurrentProfile = async () => {
+      if (!user?.id) return;
+      
+      try {
+        const { data: profileData, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+
+        if (error) {
+          console.error('Error loading profile for cancel:', error);
+          return;
+        }
+
+        if (profileData) {
+          setProfileData({
+            firstName: profileData.first_name || user.firstName,
+            lastName: profileData.last_name || user.lastName,
+            email: profileData.email || user.email,
+            phone: profileData.phone || '',
+            position: profileData.position || '',
+            location: profileData.location || '',
+            bio: profileData.bio || '',
+            joinDate: '15 de Enero, 2024',
+            avatar: profileData.avatar_url || user.avatar_url
+          });
+        }
+      } catch (error) {
+        console.error('Error loading profile for cancel:', error);
+      }
+    };
+    
+    loadCurrentProfile();
+    
     // Reset organization data
     if (organization) {
       setOrgData({
