@@ -5,7 +5,7 @@ import { Contact } from '../../utils/contacts';
 interface ContactDetailProps {
   contact: Contact;
   onBack: () => void;
-  onUpdate: (updatedContact: Contact) => void;
+  onUpdate: (updatedContact: Contact) => Promise<void>;
   onDelete: (contactId: string) => void;
 }
 
@@ -49,14 +49,22 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
     }
   };
 
-  const handleSave = () => {
-    const updatedContact = {
-      ...editedContact,
-      updated_at: new Date().toISOString(),
-    };
-    onUpdate(updatedContact);
-    setIsEditing(false);
-    setNewTaxDocument(null);
+  const handleSave = async () => {
+    try {
+      // Actualizar el contacto con los datos editados
+      const updatedContact = {
+        ...editedContact,
+        updated_at: new Date().toISOString(),
+      };
+      
+      // Llamar a onUpdate que ahora manejará la actualización en la base de datos
+      await onUpdate(updatedContact);
+      setIsEditing(false);
+      setNewTaxDocument(null);
+    } catch (error) {
+      console.error('Error saving contact:', error);
+      alert('Error al guardar los cambios. Por favor intenta de nuevo.');
+    }
   };
 
   const handleCancel = () => {

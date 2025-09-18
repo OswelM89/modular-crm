@@ -112,8 +112,8 @@ export const createContact = async (contactData: ContactFormData): Promise<Conta
       id_number: contactData.idNumber || null,
       company_id: null, // Por ahora siempre null hasta que se implemente módulo de empresas
       position: contactData.position || null,
-      email: contactData.email,
-      phone: contactData.phone,
+      email: contactData.email || '',
+      phone: contactData.phone || '',
       tax_document_url: taxDocumentUrl
     })
     .select()
@@ -129,18 +129,20 @@ export const createContact = async (contactData: ContactFormData): Promise<Conta
 
 // Update a contact
 export const updateContact = async (id: string, updates: Partial<ContactFormData>): Promise<Contact> => {
+  const updateData: any = {};
+  
+  if (updates.firstName !== undefined) updateData.first_name = updates.firstName;
+  if (updates.lastName !== undefined) updateData.last_name = updates.lastName;
+  if (updates.idNumber !== undefined) updateData.id_number = updates.idNumber || null;
+  if (updates.position !== undefined) updateData.position = updates.position || null;
+  if (updates.email !== undefined) updateData.email = updates.email || '';
+  if (updates.phone !== undefined) updateData.phone = updates.phone || '';
+  
+  updateData.updated_at = new Date().toISOString();
+
   const { data, error } = await supabase
     .from('contacts')
-    .update({
-      first_name: updates.firstName,
-      last_name: updates.lastName,
-      id_number: updates.idNumber || null,
-      company_id: updates.companyId || null,
-      position: updates.position || null,
-      email: updates.email,
-      phone: updates.phone,
-      updated_at: new Date().toISOString()
-    })
+    .update(updateData)
     .eq('id', id)
     .select()
     .single();
