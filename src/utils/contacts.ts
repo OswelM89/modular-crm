@@ -1,5 +1,4 @@
 import { supabase } from '../lib/supabase';
-import { getActiveOrganizationId } from './org';
 
 export interface Contact {
   id: string;
@@ -30,15 +29,27 @@ export interface ContactFormData {
 
 // Fetch all contacts for the active organization
 export const fetchContacts = async (): Promise<Contact[]> => {
-  const organizationId = getActiveOrganizationId();
-  if (!organizationId) {
-    throw new Error('No active organization found');
+  const user = await supabase.auth.getUser();
+  if (!user.data.user) {
+    throw new Error('User not authenticated');
+  }
+
+  // Get the user's organization
+  const { data: orgMember, error: orgError } = await supabase
+    .from('organization_members')
+    .select('organization_id')
+    .eq('user_id', user.data.user.id)
+    .single();
+
+  if (orgError || !orgMember) {
+    console.error('Error getting user organization:', orgError);
+    throw new Error('No organization found for user');
   }
 
   const { data, error } = await supabase
     .from('contacts')
     .select('*')
-    .eq('organization_id', organizationId)
+    .eq('organization_id', orgMember.organization_id)
     .order('created_at', { ascending: false });
 
   if (error) {
@@ -51,14 +62,21 @@ export const fetchContacts = async (): Promise<Contact[]> => {
 
 // Create a new contact
 export const createContact = async (contactData: ContactFormData): Promise<Contact> => {
-  const organizationId = getActiveOrganizationId();
-  if (!organizationId) {
-    throw new Error('No active organization found');
-  }
-
   const user = await supabase.auth.getUser();
   if (!user.data.user) {
     throw new Error('User not authenticated');
+  }
+
+  // Get the user's organization
+  const { data: orgMember, error: orgError } = await supabase
+    .from('organization_members')
+    .select('organization_id')
+    .eq('user_id', user.data.user.id)
+    .single();
+
+  if (orgError || !orgMember) {
+    console.error('Error getting user organization:', orgError);
+    throw new Error('No organization found for user');
   }
 
   let taxDocumentUrl: string | null = null;
@@ -88,7 +106,7 @@ export const createContact = async (contactData: ContactFormData): Promise<Conta
     .from('contacts')
     .insert({
       user_id: user.data.user.id,
-      organization_id: organizationId,
+      organization_id: orgMember.organization_id,
       first_name: contactData.firstName,
       last_name: contactData.lastName,
       id_number: contactData.idNumber || null,
