@@ -1,5 +1,7 @@
-import { useState } from 'react';
-import { ArrowLeft, User, Mail, Phone, Calendar, MapPin, Camera, Save, X, Edit, Shield, Bell, Eye, Lock } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ArrowLeft, User, Mail, Phone, Calendar, MapPin, Camera, Save, X, Edit, Shield, Bell, Eye, Lock, Building2 } from 'lucide-react';
+import { fetchMyOrganizations, type Organization } from '../../utils/org';
+import { supabase } from '../../lib/supabase';
 
 interface ProfilePageProps {
   user: {
@@ -24,6 +26,13 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
   }
 
   const [isEditing, setIsEditing] = useState(false);
+  const [isEditingOrg, setIsEditingOrg] = useState(false);
+  const [organization, setOrganization] = useState<Organization | null>(null);
+  const [orgData, setOrgData] = useState({
+    name: '',
+    description: ''
+  });
+
   const [profileData, setProfileData] = useState({
     firstName: user.firstName,
     lastName: user.lastName,
@@ -39,6 +48,27 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
 
   const [newAvatar, setNewAvatar] = useState<File | null>(null);
   const [previewAvatar, setPreviewAvatar] = useState<string | null>(null);
+
+  // Cargar organización al montar componente
+  useEffect(() => {
+    const loadOrganization = async () => {
+      try {
+        const orgs = await fetchMyOrganizations();
+        if (orgs.length > 0) {
+          const org = orgs[0];
+          setOrganization(org);
+          setOrgData({
+            name: org.name,
+            description: 'Descripción de la organización'
+          });
+        }
+      } catch (error) {
+        console.error('Error loading organization:', error);
+      }
+    };
+    
+    loadOrganization();
+  }, []);
 
   const handleInputChange = (field: string, value: string) => {
     setProfileData(prev => ({ ...prev, [field]: value }));
@@ -65,6 +95,35 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
     setIsEditing(false);
     setNewAvatar(null);
     setPreviewAvatar(null);
+  };
+
+  const handleOrgSave = async () => {
+    if (!organization) return;
+    
+    try {
+      const { error } = await supabase
+        .from('organizations')
+        .update({ name: orgData.name })
+        .eq('id', organization.id);
+        
+      if (error) throw error;
+      
+      setOrganization({ ...organization, name: orgData.name });
+      setIsEditingOrg(false);
+      console.log('Organización actualizada');
+    } catch (error) {
+      console.error('Error actualizando organización:', error);
+    }
+  };
+
+  const handleOrgCancel = () => {
+    if (organization) {
+      setOrgData({
+        name: organization.name,
+        description: 'Descripción de la organización'
+      });
+    }
+    setIsEditingOrg(false);
   };
 
   const handleCancel = () => {
@@ -167,6 +226,72 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Información Principal */}
         <div className="lg:col-span-2 space-y-6">
+          {/* Tarjeta de Organización */}
+          <div className="bg-white border border-gray-200 p-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <Building2 className="w-5 h-5 text-[#FF6200]" />
+                <h3 className="text-lg font-semibold text-gray-900">Mi Organización</h3>
+              </div>
+              {!isEditingOrg ? (
+                <button
+                  onClick={() => setIsEditingOrg(true)}
+                  className="inline-flex items-center px-3 py-1.5 text-sm bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors rounded-md"
+                >
+                  <Edit className="w-3 h-3 mr-1" />
+                  Editar
+                </button>
+              ) : (
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleOrgCancel}
+                    className="inline-flex items-center px-3 py-1.5 text-sm border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors rounded-md"
+                  >
+                    <X className="w-3 h-3 mr-1" />
+                    Cancelar
+                  </button>
+                  <button
+                    onClick={handleOrgSave}
+                    className="inline-flex items-center px-3 py-1.5 text-sm bg-[#FF6200] text-white hover:bg-orange-600 transition-colors rounded-md"
+                  >
+                    <Save className="w-3 h-3 mr-1" />
+                    Guardar
+                  </button>
+                </div>
+              )}
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Nombre de la Organización
+                </label>
+                {!isEditingOrg ? (
+                  <p className="text-gray-900 bg-gray-50 px-3 py-2 rounded-md">
+                    {organization?.name || 'Cargando...'}
+                  </p>
+                ) : (
+                  <input
+                    type="text"
+                    value={orgData.name}
+                    onChange={(e) => setOrgData({ ...orgData, name: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                    placeholder="Nombre de la organización"
+                  />
+                )}
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Tipo de Organización
+                </label>
+                <p className="text-gray-900 bg-gray-50 px-3 py-2 rounded-md">
+                  Empresa
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* Tarjeta de Perfil */}
           <div className="bg-white border border-gray-200 p-6">
             <div className="flex items-start gap-6">
