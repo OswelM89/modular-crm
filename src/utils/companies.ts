@@ -14,6 +14,7 @@ export interface Company {
   city?: string | null;
   country?: string | null;
   tax_document_url?: string | null;
+  responsible_name?: string;
   created_at: string;
   updated_at: string;
 }
@@ -52,7 +53,10 @@ export const fetchCompanies = async (): Promise<Company[]> => {
 
   const { data, error } = await supabase
     .from('companies')
-    .select('*')
+    .select(`
+      *,
+      profiles!companies_user_id_fkey(first_name, last_name)
+    `)
     .eq('organization_id', orgMember.organization_id)
     .order('created_at', { ascending: false });
 
@@ -61,7 +65,13 @@ export const fetchCompanies = async (): Promise<Company[]> => {
     throw error;
   }
 
-  return data || [];
+  // Transform data to include responsible_name
+  return data?.map(company => ({
+    ...company,
+    responsible_name: company.profiles 
+      ? `${company.profiles.first_name || ''} ${company.profiles.last_name || ''}`.trim()
+      : 'Usuario desconocido'
+  })) || [];
 };
 
 // Create a new company
