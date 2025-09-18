@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowLeft, Mail, Phone, Building2, Briefcase, Calendar, User, FileText, MoreVertical, Edit, Trash2, Save, X, Upload, File } from 'lucide-react';
 import { updateContact, updateContactWithDocument, type Contact } from '../../utils/contacts';
+import { supabase } from '../../lib/supabase';
 
 interface ContactDetailProps {
   contact: Contact;
@@ -104,18 +105,31 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
     setEditedContact(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleDownloadDocument = async (url: string) => {
+  const handleDownloadDocument = async (filePath: string) => {
     try {
-      const response = await fetch(url);
-      const blob = await response.blob();
+      console.log('Downloading file from path:', filePath);
       
-      // Crear un enlace temporal para descargar
-      const downloadUrl = window.URL.createObjectURL(blob);
+      // Descargar usando el cliente de Supabase
+      const { data, error } = await supabase.storage
+        .from('tax-documents')
+        .download(filePath);
+
+      if (error) {
+        console.error('Error downloading from Supabase:', error);
+        throw error;
+      }
+
+      if (!data) {
+        throw new Error('No se pudo obtener el archivo');
+      }
+
+      // Crear URL de descarga
+      const downloadUrl = window.URL.createObjectURL(data);
       const link = document.createElement('a');
       link.href = downloadUrl;
       
-      // Extraer el nombre del archivo de la URL o usar un nombre por defecto
-      const fileName = url.split('/').pop() || 'documento-fiscal';
+      // Extraer el nombre del archivo original
+      const fileName = filePath.split('/').pop() || 'documento-fiscal';
       link.download = fileName;
       
       // Hacer clic automáticamente en el enlace

@@ -95,11 +95,8 @@ export const createContact = async (contactData: ContactFormData): Promise<Conta
       throw uploadError;
     }
 
-    const { data: urlData } = supabase.storage
-      .from('tax-documents')
-      .getPublicUrl(fileName);
-    
-    taxDocumentUrl = urlData.publicUrl;
+    // Guardar solo el path del archivo, no la URL completa
+    taxDocumentUrl = fileName;
   }
 
   const { data, error } = await supabase
@@ -154,11 +151,8 @@ export const updateContactWithDocument = async (
       throw uploadError;
     }
 
-    const { data: urlData } = supabase.storage
-      .from('tax-documents')
-      .getPublicUrl(fileName);
-    
-    taxDocumentUrl = urlData.publicUrl;
+    // Guardar solo el path del archivo, no la URL completa
+    taxDocumentUrl = fileName;
   }
 
   const updateData: any = {};
