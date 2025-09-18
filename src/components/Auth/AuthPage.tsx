@@ -4,13 +4,13 @@ import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { useAuth } from '../../contexts/AuthContext'
+import { RegistrationSuccessPage } from './RegistrationSuccessPage'
 
 export function AuthPage() {
-  const [mode, setMode] = useState<'login' | 'register'>('login')
+  const [mode, setMode] = useState<'login' | 'register' | 'success'>('login')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState<string | null>(null)
   
   const [formData, setFormData] = useState({
     email: '',
@@ -35,7 +35,6 @@ export function AuthPage() {
     e.preventDefault()
     setLoading(true)
     setError(null)
-    setSuccess(null)
 
     try {
       if (mode === 'login') {
@@ -55,7 +54,7 @@ export function AuthPage() {
         if (error) {
           setError(error)
         } else {
-          setSuccess('¡Registro exitoso! Revisa tu email para confirmar tu cuenta.')
+          setMode('success')
         }
       }
     } catch (error) {
@@ -68,13 +67,28 @@ export function AuthPage() {
   const toggleMode = () => {
     setMode(mode === 'login' ? 'register' : 'login')
     setError(null)
-    setSuccess(null)
     setFormData({
       email: '',
       password: '',
       firstName: '',
       lastName: '',
     })
+  }
+
+  const handleGoToLogin = () => {
+    setMode('login')
+    setError(null)
+    setFormData({
+      email: '',
+      password: '',
+      firstName: '',
+      lastName: '',
+    })
+  }
+
+  // Show success page after registration
+  if (mode === 'success') {
+    return <RegistrationSuccessPage onGoToLogin={handleGoToLogin} />
   }
 
   return (
@@ -216,12 +230,6 @@ export function AuthPage() {
                 </div>
               )}
 
-              {/* Success Message */}
-              {success && (
-                <div className="bg-success/10 border border-success/20 rounded-md p-3">
-                  <p className="text-sm text-success">{success}</p>
-                </div>
-              )}
 
               {/* Submit Button */}
               <Button
