@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Mail, Phone, MapPin, Camera, Save, X, Edit } from 'lucide-react';
+import { ArrowLeft, Mail, Phone, MapPin, Camera, Save, X, Edit, Building2 } from 'lucide-react';
 import { fetchMyOrganizations, updateOrganization, type Organization } from '../../utils/org';
 import { supabase } from '../../lib/supabase';
 
@@ -448,44 +448,50 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
               <h3 className="text-lg font-semibold text-gray-900">Mi Organización</h3>
             </div>
             
-            <div className="grid grid-cols-1 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Nombre de la Organización
-                </label>
-                {!isEditing ? (
-                  <p className="text-gray-900 px-3 py-2 rounded-md">
-                    {isLoadingOrg ? 'Cargando...' : (organization?.name || 'ERROR: No se cargó el nombre')}
-                  </p>
-                ) : (
-                  <input
-                    type="text"
-                    value={orgData.name}
-                    onChange={(e) => setOrgData({ ...orgData, name: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
-                    placeholder="Nombre de la organización"
-                  />
-                )}
+            <div className="grid grid-cols-1 gap-6">
+              <div className="flex items-center">
+                <div className="w-10 h-10 bg-orange-100 flex items-center justify-center mr-4 rounded-lg">
+                  <Building2 className="w-5 h-5 text-[#FF6200]" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-900">Nombre de la Organización</p>
+                  {!isEditing ? (
+                    <p className="text-sm text-gray-600">
+                      {isLoadingOrg ? 'Cargando...' : (organization?.name || 'ERROR: No se cargó el nombre')}
+                    </p>
+                  ) : (
+                    <input
+                      type="text"
+                      value={orgData.name}
+                      onChange={(e) => setOrgData({ ...orgData, name: e.target.value })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF6200] focus:border-transparent text-sm mt-1"
+                      placeholder="Nombre de la organización"
+                    />
+                  )}
+                </div>
               </div>
               
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Tipo de Organización
-                </label>
-                {!isEditing ? (
-                  <p className="text-gray-900 px-3 py-2 rounded-md">
-                    {organization?.organization_type || 'Empresa'}
-                  </p>
-                ) : (
-                  <select
-                    value={orgData.organization_type}
-                    onChange={(e) => setOrgData({ ...orgData, organization_type: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF6200] focus:border-transparent bg-white z-50 shadow-sm"
-                  >
-                    <option value="Empresa">Empresa</option>
-                    <option value="Persona">Persona</option>
-                  </select>
-                )}
+              <div className="flex items-center">
+                <div className="w-10 h-10 bg-purple-100 flex items-center justify-center mr-4 rounded-lg">
+                  <Building2 className="w-5 h-5 text-purple-600" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-900">Tipo de Organización</p>
+                  {!isEditing ? (
+                    <p className="text-sm text-gray-600">
+                      {organization?.organization_type || 'Empresa'}
+                    </p>
+                  ) : (
+                    <select
+                      value={orgData.organization_type}
+                      onChange={(e) => setOrgData({ ...orgData, organization_type: e.target.value })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF6200] focus:border-transparent bg-white text-sm mt-1"
+                    >
+                      <option value="Empresa">Empresa</option>
+                      <option value="Persona">Persona</option>
+                    </select>
+                  )}
+                </div>
               </div>
             </div>
           </div>
