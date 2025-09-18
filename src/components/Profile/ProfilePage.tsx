@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, User, Mail, Phone, MapPin, Camera, Save, X, Edit, Building2 } from 'lucide-react';
+import { ArrowLeft, Mail, Phone, MapPin, Camera, Save, X, Edit, Building2 } from 'lucide-react';
 import { fetchMyOrganizations, updateOrganization, type Organization } from '../../utils/org';
 import { supabase } from '../../lib/supabase';
 
@@ -433,48 +433,6 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
                     />
                   ) : (
                     <p className="text-sm text-gray-600">{profileData.location}</p>
-                  )}
-                </div>
-              </div>
-
-              <div className="flex items-center">
-                <div className="w-10 h-10 bg-purple-100 flex items-center justify-center mr-4 rounded-lg">
-                  <User className="w-5 h-5 text-purple-600" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-900">Cargo</p>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      value={profileData.position}
-                      onChange={(e) => handleInputChange('position', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF6200] focus:border-transparent text-sm"
-                    />
-                  ) : (
-                    <p className="text-sm text-gray-600">{profileData.position}</p>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* Biografía */}
-            <div className="mt-6">
-              <div className="flex items-start">
-                <div className="w-10 h-10 bg-indigo-100 flex items-center justify-center mr-4 rounded-lg">
-                  <User className="w-5 h-5 text-indigo-600" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-900 mb-2">Biografía</p>
-                  {isEditing ? (
-                    <textarea
-                      value={profileData.bio}
-                      onChange={(e) => handleInputChange('bio', e.target.value)}
-                      rows={3}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF6200] focus:border-transparent text-sm"
-                      placeholder="Describe tu experiencia y habilidades..."
-                    />
-                  ) : (
-                    <p className="text-sm text-gray-600">{profileData.bio}</p>
                   )}
                 </div>
               </div>
