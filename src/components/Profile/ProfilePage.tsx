@@ -213,82 +213,6 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Información Principal */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Tarjeta de Organización */}
-          <div className="bg-white border border-gray-200 p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <Building2 className="w-5 h-5 text-[#FF6200]" />
-                <h3 className="text-lg font-semibold text-gray-900">Mi Organización</h3>
-              </div>
-              {!isEditingOrg ? (
-                <button
-                  onClick={() => setIsEditingOrg(true)}
-                  className="inline-flex items-center px-3 py-1.5 text-sm bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors rounded-md"
-                >
-                  <Edit className="w-3 h-3 mr-1" />
-                  Editar
-                </button>
-              ) : (
-                <div className="flex gap-2">
-                  <button
-                    onClick={handleOrgCancel}
-                    className="inline-flex items-center px-3 py-1.5 text-sm border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors rounded-md"
-                  >
-                    <X className="w-3 h-3 mr-1" />
-                    Cancelar
-                  </button>
-                  <button
-                    onClick={handleOrgSave}
-                    className="inline-flex items-center px-3 py-1.5 text-sm bg-[#FF6200] text-white hover:bg-orange-600 transition-colors rounded-md"
-                  >
-                    <Save className="w-3 h-3 mr-1" />
-                    Guardar
-                  </button>
-                </div>
-              )}
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Nombre de la Organización
-                </label>
-                {!isEditingOrg ? (
-                  <p className="text-gray-900 bg-gray-50 px-3 py-2 rounded-md">
-                    {isLoadingOrg ? 'Cargando...' : (organization?.name || 'ERROR: No se cargó el nombre')}
-                  </p>
-                ) : (
-                  <input
-                    type="text"
-                    value={orgData.name}
-                    onChange={(e) => setOrgData({ ...orgData, name: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
-                    placeholder="Nombre de la organización"
-                  />
-                )}
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Tipo de Organización
-                </label>
-                {!isEditingOrg ? (
-                  <p className="text-gray-900 bg-gray-50 px-3 py-2 rounded-md">
-                    {organization?.organization_type || 'Empresa'}
-                  </p>
-                ) : (
-                  <select
-                    value={orgData.organization_type}
-                    onChange={(e) => setOrgData({ ...orgData, organization_type: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF6200] focus:border-transparent bg-white z-50 shadow-sm"
-                  >
-                    <option value="Empresa">Empresa</option>
-                    <option value="Persona">Persona</option>
-                  </select>
-                )}
-              </div>
-            </div>
-          </div>
 
           {/* Tarjeta de Perfil */}
           <div className="bg-white border border-gray-200 p-6">
@@ -516,6 +440,83 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
 
         {/* Sidebar */}
         <div className="space-y-6">
+          {/* Tarjeta de Organización */}
+          <div className="bg-white border border-gray-200 p-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <Building2 className="w-5 h-5 text-[#FF6200]" />
+                <h3 className="text-lg font-semibold text-gray-900">Mi Organización</h3>
+              </div>
+              {!isEditingOrg ? (
+                <button
+                  onClick={() => setIsEditingOrg(true)}
+                  className="inline-flex items-center px-3 py-1.5 text-sm bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors rounded-md"
+                >
+                  <Edit className="w-3 h-3 mr-1" />
+                  Editar
+                </button>
+              ) : (
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleOrgCancel}
+                    className="inline-flex items-center px-3 py-1.5 text-sm border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors rounded-md"
+                  >
+                    <X className="w-3 h-3 mr-1" />
+                    Cancelar
+                  </button>
+                  <button
+                    onClick={handleOrgSave}
+                    className="inline-flex items-center px-3 py-1.5 text-sm bg-[#FF6200] text-white hover:bg-orange-600 transition-colors rounded-md"
+                  >
+                    <Save className="w-3 h-3 mr-1" />
+                    Guardar
+                  </button>
+                </div>
+              )}
+            </div>
+            
+            <div className="grid grid-cols-1 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Nombre de la Organización
+                </label>
+                {!isEditingOrg ? (
+                  <p className="text-gray-900 bg-gray-50 px-3 py-2 rounded-md">
+                    {isLoadingOrg ? 'Cargando...' : (organization?.name || 'ERROR: No se cargó el nombre')}
+                  </p>
+                ) : (
+                  <input
+                    type="text"
+                    value={orgData.name}
+                    onChange={(e) => setOrgData({ ...orgData, name: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                    placeholder="Nombre de la organización"
+                  />
+                )}
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Tipo de Organización
+                </label>
+                {!isEditingOrg ? (
+                  <p className="text-gray-900 bg-gray-50 px-3 py-2 rounded-md">
+                    {organization?.organization_type || 'Empresa'}
+                  </p>
+                ) : (
+                  <select
+                    value={orgData.organization_type}
+                    onChange={(e) => setOrgData({ ...orgData, organization_type: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF6200] focus:border-transparent bg-white z-50 shadow-sm"
+                  >
+                    <option value="Empresa">Empresa</option>
+                    <option value="Persona">Persona</option>
+                  </select>
+                )}
+              </div>
+            </div>
+          </div>
+
           {/* Cambiar Contraseña */}
           <div className="bg-white border border-gray-200 p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Seguridad</h3>
