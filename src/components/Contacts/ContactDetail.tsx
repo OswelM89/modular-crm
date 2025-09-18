@@ -1,11 +1,11 @@
 import React from 'react';
 import { ArrowLeft, Mail, Phone, Building2, Briefcase, Calendar, User, FileText, MoreVertical, Edit, Trash2, Save, X, Upload, File } from 'lucide-react';
-import { Contact } from '../../utils/contacts';
+import { updateContact, updateContactWithDocument, type Contact } from '../../utils/contacts';
 
 interface ContactDetailProps {
   contact: Contact;
   onBack: () => void;
-  onUpdate: (updatedContact: Contact) => Promise<void>;
+  onUpdate: (updatedContact: Contact) => void;
   onDelete: (contactId: string) => void;
 }
 
@@ -58,14 +58,34 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
 
   const handleSave = async () => {
     try {
-      // Actualizar el contacto con los datos editados
-      const updatedContact = {
-        ...editedContact,
-        updated_at: new Date().toISOString(),
+      // Convertir Contact a ContactFormData para la función updateContact
+      const updateData = {
+        firstName: editedContact.first_name,
+        lastName: editedContact.last_name,
+        idNumber: editedContact.id_number || '',
+        companyId: '', // Por ahora siempre vacío
+        position: editedContact.position || '',
+        email: editedContact.email || '',
+        phone: editedContact.phone || '',
+        taxDocument: null // Manejado por separado
       };
       
-      // Llamar a onUpdate que ahora manejará la actualización en la base de datos
+      console.log('Saving contact with new document:', !!newTaxDocument);
+      console.log('Update data:', updateData);
+      
+      // Usar la función que maneja documentos si hay uno nuevo
+      const updatedContact = newTaxDocument 
+        ? await updateContactWithDocument(editedContact.id, updateData, newTaxDocument)
+        : await updateContact(editedContact.id, updateData);
+      
+      console.log('Updated contact:', updatedContact);
+      
+      // Actualizar el estado local con los datos actualizados de la base de datos
+      setEditedContact(updatedContact);
+      
+      // Llamar a onUpdate para actualizar la lista
       await onUpdate(updatedContact);
+      
       setIsEditing(false);
       setNewTaxDocument(null);
     } catch (error) {

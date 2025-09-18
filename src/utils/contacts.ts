@@ -127,6 +127,71 @@ export const createContact = async (contactData: ContactFormData): Promise<Conta
   return data;
 };
 
+// Update a contact with optional tax document
+export const updateContactWithDocument = async (
+  id: string, 
+  updates: Partial<ContactFormData>, 
+  newTaxDocument?: File | null
+): Promise<Contact> => {
+  const user = await supabase.auth.getUser();
+  if (!user.data.user) {
+    throw new Error('User not authenticated');
+  }
+
+  let taxDocumentUrl: string | null = null;
+
+  // Upload new tax document if provided
+  if (newTaxDocument) {
+    const fileExt = newTaxDocument.name.split('.').pop();
+    const fileName = `${user.data.user.id}/${Date.now()}.${fileExt}`;
+    
+    const { error: uploadError } = await supabase.storage
+      .from('tax-documents')
+      .upload(fileName, newTaxDocument);
+
+    if (uploadError) {
+      console.error('Error uploading tax document:', uploadError);
+      throw uploadError;
+    }
+
+    const { data: urlData } = supabase.storage
+      .from('tax-documents')
+      .getPublicUrl(fileName);
+    
+    taxDocumentUrl = urlData.publicUrl;
+  }
+
+  const updateData: any = {};
+  
+  if (updates.firstName !== undefined) updateData.first_name = updates.firstName;
+  if (updates.lastName !== undefined) updateData.last_name = updates.lastName;
+  if (updates.idNumber !== undefined) updateData.id_number = updates.idNumber || null;
+  if (updates.position !== undefined) updateData.position = updates.position || null;
+  if (updates.email !== undefined) updateData.email = updates.email || '';
+  if (updates.phone !== undefined) updateData.phone = updates.phone || '';
+  
+  // Update tax document URL if new document was uploaded
+  if (taxDocumentUrl) {
+    updateData.tax_document_url = taxDocumentUrl;
+  }
+  
+  updateData.updated_at = new Date().toISOString();
+
+  const { data, error } = await supabase
+    .from('contacts')
+    .update(updateData)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error updating contact:', error);
+    throw error;
+  }
+
+  return data;
+};
+
 // Update a contact
 export const updateContact = async (id: string, updates: Partial<ContactFormData>): Promise<Contact> => {
   const updateData: any = {};

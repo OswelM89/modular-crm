@@ -4,7 +4,7 @@ import { SkeletonHeader, SkeletonTable } from '../UI/SkeletonLoader';
 import { ContactForm } from './ContactForm';
 import { ContactDetail } from './ContactDetail';
 import { useTranslation } from '../../hooks/useTranslation';
-import { fetchContacts, deleteContact, updateContact, type Contact } from '../../utils/contacts';
+import { fetchContacts, deleteContact, type Contact } from '../../utils/contacts';
 
 export function ContactList() {
   const [loading, setLoading] = React.useState(true);
@@ -122,24 +122,11 @@ export function ContactList() {
 
   const handleUpdateContact = async (updatedContact: Contact) => {
     try {
-      // Convertir Contact a ContactFormData para la función updateContact
-      const updateData = {
-        firstName: updatedContact.first_name,
-        lastName: updatedContact.last_name,
-        idNumber: updatedContact.id_number || '',
-        companyId: '', // Por ahora siempre vacío
-        position: updatedContact.position || '',
-        email: updatedContact.email || '',
-        phone: updatedContact.phone || '',
-        taxDocument: null // Manejado por separado en ContactDetail
-      };
-      
-      await updateContact(updatedContact.id, updateData);
+      // Solo actualizar el estado local ya que la actualización en BD se hizo en ContactDetail
       setContacts(prev => prev.map(c => c.id === updatedContact.id ? updatedContact : c));
       setSelectedContact(updatedContact);
     } catch (error) {
-      console.error('Error updating contact:', error);
-      alert('Error al actualizar el contacto. Por favor intenta de nuevo.');
+      console.error('Error updating contact in list:', error);
     }
   };
 
