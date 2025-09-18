@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ArrowLeft, User, Mail, Phone, Calendar, MapPin, Camera, Save, X, Edit, Shield, Bell, Eye, Lock, Building2 } from 'lucide-react';
-import { fetchMyOrganizations, type Organization } from '../../utils/org';
-import { supabase } from '../../lib/supabase';
+import { fetchMyOrganizations, updateOrganization, type Organization } from '../../utils/org';
 
 interface ProfilePageProps {
   user: {
@@ -30,7 +29,7 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
   const [organization, setOrganization] = useState<Organization | null>(null);
   const [orgData, setOrgData] = useState({
     name: '',
-    description: ''
+    organization_type: 'Empresa'
   });
 
   const [profileData, setProfileData] = useState({
@@ -59,7 +58,7 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
           setOrganization(org);
           setOrgData({
             name: org.name,
-            description: 'Descripción de la organización'
+            organization_type: org.organization_type || 'Empresa'
           });
         }
       } catch (error) {
@@ -101,18 +100,23 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
     if (!organization) return;
     
     try {
-      const { error } = await supabase
-        .from('organizations')
-        .update({ name: orgData.name })
-        .eq('id', organization.id);
-        
-      if (error) throw error;
+      await updateOrganization(organization.id, {
+        name: orgData.name,
+        organization_type: orgData.organization_type
+      });
       
-      setOrganization({ ...organization, name: orgData.name });
+      // Actualizar estado local
+      const updatedOrg = {
+        ...organization, 
+        name: orgData.name,
+        organization_type: orgData.organization_type
+      };
+      setOrganization(updatedOrg);
       setIsEditingOrg(false);
-      console.log('Organización actualizada');
+      console.log('Organización actualizada exitosamente');
     } catch (error) {
       console.error('Error actualizando organización:', error);
+      alert('Error al actualizar la organización. Por favor intenta de nuevo.');
     }
   };
 
@@ -120,7 +124,7 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
     if (organization) {
       setOrgData({
         name: organization.name,
-        description: 'Descripción de la organización'
+        organization_type: organization.organization_type || 'Empresa'
       });
     }
     setIsEditingOrg(false);
@@ -285,9 +289,25 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Tipo de Organización
                 </label>
-                <p className="text-gray-900 bg-gray-50 px-3 py-2 rounded-md">
-                  Empresa
-                </p>
+                {!isEditingOrg ? (
+                  <p className="text-gray-900 bg-gray-50 px-3 py-2 rounded-md">
+                    {organization?.organization_type || 'Empresa'}
+                  </p>
+                ) : (
+                  <select
+                    value={orgData.organization_type}
+                    onChange={(e) => setOrgData({ ...orgData, organization_type: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                  >
+                    <option value="Empresa">Empresa</option>
+                    <option value="Corporación">Corporación</option>
+                    <option value="Startup">Startup</option>
+                    <option value="ONG">ONG</option>
+                    <option value="Institución">Institución</option>
+                    <option value="Freelance">Freelance</option>
+                    <option value="Otro">Otro</option>
+                  </select>
+                )}
               </div>
             </div>
           </div>

@@ -4,6 +4,7 @@ export interface Organization {
   id: string
   name: string
   slug?: string | null
+  organization_type?: string | null
   created_at: string | null
   updated_at: string | null
 }
@@ -11,7 +12,7 @@ export interface Organization {
 export const fetchMyOrganizations = async (): Promise<Organization[]> => {
   const { data, error } = await supabase
     .from('organizations')
-    .select('id, name, slug, created_at, updated_at')
+    .select('id, name, slug, organization_type, created_at, updated_at')
     .order('name', { ascending: true })
 
   if (error) {
@@ -63,6 +64,19 @@ export const inviteToOrg = async (organizationId: string, userId: string): Promi
   
   if (error) {
     console.error('Error inviting user to organization:', error)
+    throw error
+  }
+}
+
+// Función para actualizar organización
+export const updateOrganization = async (organizationId: string, updates: { name?: string; organization_type?: string }): Promise<void> => {
+  const { error } = await supabase
+    .from('organizations')
+    .update(updates)
+    .eq('id', organizationId)
+  
+  if (error) {
+    console.error('Error updating organization:', error)
     throw error
   }
 }
