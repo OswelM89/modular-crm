@@ -20,6 +20,17 @@ export interface ContactFormData {
   taxDocument: File | null;
 }
 
+interface ContactFormErrors {
+  firstName?: string;
+  lastName?: string;
+  idNumber?: string;
+  companyId?: string;
+  position?: string;
+  email?: string;
+  phone?: string;
+  taxDocument?: string;
+}
+
 export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
   const [formData, setFormData] = useState<ContactFormData>({
     firstName: '',
@@ -32,7 +43,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
     taxDocument: null,
   });
 
-  const [errors, setErrors] = useState<Partial<ContactFormData>>({});
+  const [errors, setErrors] = useState<ContactFormErrors>({});
   const [showCompanyDropdown, setShowCompanyDropdown] = useState(false);
   const [companySearch, setCompanySearch] = useState('');
   const { t } = useTranslation();
@@ -86,8 +97,9 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
   };
 
   const validateForm = (): boolean => {
-    const newErrors: Partial<ContactFormData> = {};
+    const newErrors: ContactFormErrors = {};
 
+    // Required fields
     if (!formData.firstName.trim()) {
       newErrors.firstName = t('contacts.form.firstNameRequired');
     }
@@ -96,8 +108,40 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
       newErrors.lastName = t('contacts.form.lastNameRequired');
     }
 
-    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    // ID Number validation - required and format check
+    if (!formData.idNumber.trim()) {
+      newErrors.idNumber = 'Cédula de identidad es requerida';
+    } else if (formData.idNumber.length < 8) {
+      newErrors.idNumber = 'Cédula debe tener al menos 8 caracteres';
+    }
+
+    // Company selection validation - required
+    if (!formData.companyId) {
+      newErrors.companyId = 'Selecciona una empresa';
+    }
+
+    // Position validation - required
+    if (!formData.position.trim()) {
+      newErrors.position = 'Cargo es requerido';
+    }
+
+    // Email validation - required and format check
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email es requerido';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = t('contacts.form.invalidEmail');
+    }
+
+    // Phone validation - required and basic format check
+    if (!formData.phone.trim()) {
+      newErrors.phone = 'Teléfono es requerido';
+    } else if (!/^[\+]?[0-9\s\-\(\)]{10,}$/.test(formData.phone.replace(/\s/g, ''))) {
+      newErrors.phone = 'Formato de teléfono inválido';
+    }
+
+    // Tax document validation - required
+    if (!formData.taxDocument) {
+      newErrors.taxDocument = 'Documento fiscal es requerido';
     }
 
     setErrors(newErrors);
@@ -208,7 +252,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
               {/* Cédula de Identidad */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('contacts.form.idNumber')}
+                  {t('contacts.form.idNumber')} *
                 </label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -216,22 +260,29 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                     type="text"
                     value={formData.idNumber}
                     onChange={(e) => handleInputChange('idNumber', e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                    className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                      errors.idNumber ? 'border-red-500' : 'border-gray-300'
+                    }`}
                     placeholder={t('contacts.form.idNumberPlaceholder')}
                   />
                 </div>
+                {errors.idNumber && (
+                  <p className="mt-1 text-sm text-red-600">{errors.idNumber}</p>
+                )}
               </div>
 
               {/* Empresa */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('contacts.form.company')}
+                  {t('contacts.form.company')} *
                 </label>
                 <div className="relative" onClick={() => setShowCompanyDropdown(!showCompanyDropdown)}>
                   <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                   <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                   <div
-                    className="w-full pl-10 pr-10 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent cursor-pointer bg-white"
+                    className={`w-full pl-10 pr-10 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent cursor-pointer bg-white ${
+                      errors.companyId ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   >
                     {selectedCompany ? selectedCompany.name : t('contacts.form.selectCompany')}
                   </div>
@@ -289,12 +340,15 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                     </div>
                   )}
                 </div>
+                {errors.companyId && (
+                  <p className="mt-1 text-sm text-red-600">{errors.companyId}</p>
+                )}
               </div>
 
               {/* Cargo */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('contacts.form.position')}
+                  {t('contacts.form.position')} *
                 </label>
                 <div className="relative">
                   <Briefcase className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -302,16 +356,21 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                     type="text"
                     value={formData.position}
                     onChange={(e) => handleInputChange('position', e.target.value)}
-                   className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                    className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                      errors.position ? 'border-red-500' : 'border-gray-300'
+                    }`}
                     placeholder={t('contacts.form.positionPlaceholder')}
                   />
                 </div>
+                {errors.position && (
+                  <p className="mt-1 text-sm text-red-600">{errors.position}</p>
+                )}
               </div>
 
               {/* Email */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('contacts.form.email')}
+                  {t('contacts.form.email')} *
                 </label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -333,7 +392,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
               {/* Teléfono */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('contacts.form.phone')}
+                  {t('contacts.form.phone')} *
                 </label>
                 <div className="relative">
                   <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -341,18 +400,25 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
-                   className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                    className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                      errors.phone ? 'border-red-500' : 'border-gray-300'
+                    }`}
                     placeholder={t('contacts.form.phonePlaceholder')}
                   />
                 </div>
+                {errors.phone && (
+                  <p className="mt-1 text-sm text-red-600">{errors.phone}</p>
+                )}
               </div>
 
               {/* Documento Fiscal */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('contacts.form.taxDocument')}
+                  {t('contacts.form.taxDocument')} *
                 </label>
-                <div className="border-2 border-dashed border-gray-300 p-4 hover:border-[#FF6200] transition-colors">
+                <div className={`border-2 border-dashed p-4 hover:border-[#FF6200] transition-colors ${
+                  errors.taxDocument ? 'border-red-500' : 'border-gray-300'
+                }`}>
                   <input
                     type="file"
                     id="taxDocument"
@@ -393,6 +459,9 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                     </button>
                   )}
                 </div>
+                {errors.taxDocument && (
+                  <p className="mt-1 text-sm text-red-600">{errors.taxDocument}</p>
+                )}
               </div>
             </div>
 
