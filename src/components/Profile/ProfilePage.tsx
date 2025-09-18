@@ -27,7 +27,6 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
   }
 
   const [isEditing, setIsEditing] = useState(false);
-  const [isEditingOrg, setIsEditingOrg] = useState(false);
   const [isLoadingOrg, setIsLoadingOrg] = useState(true);
   const [organization, setOrganization] = useState<Organization | null>(null);
   const [orgData, setOrgData] = useState({
@@ -108,6 +107,10 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
     if (newAvatar) {
       console.log('Nueva imagen:', newAvatar);
     }
+    // Also save organization data
+    if (organization) {
+      handleOrgSave();
+    }
     setIsEditing(false);
     setNewAvatar(null);
     setPreviewAvatar(null);
@@ -129,22 +132,11 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
         organization_type: orgData.organization_type
       };
       setOrganization(updatedOrg);
-      setIsEditingOrg(false);
       console.log('Organización actualizada exitosamente');
     } catch (error) {
       console.error('Error actualizando organización:', error);
       alert('Error al actualizar la organización. Por favor intenta de nuevo.');
     }
-  };
-
-  const handleOrgCancel = () => {
-    if (organization) {
-      setOrgData({
-        name: organization.name,
-        organization_type: organization.organization_type || 'Empresa'
-      });
-    }
-    setIsEditingOrg(false);
   };
 
   const handleCancel = () => {
@@ -159,8 +151,14 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
       joinDate: '15 de Enero, 2024',
       avatar: user?.avatar_url
     });
+    // Reset organization data
+    if (organization) {
+      setOrgData({
+        name: organization.name,
+        organization_type: organization.organization_type || 'Empresa'
+      });
+    }
     setIsEditing(false);
-    setIsEditingOrg(false);
     setNewAvatar(null);
     setPreviewAvatar(null);
   };
@@ -184,10 +182,7 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
         </div>
         {!isEditing ? (
           <button
-            onClick={() => {
-              setIsEditing(true);
-              setIsEditingOrg(true);
-            }}
+            onClick={() => setIsEditing(true)}
             className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
           >
             <Edit className="w-4 h-4 mr-2" />
@@ -196,22 +191,14 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
         ) : (
           <div className="flex gap-3">
             <button
-              onClick={() => {
-                handleCancel();
-                handleOrgCancel();
-              }}
+              onClick={handleCancel}
               className="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
             >
               <X className="w-4 h-4 mr-2" />
               Cancelar
             </button>
             <button
-              onClick={() => {
-                handleSave();
-                if (isEditingOrg) {
-                  handleOrgSave();
-                }
-              }}
+              onClick={handleSave}
               className="inline-flex items-center px-4 py-2 bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
             >
               <Save className="w-4 h-4 mr-2" />
@@ -442,37 +429,9 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
         <div className="space-y-6">
           {/* Tarjeta de Organización */}
           <div className="bg-white border border-gray-200 p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <Building2 className="w-5 h-5 text-[#FF6200]" />
-                <h3 className="text-lg font-semibold text-gray-900">Mi Organización</h3>
-              </div>
-              {!isEditingOrg ? (
-                <button
-                  onClick={() => setIsEditingOrg(true)}
-                  className="inline-flex items-center px-3 py-1.5 text-sm bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors rounded-md"
-                >
-                  <Edit className="w-3 h-3 mr-1" />
-                  Editar
-                </button>
-              ) : (
-                <div className="flex gap-2">
-                  <button
-                    onClick={handleOrgCancel}
-                    className="inline-flex items-center px-3 py-1.5 text-sm border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors rounded-md"
-                  >
-                    <X className="w-3 h-3 mr-1" />
-                    Cancelar
-                  </button>
-                  <button
-                    onClick={handleOrgSave}
-                    className="inline-flex items-center px-3 py-1.5 text-sm bg-[#FF6200] text-white hover:bg-orange-600 transition-colors rounded-md"
-                  >
-                    <Save className="w-3 h-3 mr-1" />
-                    Guardar
-                  </button>
-                </div>
-              )}
+            <div className="flex items-center gap-3 mb-4">
+              <Building2 className="w-5 h-5 text-[#FF6200]" />
+              <h3 className="text-lg font-semibold text-gray-900">Mi Organización</h3>
             </div>
             
             <div className="grid grid-cols-1 gap-4">
@@ -480,7 +439,7 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Nombre de la Organización
                 </label>
-                {!isEditingOrg ? (
+                {!isEditing ? (
                   <p className="text-gray-900 bg-gray-50 px-3 py-2 rounded-md">
                     {isLoadingOrg ? 'Cargando...' : (organization?.name || 'ERROR: No se cargó el nombre')}
                   </p>
@@ -499,7 +458,7 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Tipo de Organización
                 </label>
-                {!isEditingOrg ? (
+                {!isEditing ? (
                   <p className="text-gray-900 bg-gray-50 px-3 py-2 rounded-md">
                     {organization?.organization_type || 'Empresa'}
                   </p>
