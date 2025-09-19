@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 
-import { LanguageSelector } from './components/UI/LanguageSelector';
 import { Dashboard } from './components/Dashboard/Dashboard';
 import { ContactList } from './components/Contacts/ContactList';
 import { CompanyList } from './components/Companies/CompanyList';
@@ -10,10 +9,9 @@ import { QuoteBuilder } from './components/Quotes/QuoteBuilder';
 import { SettingsPage } from './components/Settings/SettingsPage';
 import { ProfilePage } from './components/Profile/ProfilePage';
 import { AuthPage } from './components/Auth/AuthPage';
+import { Header } from './components/Layout/Header';
 import { useAuth } from './contexts/AuthContext';
 import { getDefaultOrganization } from './utils/org';
-import { SidebarProvider, SidebarInset, SidebarTrigger } from './components/UI/sidebar';
-import { AppSidebar } from './components/AppSidebar';
 
 function App() {
   const { user, loading } = useAuth();
@@ -115,28 +113,19 @@ function App() {
   }
 
   return (
-    <SidebarProvider>
-      <div className="min-h-screen bg-background flex w-full">
-        <AppSidebar 
-          activeSection={activeSection} 
-          onSectionChange={handleSectionChange}
-        />
-        
-        <SidebarInset className="flex flex-col flex-1">
-          {/* Header con trigger y selector de idioma */}
-          <div className="flex items-center justify-between p-4 border-b bg-background">
-            <SidebarTrigger className="text-gray-600 hover:text-gray-900" />
-            <LanguageSelector />
-          </div>
-          
-          <main className="flex-1 px-6 py-8">
-            <div className="max-w-[1150px] mx-auto">
-              {renderContent()}
-            </div>
-          </main>
-        </SidebarInset>
-      </div>
-    </SidebarProvider>
+    <div className="min-h-screen bg-background">
+      <Header 
+        activeSection={activeSection}
+        onSectionChange={handleSectionChange}
+        user={transformedUser}
+      />
+      
+      <main className="px-6 py-8">
+        <div className="max-w-[1150px] mx-auto">
+          {renderContent()}
+        </div>
+      </main>
+    </div>
   );
 }
 

@@ -1,145 +1,138 @@
-import React, { useState } from 'react';
-import { Bell, ChevronDown } from 'lucide-react';
-import { Button } from '../ui/button';
+import { useState } from 'react';
+import { BarChart3, Building2, Users, Handshake, FileText, TrendingUp, PieChart, Menu, X } from 'lucide-react';
+import { LanguageSelector } from '../UI/LanguageSelector';
 import { useTranslation } from '../../hooks/useTranslation';
-import { useAuth } from '../../contexts/AuthContext';
-import { getInitials } from '../../lib/utils';
-import { SidebarTrigger } from '../UI/sidebar';
+
+const navigation = [
+  { id: 'dashboard', nameKey: 'nav.dashboard', icon: BarChart3 },
+  { id: 'contacts', nameKey: 'nav.contacts', icon: Users },
+  { id: 'companies', nameKey: 'nav.companies', icon: Building2 },
+  { id: 'deals', nameKey: 'nav.deals', icon: Handshake },
+  { id: 'quotes', nameKey: 'nav.quotes', icon: FileText },
+  { id: 'pipeline', nameKey: 'nav.pipeline', icon: TrendingUp },
+  { id: 'reports', nameKey: 'nav.reports', icon: PieChart },
+];
 
 interface HeaderProps {
+  activeSection: string;
+  onSectionChange: (section: string) => void;
   user: {
     id: string;
     firstName: string;
     lastName: string;
     email: string;
-    avatar_url?: string | null;
+    avatar_url: string | null;
   } | null;
 }
 
-export function Header({ user }: HeaderProps) {
-  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
   const { t } = useTranslation();
-  const { signOut } = useAuth();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const handleLogout = async () => {
-    try {
-      await signOut();
-      setShowProfileDropdown(false);
-    } catch (error) {
-      console.error('Error al cerrar sesión:', error);
-    }
-  };
-
-  const toggleProfileDropdown = () => {
-    setShowProfileDropdown(!showProfileDropdown);
-  };
-
-  // Close dropdown when clicking outside
-  React.useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Element;
-      if (!target.closest('.profile-dropdown')) {
-        setShowProfileDropdown(false);
-      }
-    };
-
-    if (showProfileDropdown) {
-      document.addEventListener('click', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, [showProfileDropdown]);
   return (
-    <div className="bg-secondary text-secondary-foreground">
-      {/* Header */}
-      <div className="px-6 py-4 border-b border-border">
-        <div className="max-w-[1150px] mx-auto flex items-center justify-between">
+    <header className="bg-white border-b border-border shadow-sm">
+      <div className="max-w-[1200px] mx-auto px-6">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
           <div className="flex items-center gap-3">
-            <SidebarTrigger />
-            <div className="flex items-center">
-              <img 
-                src="/Logo modular CRM.svg" 
-                alt="Modular CRM" 
-                className="h-8 w-auto"
-              />
-            </div>
+            <img 
+              src="/Logo modular CRM.svg" 
+              alt="Modular CRM" 
+              className="h-8 w-8"
+            />
+            <span className="font-semibold text-lg text-foreground">Modular CRM</span>
           </div>
 
-          {/* Right Actions */}
-          <div className="flex items-center space-x-2 sm:space-x-4">
-            <Button 
-              variant="ghost" 
-              size="icon"
-              className="relative text-muted-foreground hover:text-foreground"
-            >
-              <Bell className="w-5 h-5" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full"></span>
-            </Button>
-            
-            <div 
-              className="relative profile-dropdown"
-            >
-              <div 
-                className="flex items-center space-x-2 sm:space-x-3 cursor-pointer hover:bg-muted px-2 sm:px-3 py-2 rounded-md transition-colors"
-                onClick={toggleProfileDropdown}
-              >
-                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-primary rounded-full flex items-center justify-center">
-                  {user?.avatar_url ? (
-                    <img 
-                      src={user.avatar_url} 
-                      alt={`${user?.firstName} ${user?.lastName}`}
-                      className="w-full h-full rounded-full object-cover"
-                    />
-                  ) : (
-                    <span className="text-xs font-medium text-primary-foreground">
-                      {getInitials(user?.firstName, user?.lastName)}
-                    </span>
-                  )}
-                </div>
-                <div className="text-left hidden sm:block">
-                  <div className="text-sm font-medium text-foreground">
-                    {user?.firstName || 'Usuario'} {user?.lastName || ''}
-                  </div>
-                </div>
-                <ChevronDown className="w-4 h-4 text-muted-foreground hidden sm:block" />
-              </div>
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-1">
+            {navigation.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeSection === item.id;
               
-              {showProfileDropdown && (
-               <div className="absolute right-0 top-full mt-2 w-48 bg-card border border-border shadow-lg rounded-md py-2 z-50 animate-scale-in">
-                  <div className="px-4 py-2 border-b border-border">
-                    <div className="text-sm font-medium text-card-foreground">
-                      {user?.firstName || 'Usuario'} {user?.lastName || ''}
-                    </div>
-                    <div className="text-xs text-muted-foreground">{user?.email || ''}</div>
-                  </div>
-                  <Button 
-                    variant="ghost"
-                    className="w-full justify-start px-4 py-2 text-sm text-card-foreground hover:bg-muted"
-                  >
-                    Perfil
-                  </Button>
-                  <Button 
-                    variant="ghost"
-                    className="w-full justify-start px-4 py-2 text-sm text-card-foreground hover:bg-muted"
-                  >
-                    {t('profile.settings')}
-                  </Button>
-                  <hr className="my-1 border-border" />
-                  <Button 
-                    onClick={handleLogout}
-                    variant="ghost"
-                    className="w-full justify-start px-4 py-2 text-sm text-destructive hover:bg-destructive/10"
-                  >
-                    {t('profile.logout')}
-                  </Button>
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => onSectionChange(item.id)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                    isActive 
+                      ? 'bg-primary text-primary-foreground' 
+                      : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  {t(item.nameKey)}
+                </button>
+              );
+            })}
+          </nav>
+
+          {/* Right section */}
+          <div className="flex items-center gap-4">
+            <LanguageSelector />
+            
+            {/* User info */}
+            {user && (
+              <div className="hidden sm:flex items-center gap-3">
+                <div className="text-right">
+                  <p className="text-sm font-medium text-foreground">
+                    {user.firstName} {user.lastName}
+                  </p>
+                  <p className="text-xs text-muted-foreground">{user.email}</p>
                 </div>
-              )}
-            </div>
+                {user.avatar_url ? (
+                  <img 
+                    src={user.avatar_url} 
+                    alt="Avatar" 
+                    className="w-8 h-8 rounded-full"
+                  />
+                ) : (
+                  <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-medium">
+                    {user.firstName.charAt(0)}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 text-muted-foreground hover:text-foreground"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Navigation */}
+        {mobileMenuOpen && (
+          <div className="md:hidden py-4 border-t border-border">
+            <nav className="flex flex-col gap-2">
+              {navigation.map((item) => {
+                const Icon = item.icon;
+                const isActive = activeSection === item.id;
+                
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => {
+                      onSectionChange(item.id);
+                      setMobileMenuOpen(false);
+                    }}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-md text-sm font-medium transition-colors text-left ${
+                      isActive 
+                        ? 'bg-primary text-primary-foreground' 
+                        : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                    }`}
+                  >
+                    <Icon className="w-4 h-4" />
+                    {t(item.nameKey)}
+                  </button>
+                );
+              })}
+            </nav>
+          </div>
+        )}
       </div>
-    </div>
+    </header>
   );
 }
