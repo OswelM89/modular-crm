@@ -65,11 +65,6 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <img 
-              src="/Logo modular CRM.svg" 
-              alt="Modular CRM" 
-              className="h-8 w-8"
-            />
             <span className="font-semibold text-lg text-foreground">Modular CRM</span>
           </div>
 
