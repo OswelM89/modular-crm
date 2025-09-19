@@ -132,7 +132,7 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
                       {user.firstName} {user.lastName}
                     </p>
                     <p className="text-xs text-muted-foreground leading-tight">
-                      ORG-{user.id.slice(-5).toUpperCase()}
+                      Org: {user.id.slice(-5).toUpperCase()}
                     </p>
                   </div>
                   

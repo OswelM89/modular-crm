@@ -11,10 +11,12 @@ import { ProfilePage } from './components/Profile/ProfilePage';
 import { AuthPage } from './components/Auth/AuthPage';
 import { Header } from './components/Layout/Header';
 import { useAuth } from './contexts/AuthContext';
+import { useUserProfile } from './hooks/useUserProfile';
 import { getDefaultOrganization } from './utils/org';
 
 function App() {
   const { user, loading } = useAuth();
+  const { profile } = useUserProfile();
   const [activeSection, setActiveSection] = useState(() => {
     return localStorage.getItem('activeSection') || 'dashboard';
   });
@@ -26,13 +28,13 @@ function App() {
     }
   }, [user]);
 
-  // Transform auth user to match existing interface
+  // Transform auth user to match existing interface with profile data
   const transformedUser = user ? {
     id: user.id,
-    firstName: user.user_metadata?.first_name || 'Usuario',
-    lastName: user.user_metadata?.last_name || '',
+    firstName: profile?.first_name || user.user_metadata?.first_name || 'Usuario',
+    lastName: profile?.last_name || user.user_metadata?.last_name || '',
     email: user.email || '',
-    avatar_url: user.user_metadata?.avatar_url || null
+    avatar_url: profile?.avatar_url || user.user_metadata?.avatar_url || null
   } : null;
 
   const handleSectionChange = (section: string) => {
