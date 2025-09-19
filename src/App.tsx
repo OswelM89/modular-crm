@@ -121,7 +121,6 @@ function App() {
         <AppSidebar 
           activeSection={activeSection} 
           onSectionChange={handleSectionChange}
-          user={transformedUser}
         />
         
         <SidebarInset className="flex flex-col flex-1">
