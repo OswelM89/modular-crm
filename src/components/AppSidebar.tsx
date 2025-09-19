@@ -40,11 +40,8 @@ export function AppSidebar({ activeSection, onSectionChange }: AppSidebarProps) 
           <img 
             src="/Logo modular CRM.svg" 
             alt="Modular CRM" 
-            className={`transition-all filter brightness-0 invert ${collapsed ? 'h-8 w-8' : 'h-10 w-auto'}`}
+            className={`transition-all ${collapsed ? 'h-8 w-8' : 'h-10 w-auto'}`}
           />
-          {!collapsed && (
-            <span className="text-xl font-bold text-sidebar-foreground">CRM</span>
-          )}
         </div>
       </SidebarHeader>
       

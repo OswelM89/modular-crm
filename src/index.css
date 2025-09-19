@@ -69,16 +69,16 @@
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     /* Sidebar variables */
-    --sidebar-background: 0 0% 8%;
-    --sidebar-foreground: 0 0% 90%;
-    --sidebar-primary: 22 100% 50%;
-    --sidebar-primary-foreground: 0 0% 8%;
-    --sidebar-accent: 0 0% 15%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 0 0% 20%;
-    --sidebar-ring: 22 100% 50%;
-    --sidebar-muted: 0 0% 25%;
-    --sidebar-muted-foreground: 0 0% 70%;
+    --sidebar-background: 22 100% 50%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 0 0% 100%;
+    --sidebar-primary-foreground: 22 100% 50%;
+    --sidebar-accent: 18 100% 45%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 28 100% 55%;
+    --sidebar-ring: 0 0% 100%;
+    --sidebar-muted: 28 100% 55%;
+    --sidebar-muted-foreground: 0 0% 90%;
   }
 
   .dark {
@@ -103,16 +103,16 @@
     --ring: 22 100% 50%;
     
     /* Sidebar dark theme */
-    --sidebar-background: 0 0% 8%;
-    --sidebar-foreground: 0 0% 90%;
-    --sidebar-primary: 22 100% 50%;
-    --sidebar-primary-foreground: 0 0% 8%;
-    --sidebar-accent: 0 0% 15%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 0 0% 20%;
-    --sidebar-ring: 22 100% 50%;
-    --sidebar-muted: 0 0% 25%;
-    --sidebar-muted-foreground: 0 0% 70%;
+    --sidebar-background: 22 100% 50%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 0 0% 100%;
+    --sidebar-primary-foreground: 22 100% 50%;
+    --sidebar-accent: 18 100% 45%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 28 100% 55%;
+    --sidebar-ring: 0 0% 100%;
+    --sidebar-muted: 28 100% 55%;
+    --sidebar-muted-foreground: 0 0% 90%;
   }
 
   * {
