@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react';
-import { Plus, Calendar, DollarSign, User, Building2, Edit, Trash2, Eye } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Plus, Calendar, DollarSign, User, Building2, Edit, Trash2, Eye, Bell, ChevronDown } from 'lucide-react';
 import { Quote } from '../../types';
 import { SkeletonHeader, SkeletonTable } from '../UI/SkeletonLoader';
 import { mockQuotes } from '../../data/mockData';
 import { useTranslation } from '../../hooks/useTranslation';
 import { CreateQuotePage } from './CreateQuotePage';
+import { useAuth } from '../../contexts/AuthContext';
+import { getInitials } from '../../lib/utils';
+import { Button } from '../ui/button';
 
 export function QuoteList() {
   const [loading, setLoading] = useState(true);
@@ -12,12 +15,54 @@ export function QuoteList() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [showCreateQuote, setShowCreateQuote] = useState(false);
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const { t } = useTranslation();
+  const { user, signOut } = useAuth();
+
+  // Transform auth user to match existing interface
+  const transformedUser = user ? {
+    id: user.id,
+    firstName: user.user_metadata?.first_name || 'Usuario',
+    lastName: user.user_metadata?.last_name || '',
+    email: user.email || '',
+    avatar_url: user.user_metadata?.avatar_url || null
+  } : null;
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      setShowProfileDropdown(false);
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+    }
+  };
+
+  const toggleProfileDropdown = () => {
+    setShowProfileDropdown(!showProfileDropdown);
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1100);
     return () => clearTimeout(timer);
   }, []);
+
+  // Close dropdown when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+      if (!target.closest('.profile-dropdown')) {
+        setShowProfileDropdown(false);
+      }
+    };
+
+    if (showProfileDropdown) {
+      document.addEventListener('click', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [showProfileDropdown]);
 
   // Si está en modo crear cotización, mostrar esa página
   if (showCreateQuote) {
@@ -85,13 +130,86 @@ export function QuoteList() {
           <h1 className="text-gray-900 mb-0" style={{ fontSize: '1.875rem', fontWeight: '700' }}>{t('quotes.title')}</h1>
           <p className="text-gray-600" style={{ fontSize: '18px' }}>{t('quotes.subtitle')}</p>
         </div>
-        <button 
-          onClick={() => setShowCreateQuote(true)}
-          className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          {t('quotes.new')}
-        </button>
+        
+        <div className="flex items-center gap-4">
+          <button 
+            onClick={() => setShowCreateQuote(true)}
+            className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            {t('quotes.new')}
+          </button>
+          
+          {/* Profile Dropdown */}
+          <div className="flex items-center space-x-2">
+            <Button 
+              variant="ghost" 
+              size="icon"
+              className="relative text-muted-foreground hover:text-foreground"
+            >
+              <Bell className="w-5 h-5" />
+              <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full"></span>
+            </Button>
+            
+            <div className="relative profile-dropdown">
+              <div 
+                className="flex items-center space-x-3 cursor-pointer hover:bg-muted px-3 py-2 rounded-md transition-colors"
+                onClick={toggleProfileDropdown}
+              >
+                <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                  {transformedUser?.avatar_url ? (
+                    <img 
+                      src={transformedUser.avatar_url} 
+                      alt={`${transformedUser?.firstName} ${transformedUser?.lastName}`}
+                      className="w-full h-full rounded-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-xs font-medium text-primary-foreground">
+                      {getInitials(transformedUser?.firstName, transformedUser?.lastName)}
+                    </span>
+                  )}
+                </div>
+                <div className="text-left">
+                  <div className="text-sm font-medium text-foreground">
+                    {transformedUser?.firstName || 'Usuario'} {transformedUser?.lastName || ''}
+                  </div>
+                </div>
+                <ChevronDown className="w-4 h-4 text-muted-foreground" />
+              </div>
+              
+              {showProfileDropdown && (
+                <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-200 shadow-lg rounded-md py-2 z-50">
+                  <div className="px-4 py-2 border-b border-gray-200">
+                    <div className="text-sm font-medium text-gray-900">
+                      {transformedUser?.firstName || 'Usuario'} {transformedUser?.lastName || ''}
+                    </div>
+                    <div className="text-xs text-gray-500">{transformedUser?.email || ''}</div>
+                  </div>
+                  <Button 
+                    variant="ghost"
+                    className="w-full justify-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Perfil
+                  </Button>
+                  <Button 
+                    variant="ghost"
+                    className="w-full justify-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    {t('profile.settings')}
+                  </Button>
+                  <hr className="my-1 border-gray-200" />
+                  <Button 
+                    onClick={handleLogout}
+                    variant="ghost"
+                    className="w-full justify-start px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                  >
+                    {t('profile.logout')}
+                  </Button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="bg-white border border-gray-200">
