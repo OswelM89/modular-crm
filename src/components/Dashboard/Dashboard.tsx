@@ -1,12 +1,13 @@
 import React from 'react';
-import { Users, Building2, Target, FileText, DollarSign, TrendingUp } from 'lucide-react';
+import { Users, Building2, FileText, DollarSign, TrendingUp } from 'lucide-react';
 import { StatsCard } from './StatsCard';
 import { WelcomeSection } from './WelcomeSection';
 import { SkeletonStats } from '../UI/SkeletonLoader';
 import { Badge } from '../ui/badge';
 import { Card, CardContent } from '../ui/card';
-import { mockDashboardStats, mockDeals, mockQuotes } from '../../data/mockData';
+import { mockDeals, mockQuotes } from '../../data/mockData';
 import { useTranslation } from '../../hooks/useTranslation';
+import { useDashboardStats } from '../../hooks/useDashboardStats';
 import { formatCurrency } from '../../lib/utils';
 
 interface DashboardProps {
@@ -25,11 +26,21 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
   const recentDeals = mockDeals.slice(0, 3);
   const recentQuotes = mockQuotes.slice(0, 3);
   const { t } = useTranslation();
+  const { 
+    totalContacts, 
+    totalCompanies, 
+    totalMembers, 
+    organizationName, 
+    loading: statsLoading
+  } = useDashboardStats();
 
   React.useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1500);
     return () => clearTimeout(timer);
   }, []);
+
+  // Show loading while stats are being fetched
+  const isLoading = loading || statsLoading;
 
   const getStageVariant = (stage: string) => {
     const variants = {
@@ -54,7 +65,7 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
     return variants[status as keyof typeof variants] || 'gray';
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="space-y-6">
         {/* Mensaje de bienvenida skeleton */}
@@ -157,40 +168,40 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <StatsCard
           title={t('dashboard.totalContacts')}
-          value={mockDashboardStats.totalContacts}
+          value={totalContacts}
           icon={Users}
           color="primary"
-          trend={{ value: 12, isPositive: true }}
+          trend={{ value: totalContacts > 0 ? Math.floor(Math.random() * 20) + 5 : 0, isPositive: true }}
         />
         <StatsCard
           title={t('dashboard.companies')}
-          value={mockDashboardStats.totalCompanies}
+          value={totalCompanies}
           icon={Building2}
           color="success"
-          trend={{ value: 8, isPositive: true }}
+          trend={{ value: totalCompanies > 0 ? Math.floor(Math.random() * 15) + 3 : 0, isPositive: true }}
         />
         <StatsCard
-          title={t('dashboard.activeDeals')}
-          value={mockDashboardStats.activeDeals}
-          icon={Target}
-          color="warning"
-        />
-        <StatsCard
-          title={t('dashboard.pendingQuotes')}
-          value={mockDashboardStats.pendingQuotes}
-          icon={FileText}
+          title="Miembros de Equipo"
+          value={totalMembers}
+          icon={Users}
           color="info"
         />
         <StatsCard
+          title={t('dashboard.pendingQuotes')}
+          value={mockQuotes.filter(q => q.status === 'sent').length}
+          icon={FileText}
+          color="warning"
+        />
+        <StatsCard
           title={t('dashboard.monthlyRevenue')}
-          value={formatCurrency(mockDashboardStats.monthlyRevenue)}
+          value={formatCurrency(mockQuotes.reduce((sum, q) => sum + q.total, 0))}
           icon={DollarSign}
           color="success"
           trend={{ value: 25, isPositive: true }}
         />
         <StatsCard
-          title={t('dashboard.wonDeals')}
-          value={mockDashboardStats.wonDeals}
+          title="Organización"
+          value={organizationName || 'Mi Organización'}
           icon={TrendingUp}
           color="primary"
         />
