@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BarChart3, Building2, Users, Handshake, FileText, TrendingUp, PieChart, Menu, X } from 'lucide-react';
+import { BarChart3, Building2, Users, Handshake, FileText, TrendingUp, PieChart, Menu, X, ChevronDown } from 'lucide-react';
 import { LanguageSelector } from '../UI/LanguageSelector';
 import { useTranslation } from '../../hooks/useTranslation';
 import { useAuth } from '../../contexts/AuthContext';
@@ -110,26 +110,36 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
             {user && (
               <div className="relative user-dropdown">
                 <div 
-                  className="hidden sm:flex items-center gap-3 cursor-pointer hover:bg-muted px-3 py-2 rounded-md transition-colors"
+                  className="hidden sm:flex items-center gap-3 cursor-pointer hover:bg-muted/80 bg-muted/40 px-4 py-2 rounded-full border border-border/50 hover:border-border transition-all duration-200 shadow-sm hover:shadow-md"
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
                 >
-                  <div className="text-right">
-                    <p className="text-sm font-medium text-foreground">
-                      {user.firstName} {user.lastName}
-                    </p>
-                    <p className="text-xs text-muted-foreground">{user.email}</p>
-                  </div>
+                  {/* Avatar a la izquierda */}
                   {user.avatar_url ? (
                     <img 
                       src={user.avatar_url} 
                       alt="Avatar" 
-                      className="w-8 h-8 rounded-full"
+                      className="w-8 h-8 rounded-full ring-2 ring-primary/20"
                     />
                   ) : (
-                    <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-medium">
+                    <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-medium ring-2 ring-primary/20">
                       {user.firstName.charAt(0)}
                     </div>
                   )}
+                  
+                  {/* Nombre y organización */}
+                  <div className="text-left">
+                    <p className="text-sm font-medium text-foreground leading-tight">
+                      {user.firstName} {user.lastName}
+                    </p>
+                    <p className="text-xs text-muted-foreground leading-tight">
+                      ORG-{user.id.slice(-5).toUpperCase()}
+                    </p>
+                  </div>
+                  
+                  {/* Chevron */}
+                  <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform duration-200 ${
+                    userDropdownOpen ? 'rotate-180' : ''
+                  }`} />
                 </div>
                 
                 {/* Dropdown Menu */}
