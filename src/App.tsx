@@ -123,13 +123,11 @@ function App() {
         />
         
         <SidebarInset className="flex flex-col flex-1">
-          {/* Trigger para expandir/contraer sidebar */}
-          <div className="p-2">
+          {/* Header con trigger y selector de idioma */}
+          <div className="flex items-center justify-between p-4 border-b bg-background">
             <SidebarTrigger className="text-gray-600 hover:text-gray-900" />
+            <LanguageSelector />
           </div>
-          
-          {/* Selector de idioma flotante */}
-          <LanguageSelector />
           
           <main className="flex-1 px-6 py-8">
             <div className="max-w-[1150px] mx-auto">
