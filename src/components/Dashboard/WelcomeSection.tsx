@@ -27,7 +27,7 @@ export function WelcomeSection({ userName, onSectionChange }: WelcomeSectionProp
   return (
     <div className="mb-8">
       {/* Mensaje de bienvenida */}
-      <div className="mb-6 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6 animate-fade-in">
+      <div className="mb-6 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6">
         <div className="flex-1">
           <h1 className="text-display-lg mb-2">
             <span className="text-foreground">
