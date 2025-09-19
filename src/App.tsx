@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Header } from './components/Layout/Header';
+
 import { Footer } from './components/Layout/Footer';
 import { LanguageSelector } from './components/UI/LanguageSelector';
 import { Dashboard } from './components/Dashboard/Dashboard';
@@ -121,11 +121,10 @@ function App() {
         <AppSidebar 
           activeSection={activeSection} 
           onSectionChange={handleSectionChange}
+          user={transformedUser}
         />
         
         <SidebarInset className="flex flex-col flex-1">
-          <Header user={transformedUser} />
-          
           {/* Selector de idioma flotante */}
           <LanguageSelector />
           
