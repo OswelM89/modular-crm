@@ -33,7 +33,7 @@ export function AppSidebar({ activeSection, onSectionChange }: AppSidebarProps) 
   const { collapsed } = useSidebar();
 
   return (
-    <Sidebar collapsible="icon" className="border-r fixed left-0 top-0 h-screen z-50" style={{ backgroundColor: '#FF6200' }}>
+    <Sidebar collapsible="icon" className="border-r" style={{ backgroundColor: '#FF6200' }}>
       <SidebarHeader className="border-b p-4" style={{ borderColor: '#CC4E00', backgroundColor: '#FF6200' }}>
         {/* Logo */}
         <div className="flex items-center gap-3">

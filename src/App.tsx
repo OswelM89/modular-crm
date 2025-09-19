@@ -122,7 +122,7 @@ function App() {
           onSectionChange={handleSectionChange}
         />
         
-        <SidebarInset className="flex flex-col flex-1 ml-0">
+        <SidebarInset className="flex flex-col flex-1">
           {/* Trigger para expandir/contraer sidebar */}
           <div className="p-2">
             <SidebarTrigger className="text-gray-600 hover:text-gray-900" />
@@ -131,7 +131,7 @@ function App() {
           {/* Selector de idioma flotante */}
           <LanguageSelector />
           
-          <main className="flex-1 px-6 py-8 ml-16 group-data-[side=left]:ml-64">
+          <main className="flex-1 px-6 py-8">
             <div className="max-w-[1150px] mx-auto">
               {renderContent()}
             </div>
