@@ -49,10 +49,11 @@ export function AppSidebar({ activeSection, onSectionChange }: AppSidebarProps) 
                     <SidebarMenuButton
                       onClick={() => onSectionChange(item.id)}
                       isActive={isActive}
+                      tooltip={collapsed ? t(item.nameKey) : undefined}
                       className={`${isActive ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium' : ''}`}
                     >
-                      <Icon className="w-4 h-4" />
-                      <span>{t(item.nameKey)}</span>
+                      <Icon className="w-4 h-4 flex-shrink-0" />
+                      <span className="group-data-[collapsible=icon]:sr-only">{t(item.nameKey)}</span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 );
