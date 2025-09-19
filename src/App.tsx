@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 
-import { Footer } from './components/Layout/Footer';
 import { LanguageSelector } from './components/UI/LanguageSelector';
 import { Dashboard } from './components/Dashboard/Dashboard';
 import { ContactList } from './components/Contacts/ContactList';
@@ -132,8 +131,6 @@ function App() {
               {renderContent()}
             </div>
           </main>
-          
-          <Footer />
         </SidebarInset>
       </div>
     </SidebarProvider>
