@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BarChart3, Building2, Users, Handshake, FileText, TrendingUp, PieChart, Menu, X } from 'lucide-react';
 import { LanguageSelector } from '../UI/LanguageSelector';
 import { useTranslation } from '../../hooks/useTranslation';
+import { useAuth } from '../../contexts/AuthContext';
 
 const navigation = [
   { id: 'dashboard', nameKey: 'nav.dashboard', icon: BarChart3 },
@@ -27,7 +28,36 @@ interface HeaderProps {
 
 export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
   const { t } = useTranslation();
+  const { signOut } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+      if (!target.closest('.user-dropdown')) {
+        setUserDropdownOpen(false);
+      }
+    };
+
+    if (userDropdownOpen) {
+      document.addEventListener('click', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [userDropdownOpen]);
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      setUserDropdownOpen(false);
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+    }
+  };
 
   return (
     <header className="bg-white border-b border-border shadow-sm">
@@ -78,22 +108,58 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
             
             {/* User info */}
             {user && (
-              <div className="hidden sm:flex items-center gap-3">
-                <div className="text-right">
-                  <p className="text-sm font-medium text-foreground">
-                    {user.firstName} {user.lastName}
-                  </p>
-                  <p className="text-xs text-muted-foreground">{user.email}</p>
+              <div className="relative user-dropdown">
+                <div 
+                  className="hidden sm:flex items-center gap-3 cursor-pointer hover:bg-muted px-3 py-2 rounded-md transition-colors"
+                  onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                >
+                  <div className="text-right">
+                    <p className="text-sm font-medium text-foreground">
+                      {user.firstName} {user.lastName}
+                    </p>
+                    <p className="text-xs text-muted-foreground">{user.email}</p>
+                  </div>
+                  {user.avatar_url ? (
+                    <img 
+                      src={user.avatar_url} 
+                      alt="Avatar" 
+                      className="w-8 h-8 rounded-full"
+                    />
+                  ) : (
+                    <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-medium">
+                      {user.firstName.charAt(0)}
+                    </div>
+                  )}
                 </div>
-                {user.avatar_url ? (
-                  <img 
-                    src={user.avatar_url} 
-                    alt="Avatar" 
-                    className="w-8 h-8 rounded-full"
-                  />
-                ) : (
-                  <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-medium">
-                    {user.firstName.charAt(0)}
+                
+                {/* Dropdown Menu */}
+                {userDropdownOpen && (
+                  <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-border shadow-lg rounded-md py-2 z-50 animate-scale-in">
+                    <button
+                      onClick={() => {
+                        onSectionChange('profile');
+                        setUserDropdownOpen(false);
+                      }}
+                      className="w-full px-4 py-2 text-left text-sm text-foreground hover:bg-muted transition-colors"
+                    >
+                      Perfil
+                    </button>
+                    <button
+                      onClick={() => {
+                        onSectionChange('settings');
+                        setUserDropdownOpen(false);
+                      }}
+                      className="w-full px-4 py-2 text-left text-sm text-foreground hover:bg-muted transition-colors"
+                    >
+                      Configuración
+                    </button>
+                    <hr className="my-1 border-border" />
+                    <button
+                      onClick={handleLogout}
+                      className="w-full px-4 py-2 text-left text-sm text-destructive hover:bg-destructive/10 transition-colors"
+                    >
+                      Salir
+                    </button>
                   </div>
                 )}
               </div>
