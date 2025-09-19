@@ -131,7 +131,7 @@ function App() {
           {/* Selector de idioma flotante */}
           <LanguageSelector />
           
-          <main className="flex-1 px-6 py-8">
+          <main className="flex-1 px-6 py-8 ml-16 group-data-[side=left]:ml-64">
             <div className="max-w-[1150px] mx-auto">
               {renderContent()}
             </div>
