@@ -33,8 +33,8 @@ export function AppSidebar({ activeSection, onSectionChange }: AppSidebarProps) 
   const { collapsed } = useSidebar();
 
   return (
-    <Sidebar collapsible="icon" className="border-r bg-sidebar-background">
-      <SidebarHeader className="border-b border-sidebar-border p-6">
+    <Sidebar collapsible="icon" className="border-r" style={{ backgroundColor: '#FF6200' }}>
+      <SidebarHeader className="border-b p-6" style={{ borderColor: '#CC4E00', backgroundColor: '#FF6200' }}>
         {/* Logo */}
         <div className="flex items-center gap-4">
           <img 
@@ -45,9 +45,9 @@ export function AppSidebar({ activeSection, onSectionChange }: AppSidebarProps) 
         </div>
       </SidebarHeader>
       
-      <SidebarContent className="px-4 py-4">
+      <SidebarContent className="px-4 py-4" style={{ backgroundColor: '#FF6200' }}>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-sidebar-muted-foreground font-semibold text-sm uppercase tracking-wider mb-4">
+          <SidebarGroupLabel className="font-semibold text-sm uppercase tracking-wider mb-4" style={{ color: 'white' }}>
             {!collapsed && "Navegación"}
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -62,11 +62,15 @@ export function AppSidebar({ activeSection, onSectionChange }: AppSidebarProps) 
                       onClick={() => onSectionChange(item.id)}
                       isActive={isActive}
                       tooltip={collapsed ? t(item.nameKey) : undefined}
-                      className={`h-12 px-4 rounded-lg transition-all duration-200 hover:bg-sidebar-accent ${
+                      className={`h-12 px-4 rounded-lg transition-all duration-200 text-white hover:bg-white hover:bg-opacity-20 ${
                         isActive 
-                          ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-sm' 
-                          : 'text-sidebar-foreground hover:text-sidebar-accent-foreground'
+                          ? 'bg-white bg-opacity-20 font-semibold shadow-sm' 
+                          : 'hover:text-white'
                       }`}
+                      style={{ 
+                        backgroundColor: isActive ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
+                        color: 'white'
+                      }}
                     >
                       <Icon className="w-6 h-6 flex-shrink-0" />
                       <span className={`group-data-[collapsible=icon]:sr-only text-base font-medium ml-1 ${
