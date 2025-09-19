@@ -33,25 +33,25 @@ export function AppSidebar({ activeSection, onSectionChange }: AppSidebarProps) 
   const { collapsed } = useSidebar();
 
   return (
-    <Sidebar collapsible="icon" className="border-r" style={{ backgroundColor: '#FF6200' }}>
-      <SidebarHeader className="border-b p-6" style={{ borderColor: '#CC4E00', backgroundColor: '#FF6200' }}>
+    <Sidebar collapsible="icon" className="border-r fixed left-0 top-0 h-screen z-50" style={{ backgroundColor: '#FF6200' }}>
+      <SidebarHeader className="border-b p-4" style={{ borderColor: '#CC4E00', backgroundColor: '#FF6200' }}>
         {/* Logo */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <img 
             src="/Logo modular CRM.svg" 
             alt="Modular CRM" 
-            className={`transition-all ${collapsed ? 'h-8 w-8' : 'h-10 w-auto'}`}
+            className={`transition-all ${collapsed ? 'h-6 w-6' : 'h-8 w-8'}`}
           />
         </div>
       </SidebarHeader>
       
-      <SidebarContent className="px-4 py-4" style={{ backgroundColor: '#FF6200' }}>
+      <SidebarContent className="px-3 py-4" style={{ backgroundColor: '#FF6200' }}>
         <SidebarGroup>
-          <SidebarGroupLabel className="font-semibold text-sm uppercase tracking-wider mb-4" style={{ color: 'white' }}>
+          <SidebarGroupLabel className="font-semibold text-xs uppercase tracking-wider mb-3" style={{ color: 'white' }}>
             {!collapsed && "Navegación"}
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu className="space-y-2">
+            <SidebarMenu className="space-y-1">
               {navigation.map((item) => {
                 const Icon = item.icon;
                 const isActive = activeSection === item.id;
@@ -62,7 +62,7 @@ export function AppSidebar({ activeSection, onSectionChange }: AppSidebarProps) 
                       onClick={() => onSectionChange(item.id)}
                       isActive={isActive}
                       tooltip={collapsed ? t(item.nameKey) : undefined}
-                      className={`h-12 px-4 rounded-lg transition-all duration-200 text-white hover:bg-white hover:bg-opacity-20 ${
+                      className={`h-10 px-3 rounded-md transition-all duration-200 text-white hover:bg-white hover:bg-opacity-20 ${
                         isActive 
                           ? 'bg-white bg-opacity-20 font-semibold shadow-sm' 
                           : 'hover:text-white'
@@ -72,8 +72,8 @@ export function AppSidebar({ activeSection, onSectionChange }: AppSidebarProps) 
                         color: 'white'
                       }}
                     >
-                      <Icon className="w-6 h-6 flex-shrink-0" />
-                      <span className={`group-data-[collapsible=icon]:sr-only text-base font-medium ml-1 ${
+                      <Icon className="w-5 h-5 flex-shrink-0" />
+                      <span className={`group-data-[collapsible=icon]:sr-only text-sm font-medium ml-2 ${
                         isActive ? 'font-semibold' : ''
                       }`}>
                         {t(item.nameKey)}

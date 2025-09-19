@@ -12,7 +12,7 @@ import { ProfilePage } from './components/Profile/ProfilePage';
 import { AuthPage } from './components/Auth/AuthPage';
 import { useAuth } from './contexts/AuthContext';
 import { getDefaultOrganization } from './utils/org';
-import { SidebarProvider, SidebarInset } from './components/UI/sidebar';
+import { SidebarProvider, SidebarInset, SidebarTrigger } from './components/UI/sidebar';
 import { AppSidebar } from './components/AppSidebar';
 
 function App() {
@@ -122,7 +122,12 @@ function App() {
           onSectionChange={handleSectionChange}
         />
         
-        <SidebarInset className="flex flex-col flex-1">
+        <SidebarInset className="flex flex-col flex-1 ml-0">
+          {/* Trigger para expandir/contraer sidebar */}
+          <div className="p-2">
+            <SidebarTrigger className="text-gray-600 hover:text-gray-900" />
+          </div>
+          
           {/* Selector de idioma flotante */}
           <LanguageSelector />
           
