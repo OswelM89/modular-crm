@@ -293,6 +293,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      activate_subscription_for_order: {
+        Args: { p_bold_order_id: string }
+        Returns: undefined
+      }
       get_user_org_role: {
         Args: { org_id: string; user_id: string }
         Returns: Database["public"]["Enums"]["organization_role"]
