@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Plus, Mail, User, Edit, Trash2, X, Eye, EyeOff, Shield } from 'lucide-react';
+import { ArrowLeft, Plus, Mail, User, Edit, Trash2, X, Eye, EyeOff, Shield, MoreVertical } from 'lucide-react';
 
 interface AddUserPageProps {
   onBack: () => void;
@@ -64,7 +64,6 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
   ]);
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [showUserForm, setShowUserForm] = useState(false);
   const [formData, setFormData] = useState<UserFormData>({
     firstName: '',
@@ -105,35 +104,6 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
     user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
     user.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  const handleSelectUser = (userId: string) => {
-    setSelectedUsers(prev => 
-      prev.includes(userId) 
-        ? prev.filter(id => id !== userId)
-        : [...prev, userId]
-    );
-  };
-
-  const handleSelectAll = () => {
-    if (selectedUsers.length === filteredUsers.length) {
-      setSelectedUsers([]);
-    } else {
-      setSelectedUsers(filteredUsers.map(user => user.id));
-    }
-  };
-
-  const handleDeleteSelected = () => {
-    if (selectedUsers.length === 0) return;
-    
-    const confirmDelete = window.confirm(
-      `¿Estás seguro de que quieres eliminar ${selectedUsers.length} usuario(s)?`
-    );
-    
-    if (confirmDelete) {
-      setUsers(prev => prev.filter(user => !selectedUsers.includes(user.id)));
-      setSelectedUsers([]);
-    }
-  };
 
   const getRoleLabel = (role: string) => {
     const roleObj = roles.find(r => r.value === role);
@@ -295,25 +265,6 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
         </button>
       </div>
 
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div className="flex items-center gap-3">
-          {selectedUsers.length > 0 && (
-            <>
-              <span className="text-sm text-gray-600">
-                {selectedUsers.length} seleccionado(s)
-              </span>
-              <button
-                onClick={handleDeleteSelected}
-                className="inline-flex items-center px-3 py-2 bg-red-600 text-white hover:bg-red-700 transition-colors rounded-lg"
-              >
-                <Trash2 className="w-4 h-4 mr-2" />
-                Eliminar
-              </button>
-            </>
-          )}
-        </div>
-      </div>
-
       <div className="bg-white border border-gray-200 rounded-xl">
         <div className="p-6 border-b border-gray-200">
           <input
@@ -326,33 +277,14 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
         </div>
 
         <div className="p-6">
-          {/* Select All Option */}
-          <div className="mb-6 pb-4 border-b border-gray-200">
-            <label className="flex items-center gap-3 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={selectedUsers.length === filteredUsers.length && filteredUsers.length > 0}
-                onChange={handleSelectAll}
-                className="w-4 h-4 text-primary bg-gray-100 border-gray-300 focus:ring-primary focus:ring-2 rounded"
-              />
-              <span className="text-sm text-gray-600">Seleccionar todos ({filteredUsers.length})</span>
-            </label>
-          </div>
-
           {/* Users Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredUsers.map((user) => (
               <div key={user.id} className="bg-gray-50 border border-gray-200 rounded-xl p-6 transition-colors hover:bg-gray-100">
                 <div className="flex flex-col items-start space-y-4">
-                  {/* Checkbox and Avatar */}
+                  {/* Header with Avatar and Menu */}
                   <div className="flex items-start justify-between w-full">
                     <div className="flex items-center gap-3">
-                      <input
-                        type="checkbox"
-                        checked={selectedUsers.includes(user.id)}
-                        onChange={() => handleSelectUser(user.id)}
-                        className="w-4 h-4 text-primary bg-gray-100 border-gray-300 focus:ring-primary focus:ring-2 rounded"
-                      />
                       <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
                         <span className="text-sm font-medium text-[#FF6200]">
                           {user.firstName.charAt(0)}{user.lastName.charAt(0)}
@@ -360,14 +292,21 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
                       </div>
                     </div>
                     
-                    {/* Actions */}
-                    <div className="flex items-center space-x-2">
-                      <button className="p-2 text-primary hover:text-primary/70 transition-colors rounded-lg hover:bg-white">
-                        <Edit className="w-4 h-4" />
+                    {/* Three dots menu */}
+                    <div className="relative group">
+                      <button className="p-2 text-gray-400 hover:text-gray-600 transition-colors rounded-lg hover:bg-white">
+                        <MoreVertical className="w-4 h-4" />
                       </button>
-                      <button className="p-2 text-red-600 hover:text-red-900 transition-colors rounded-lg hover:bg-white">
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                      <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 min-w-[120px]">
+                        <button className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 w-full text-left">
+                          <Edit className="w-3 h-3" />
+                          Editar
+                        </button>
+                        <button className="flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 w-full text-left">
+                          <Trash2 className="w-3 h-3" />
+                          Eliminar
+                        </button>
+                      </div>
                     </div>
                   </div>
 
