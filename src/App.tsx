@@ -10,6 +10,7 @@ import { Pipeline } from './components/Pipeline/Pipeline';
 import { SettingsPage } from './components/Settings/SettingsPage';
 import { ProfilePage } from './components/Profile/ProfilePage';
 import { AuthPage } from './components/Auth/AuthPage';
+import { SubscriptionGuard } from './components/Auth/SubscriptionGuard';
 import { Header } from './components/Layout/Header';
 import { useAuth } from './contexts/AuthContext';
 import { useUserProfile } from './hooks/useUserProfile';
@@ -104,19 +105,21 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header 
-        activeSection={activeSection}
-        onSectionChange={handleSectionChange}
-        user={transformedUser}
-      />
-      
-      <main className="px-6 py-8 bg-content-background">
-        <div className="max-w-[1150px] mx-auto">
-          {renderContent()}
-        </div>
-      </main>
-    </div>
+    <SubscriptionGuard>
+      <div className="min-h-screen bg-background">
+        <Header 
+          activeSection={activeSection}
+          onSectionChange={handleSectionChange}
+          user={transformedUser}
+        />
+        
+        <main className="px-6 py-8 bg-content-background">
+          <div className="max-w-[1150px] mx-auto">
+            {renderContent()}
+          </div>
+        </main>
+      </div>
+    </SubscriptionGuard>
   );
 }
 

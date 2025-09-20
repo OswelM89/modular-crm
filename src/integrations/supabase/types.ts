@@ -186,6 +186,39 @@ export type Database = {
         }
         Relationships: []
       }
+      payment_orders: {
+        Row: {
+          amount: number
+          bold_order_id: string | null
+          created_at: string
+          currency: string
+          id: string
+          organization_id: string
+          status: Database["public"]["Enums"]["payment_order_status"]
+          updated_at: string
+        }
+        Insert: {
+          amount?: number
+          bold_order_id?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          organization_id: string
+          status?: Database["public"]["Enums"]["payment_order_status"]
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          bold_order_id?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          organization_id?: string
+          status?: Database["public"]["Enums"]["payment_order_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -228,6 +261,33 @@ export type Database = {
         }
         Relationships: []
       }
+      subscriptions: {
+        Row: {
+          created_at: string
+          expires_at: string | null
+          id: string
+          organization_id: string
+          status: Database["public"]["Enums"]["subscription_status"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          organization_id: string
+          status?: Database["public"]["Enums"]["subscription_status"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          organization_id?: string
+          status?: Database["public"]["Enums"]["subscription_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -244,6 +304,12 @@ export type Database = {
     }
     Enums: {
       organization_role: "owner" | "admin" | "member"
+      payment_order_status: "pending" | "completed" | "failed" | "cancelled"
+      subscription_status:
+        | "active"
+        | "expired"
+        | "pending_payment"
+        | "cancelled"
       user_role: "admin" | "gestor"
     }
     CompositeTypes: {
@@ -373,6 +439,13 @@ export const Constants = {
   public: {
     Enums: {
       organization_role: ["owner", "admin", "member"],
+      payment_order_status: ["pending", "completed", "failed", "cancelled"],
+      subscription_status: [
+        "active",
+        "expired",
+        "pending_payment",
+        "cancelled",
+      ],
       user_role: ["admin", "gestor"],
     },
   },

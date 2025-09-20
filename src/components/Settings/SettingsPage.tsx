@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { UserPlus, FileText, Plus, CreditCard } from 'lucide-react';
 import { AddUserPage } from './AddUserPage';
 import { QuoteConfigPage } from './QuoteConfigPage';
+import { BillingPage } from './BillingPage';
 
 export function SettingsPage() {
   const [currentPage, setCurrentPage] = useState<string>(() => {
@@ -20,7 +21,7 @@ export function SettingsPage() {
       icon: CreditCard,
       color: 'bg-gray-100',
       available: true,
-      action: () => {}
+      action: () => setCurrentPage('billing')
     },
     {
       id: 'users',
@@ -61,6 +62,10 @@ export function SettingsPage() {
   ];
 
   // Renderizar páginas específicas
+  if (currentPage === 'billing') {
+    return <BillingPage onBack={() => setCurrentPage('main')} />;
+  }
+
   if (currentPage === 'users') {
     return <AddUserPage onBack={() => setCurrentPage('main')} />;
   }
