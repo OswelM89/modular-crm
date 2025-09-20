@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BarChart3, Building2, Users, Handshake, FileText, TrendingUp, PieChart, Menu, X, ChevronDown } from 'lucide-react';
+import { BarChart3, Building2, Users, Handshake, FileText, TrendingUp, Menu, X, ChevronDown } from 'lucide-react';
 import { LanguageSelector } from '../UI/LanguageSelector';
 import { useTranslation } from '../../hooks/useTranslation';
 import { useAuth } from '../../contexts/AuthContext';
@@ -11,7 +11,6 @@ const navigation = [
   { id: 'deals', nameKey: 'nav.deals', icon: Handshake },
   { id: 'quotes', nameKey: 'nav.quotes', icon: FileText },
   { id: 'pipeline', nameKey: 'nav.pipeline', icon: TrendingUp },
-  { id: 'reports', nameKey: 'nav.reports', icon: PieChart },
 ];
 
 interface HeaderProps {
