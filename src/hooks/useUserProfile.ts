@@ -8,6 +8,7 @@ export function useUserProfile() {
     avatar_url: string | null;
     first_name: string | null;
     last_name: string | null;
+    organization_id: string | null;
   } | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -22,12 +23,13 @@ export function useUserProfile() {
       try {
         const { data: profileData, error } = await supabase
           .from('profiles')
-          .select('avatar_url, first_name, last_name')
+          .select('avatar_url, first_name, last_name, organization_id')
           .eq('id', user.id)
-          .single();
+          .maybeSingle();
 
         if (error) {
           console.error('Error fetching profile:', error);
+          setLoading(false);
           return;
         }
 

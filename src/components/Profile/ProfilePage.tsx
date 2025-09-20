@@ -60,7 +60,7 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
           .from('profiles')
           .select('*')
           .eq('id', user.id)
-          .single();
+          .maybeSingle();
 
         if (error) {
           console.error('Error loading profile:', error);
@@ -248,7 +248,7 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
           .from('profiles')
           .select('*')
           .eq('id', user.id)
-          .single();
+          .maybeSingle();
 
         if (error) {
           console.error('Error loading profile for cancel:', error);
