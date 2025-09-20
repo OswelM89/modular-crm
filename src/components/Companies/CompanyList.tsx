@@ -1,18 +1,24 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Plus, Globe, Phone, Users, Mail, Building2 } from 'lucide-react';
 import { SkeletonHeader, SkeletonTable } from '../UI/SkeletonLoader';
 import { CompanyForm } from './CompanyForm';
 import { CompanyFormData } from '../../utils/companies';
 import { useTranslation } from '../../hooks/useTranslation';
 import { fetchCompanies, createCompany, deleteCompany, type Company } from '../../utils/companies';
+import { supabase } from '../../integrations/supabase/client';
 
 export function CompanyList() {
   const [loading, setLoading] = useState(true);
   const [companies, setCompanies] = useState<Company[]>([]);
+  const [userProfiles, setUserProfiles] = useState<{[key: string]: {first_name: string, last_name: string}}>({});
   const [searchTerm, setSearchTerm] = useState('');
+  const [responsibleFilter, setResponsibleFilter] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
   const [showCompanyForm, setShowCompanyForm] = useState(false);
   const { t } = useTranslation();
+
+  const ITEMS_PER_PAGE = 20;
 
   useEffect(() => {
     loadCompanies();
@@ -23,6 +29,26 @@ export function CompanyList() {
       setLoading(true);
       const companiesData = await fetchCompanies();
       setCompanies(companiesData);
+      
+      // Get unique user IDs and fetch their profiles
+      const uniqueUserIds = [...new Set(companiesData.map(company => company.user_id))];
+      if (uniqueUserIds.length > 0) {
+        const { data: profiles, error } = await supabase
+          .from('profiles')
+          .select('id, first_name, last_name')
+          .in('id', uniqueUserIds);
+        
+        if (!error && profiles) {
+          const profilesMap = profiles.reduce((acc, profile) => {
+            acc[profile.id] = {
+              first_name: profile.first_name || '',
+              last_name: profile.last_name || ''
+            };
+            return acc;
+          }, {} as {[key: string]: {first_name: string, last_name: string}});
+          setUserProfiles(profilesMap);
+        }
+      }
     } catch (error) {
       console.error('Error loading companies:', error);
       alert('Error al cargar las empresas. Por favor intenta de nuevo.');
@@ -31,10 +57,37 @@ export function CompanyList() {
     }
   };
 
-  const filteredCompanies = companies.filter(company =>
-    company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (company.sector && company.sector.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  const filteredCompanies = companies.filter(company => {
+    const matchesSearch = company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (company.sector && company.sector.toLowerCase().includes(searchTerm.toLowerCase()));
+    const matchesResponsible = responsibleFilter === 'all' || company.user_id === responsibleFilter;
+    return matchesSearch && matchesResponsible;
+  });
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredCompanies.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const paginatedCompanies = filteredCompanies.slice(startIndex, endIndex);
+
+  // Get unique responsible users
+  const uniqueResponsible = React.useMemo(() => {
+    const responsibleUsers = companies.reduce((acc, company) => {
+      if (!acc.some(user => user.id === company.user_id)) {
+        const profile = userProfiles[company.user_id];
+        const displayName = profile 
+          ? `${profile.first_name} ${profile.last_name}`.trim() || `Usuario ${company.user_id.slice(-5).toUpperCase()}`
+          : `Usuario ${company.user_id.slice(-5).toUpperCase()}`;
+        
+        acc.push({
+          id: company.user_id,
+          name: displayName
+        });
+      }
+      return acc;
+    }, [] as { id: string; name: string }[]);
+    return responsibleUsers;
+  }, [companies, userProfiles]);
 
   const handleSelectCompany = (companyId: string) => {
     setSelectedCompanies(prev => 
@@ -45,10 +98,10 @@ export function CompanyList() {
   };
 
   const handleSelectAll = () => {
-    if (selectedCompanies.length === filteredCompanies.length) {
+    if (selectedCompanies.length === paginatedCompanies.length) {
       setSelectedCompanies([]);
     } else {
-      setSelectedCompanies(filteredCompanies.map(company => company.id));
+      setSelectedCompanies(paginatedCompanies.map(company => company.id));
     }
   };
 
@@ -169,15 +222,29 @@ export function CompanyList() {
         </div>
       </div>
 
-      <div className="bg-white border border-gray-200">
+      <div className="bg-white border border-gray-200 rounded-xl">
         <div className="p-6 border-b border-gray-200">
-          <input
-            type="text"
-            placeholder={t('companies.search')}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-           className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent"
-          />
+          <div className="flex flex-col sm:flex-row gap-4">
+            <input
+              type="text"
+              placeholder={t('companies.search')}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+            />
+            <select
+              value={responsibleFilter}
+              onChange={(e) => setResponsibleFilter(e.target.value)}
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+            >
+              <option value="all">Todos los responsables</option>
+              {uniqueResponsible.map((user) => (
+                <option key={user.id} value={user.id}>
+                  {user.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         <div className="overflow-x-auto">
@@ -187,7 +254,7 @@ export function CompanyList() {
                 <th className="px-6 py-3 text-left">
                   <input
                     type="checkbox"
-                    checked={selectedCompanies.length === filteredCompanies.length && filteredCompanies.length > 0}
+                    checked={selectedCompanies.length === paginatedCompanies.length && paginatedCompanies.length > 0}
                     onChange={handleSelectAll}
                    className="w-4 h-4 text-primary bg-gray-100 border-gray-300 focus:ring-primary focus:ring-2"
                   />
@@ -207,7 +274,7 @@ export function CompanyList() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {filteredCompanies.map((company) => (
+              {paginatedCompanies.map((company) => (
                 <tr key={company.id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <input
@@ -264,6 +331,62 @@ export function CompanyList() {
             </tbody>
           </table>
         </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+            <div className="text-sm text-gray-700">
+              Mostrando {startIndex + 1} - {Math.min(endIndex, filteredCompanies.length)} de {filteredCompanies.length} empresas
+            </div>
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="px-3 py-1 text-sm border border-gray-300 rounded-lg bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Anterior
+              </button>
+              
+              {/* Page numbers */}
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => {
+                // Show first page, last page, current page, and pages around current page
+                const showPage = pageNum === 1 || 
+                                pageNum === totalPages || 
+                                (pageNum >= currentPage - 1 && pageNum <= currentPage + 1);
+                
+                if (!showPage && pageNum === 2 && currentPage > 4) {
+                  return <span key={pageNum} className="px-2 text-gray-400">...</span>;
+                }
+                if (!showPage && pageNum === totalPages - 1 && currentPage < totalPages - 3) {
+                  return <span key={pageNum} className="px-2 text-gray-400">...</span>;
+                }
+                if (!showPage) return null;
+
+                return (
+                  <button
+                    key={pageNum}
+                    onClick={() => setCurrentPage(pageNum)}
+                    className={`px-3 py-1 text-sm rounded-lg ${
+                      currentPage === pageNum
+                        ? 'bg-primary text-primary-foreground'
+                        : 'border border-gray-300 bg-white hover:bg-gray-50'
+                    }`}
+                  >
+                    {pageNum}
+                  </button>
+                );
+              })}
+              
+              <button
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className="px-3 py-1 text-sm border border-gray-300 rounded-lg bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Siguiente
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       <CompanyForm

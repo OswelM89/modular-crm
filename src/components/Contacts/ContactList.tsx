@@ -5,10 +5,12 @@ import { ContactForm } from './ContactForm';
 import { ContactDetail } from './ContactDetail';
 import { useTranslation } from '../../hooks/useTranslation';
 import { fetchContacts, deleteContact, type Contact } from '../../utils/contacts';
+import { supabase } from '../../integrations/supabase/client';
 
 export function ContactList() {
   const [loading, setLoading] = React.useState(true);
   const [contacts, setContacts] = React.useState<Contact[]>([]);
+  const [userProfiles, setUserProfiles] = React.useState<{[key: string]: {first_name: string, last_name: string}}>({});
   const [searchTerm, setSearchTerm] = React.useState('');
   const [responsibleFilter, setResponsibleFilter] = React.useState('all');
   const [currentPage, setCurrentPage] = React.useState(1);
@@ -26,6 +28,26 @@ export function ContactList() {
         setLoading(true);
         const contactsData = await fetchContacts();
         setContacts(contactsData);
+        
+        // Get unique user IDs and fetch their profiles
+        const uniqueUserIds = [...new Set(contactsData.map(contact => contact.user_id))];
+        if (uniqueUserIds.length > 0) {
+          const { data: profiles, error } = await supabase
+            .from('profiles')
+            .select('id, first_name, last_name')
+            .in('id', uniqueUserIds);
+          
+          if (!error && profiles) {
+            const profilesMap = profiles.reduce((acc, profile) => {
+              acc[profile.id] = {
+                first_name: profile.first_name || '',
+                last_name: profile.last_name || ''
+              };
+              return acc;
+            }, {} as {[key: string]: {first_name: string, last_name: string}});
+            setUserProfiles(profilesMap);
+          }
+        }
       } catch (error) {
         console.error('Error loading contacts:', error);
       } finally {
@@ -54,15 +76,20 @@ export function ContactList() {
   const uniqueResponsible = React.useMemo(() => {
     const responsibleUsers = contacts.reduce((acc, contact) => {
       if (!acc.some(user => user.id === contact.user_id)) {
+        const profile = userProfiles[contact.user_id];
+        const displayName = profile 
+          ? `${profile.first_name} ${profile.last_name}`.trim() || `Usuario ${contact.user_id.slice(-5).toUpperCase()}`
+          : `Usuario ${contact.user_id.slice(-5).toUpperCase()}`;
+        
         acc.push({
           id: contact.user_id,
-          name: `Usuario ${contact.user_id.slice(-5).toUpperCase()}`
+          name: displayName
         });
       }
       return acc;
     }, [] as { id: string; name: string }[]);
     return responsibleUsers;
-  }, [contacts]);
+  }, [contacts, userProfiles]);
 
   const handleCreateContact = (newContact: Contact) => {
     setContacts(prev => [newContact, ...prev]);
