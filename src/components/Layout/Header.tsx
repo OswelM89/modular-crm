@@ -76,7 +76,7 @@ export function Header({
       console.error('Error al cerrar sesión:', error);
     }
   };
-  return <header className="border-b border-border shadow-sm bg-teal-400">
+  return <header className="border-b border-border shadow-sm bg-gray-950">
       <div className="max-w-[1200px] mx-auto px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
