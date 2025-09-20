@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { ArrowLeft, Plus, Mail, User, Edit, Trash2, X, Eye, EyeOff, Shield, MoreVertical } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowLeft, Plus, Mail, User, Edit, Trash2, Eye, EyeOff, Shield, MoreVertical } from 'lucide-react';
 
 interface AddUserPageProps {
   onBack: () => void;
@@ -15,21 +15,154 @@ interface UserData {
   createdAt: Date;
 }
 
-interface UserFormData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  role: string;
-  permissions: {
-    contacts: boolean;
-    companies: boolean;
-    deals: boolean;
-    quotes: boolean;
-    reports: boolean;
-    settings: boolean;
+interface NewUserModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (userData: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    role: string;
+    password: string;
+  }) => void;
+}
+
+function NewUserModal({ isOpen, onClose, onSave }: NewUserModalProps) {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [role, setRole] = useState('gestor');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+
+  const roles = [
+    { value: 'admin', label: 'Administrador' },
+    { value: 'gestor', label: 'Gestor' },
+  ];
+
+  const handleSave = () => {
+    if (firstName.trim() && lastName.trim() && email.trim() && password.trim()) {
+      onSave({
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        email: email.trim(),
+        role,
+        password: password.trim(),
+      });
+      // Reset form
+      setFirstName('');
+      setLastName('');
+      setEmail('');
+      setRole('gestor');
+      setPassword('');
+      onClose();
+    }
   };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Agregar Nuevo Usuario</h3>
+        
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Nombre
+            </label>
+            <input
+              type="text"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              placeholder="Nombre del usuario"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Apellido
+            </label>
+            <input
+              type="text"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              placeholder="Apellido del usuario"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Email
+            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              placeholder="usuario@empresa.com"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Rol
+            </label>
+            <select
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+            >
+              {roles.map((roleOption) => (
+                <option key={roleOption.value} value={roleOption.value}>
+                  {roleOption.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Contraseña
+            </label>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                placeholder="Contraseña temporal"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex gap-3 mt-6">
+          <button
+            onClick={onClose}
+            className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+          >
+            Cancelar
+          </button>
+          <button
+            onClick={handleSave}
+            className="flex-1 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+          >
+            Agregar Usuario
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export function AddUserPage({ onBack }: AddUserPageProps) {
@@ -64,39 +197,11 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
   ]);
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [showUserForm, setShowUserForm] = useState(false);
-  const [formData, setFormData] = useState<UserFormData>({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-        role: 'gestor',
-    permissions: {
-      contacts: false,
-      companies: false,
-      deals: false,
-      quotes: false,
-      reports: false,
-      settings: false
-    }
-  });
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showNewUserModal, setShowNewUserModal] = useState(false);
 
   const roles = [
     { value: 'admin', label: 'Administrador', description: 'Acceso completo al sistema' },
     { value: 'gestor', label: 'Gestor', description: 'Acceso a funciones principales de gestión' }
-  ];
-
-  const permissions = [
-    { key: 'contacts', label: 'Contactos', description: 'Crear, editar y eliminar contactos' },
-    { key: 'companies', label: 'Empresas', description: 'Gestionar información de empresas' },
-    { key: 'deals', label: 'Negocios', description: 'Administrar pipeline de ventas' },
-    { key: 'quotes', label: 'Cotizaciones', description: 'Crear y enviar cotizaciones' },
-    { key: 'reports', label: 'Reportes', description: 'Ver reportes y estadísticas' },
-    { key: 'settings', label: 'Configuración', description: 'Acceso a configuración del sistema' }
   ];
 
   const filteredUsers = users.filter(user =>
@@ -120,123 +225,24 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
     return status === 'active' ? 'Activo' : 'Inactivo';
   };
 
-  // Bloquear scroll del body cuando el modal está abierto
-  useEffect(() => {
-    if (showUserForm) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-
-    return () => {
-      document.body.style.overflow = 'unset';
+  const handleCreateUser = (userData: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    role: string;
+    password: string;
+  }) => {
+    const newUser: UserData = {
+      id: Math.random().toString(36).substr(2, 9),
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      email: userData.email,
+      role: userData.role,
+      status: 'active',
+      createdAt: new Date()
     };
-  }, [showUserForm]);
-
-  const handleInputChange = (field: keyof UserFormData, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: '' }));
-    }
-  };
-
-  const handlePermissionChange = (permission: string, checked: boolean) => {
-    setFormData(prev => ({
-      ...prev,
-      permissions: {
-        ...prev.permissions,
-        [permission]: checked
-      }
-    }));
-  };
-
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {};
-
-    if (!formData.firstName.trim()) {
-      newErrors.firstName = 'El nombre es requerido';
-    }
-
-    if (!formData.lastName.trim()) {
-      newErrors.lastName = 'El apellido es requerido';
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = 'El email es requerido';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Email inválido';
-    }
-
-    if (!formData.password) {
-      newErrors.password = 'La contraseña es requerida';
-    } else if (formData.password.length < 6) {
-      newErrors.password = 'La contraseña debe tener al menos 6 caracteres';
-    }
-
-    if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Las contraseñas no coinciden';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (validateForm()) {
-      const newUser: UserData = {
-        id: Math.random().toString(36).substr(2, 9),
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        role: formData.role,
-        status: 'active',
-        createdAt: new Date()
-      };
-      
-      setUsers(prev => [newUser, ...prev]);
-      
-      // Reset form
-      setFormData({
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-        role: 'gestor',
-        permissions: {
-          contacts: false,
-          companies: false,
-          deals: false,
-          quotes: false,
-          reports: false,
-          settings: false
-        }
-      });
-      setErrors({});
-      setShowUserForm(false);
-    }
-  };
-
-  const handleCloseForm = () => {
-    setFormData({
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-        role: 'gestor',
-      permissions: {
-        contacts: false,
-        companies: false,
-        deals: false,
-        quotes: false,
-        reports: false,
-        settings: false
-      }
-    });
-    setErrors({});
-    setShowUserForm(false);
+    
+    setUsers(prev => [newUser, ...prev]);
   };
 
   return (
@@ -257,11 +263,11 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
           </p>
         </div>
         <button 
-          onClick={() => setShowUserForm(true)}
+          onClick={() => setShowNewUserModal(true)}
           className="inline-flex items-center px-6 py-3 text-base bg-primary text-primary-foreground hover:bg-primary/90 transition-colors rounded-lg"
         >
           <Plus className="w-4 h-4 mr-2" />
-          Nuevo Usuario
+          Agregar Usuario
         </button>
       </div>
 
@@ -352,223 +358,12 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
         )}
       </div>
 
-      {/* Popup lateral para crear usuario */}
-      {showUserForm && (
-        <div className="fixed inset-0 z-50">
-          {/* Overlay */}
-          <div 
-            className="absolute inset-0 bg-black bg-opacity-50"
-            onClick={handleCloseForm}
-          />
-          
-          {/* Sidebar */}
-          <div className="absolute right-0 inset-y-0 w-full sm:w-96 bg-white flex flex-col">
-            {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 flex-shrink-0">
-              <h2 className="text-xl font-semibold text-gray-900">Nuevo Usuario</h2>
-              <button
-                onClick={handleCloseForm}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
-              >
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-
-            {/* Form */}
-            <form onSubmit={handleSubmit} className="flex-1 flex flex-col min-h-0">
-              <div className="flex-1 p-6 space-y-6 overflow-y-auto">
-                {/* Nombre */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Nombre *
-                    </label>
-                    <div className="relative">
-                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                      <input
-                        type="text"
-                        value={formData.firstName}
-                        onChange={(e) => handleInputChange('firstName', e.target.value)}
-                        className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
-                          errors.firstName ? 'border-red-500' : 'border-gray-300'
-                        }`}
-                        placeholder="Nombre"
-                      />
-                    </div>
-                    {errors.firstName && (
-                      <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Apellido *
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.lastName}
-                      onChange={(e) => handleInputChange('lastName', e.target.value)}
-                      className={`w-full px-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
-                        errors.lastName ? 'border-red-500' : 'border-gray-300'
-                      }`}
-                      placeholder="Apellido"
-                    />
-                    {errors.lastName && (
-                      <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>
-                    )}
-                  </div>
-                </div>
-
-                {/* Email */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Email *
-                  </label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                    <input
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => handleInputChange('email', e.target.value)}
-                      className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
-                        errors.email ? 'border-red-500' : 'border-gray-300'
-                      }`}
-                      placeholder="usuario@empresa.com"
-                    />
-                  </div>
-                  {errors.email && (
-                    <p className="mt-1 text-sm text-red-600">{errors.email}</p>
-                  )}
-                </div>
-
-                {/* Contraseñas */}
-                <div className="grid grid-cols-1 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Contraseña *
-                    </label>
-                    <div className="relative">
-                      <input
-                        type={showPassword ? 'text' : 'password'}
-                        value={formData.password}
-                        onChange={(e) => handleInputChange('password', e.target.value)}
-                        className={`w-full pr-12 pl-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
-                          errors.password ? 'border-red-500' : 'border-gray-300'
-                        }`}
-                        placeholder="••••••••"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                      >
-                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                      </button>
-                    </div>
-                    {errors.password && (
-                      <p className="mt-1 text-sm text-red-600">{errors.password}</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Confirmar Contraseña *
-                    </label>
-                    <div className="relative">
-                      <input
-                        type={showConfirmPassword ? 'text' : 'password'}
-                        value={formData.confirmPassword}
-                        onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-                        className={`w-full pr-12 pl-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
-                          errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
-                        }`}
-                        placeholder="••••••••"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                      >
-                        {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                      </button>
-                    </div>
-                    {errors.confirmPassword && (
-                      <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
-                    )}
-                  </div>
-                </div>
-
-                {/* Rol */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Rol del Usuario
-                  </label>
-                  <div className="space-y-3">
-                    {roles.map((role) => (
-                      <label key={role.value} className="flex items-start">
-                        <input
-                          type="radio"
-                          name="role"
-                          value={role.value}
-                          checked={formData.role === role.value}
-                          onChange={(e) => handleInputChange('role', e.target.value)}
-                          className="mt-1 w-4 h-4 text-[#FF6200] bg-gray-100 border-gray-300 focus:ring-[#FF6200] focus:ring-2"
-                        />
-                        <div className="ml-3">
-                          <div className="text-sm font-medium text-gray-900">{role.label}</div>
-                          <div className="text-sm text-gray-600">{role.description}</div>
-                        </div>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Permisos */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Permisos Específicos
-                  </label>
-                  <div className="space-y-3">
-                    {permissions.map((permission) => (
-                      <label key={permission.key} className="flex items-start">
-                        <input
-                          type="checkbox"
-                          checked={formData.permissions[permission.key as keyof typeof formData.permissions]}
-                          onChange={(e) => handlePermissionChange(permission.key, e.target.checked)}
-                          className="mt-1 w-4 h-4 text-[#FF6200] bg-gray-100 border-gray-300 focus:ring-[#FF6200] focus:ring-2"
-                        />
-                        <div className="ml-3">
-                          <div className="text-sm font-medium text-gray-900">{permission.label}</div>
-                          <div className="text-sm text-gray-600">{permission.description}</div>
-                        </div>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Footer */}
-              <div className="p-6 border-t border-gray-200 bg-gray-50 flex-shrink-0">
-                <div className="flex space-x-3">
-                  <button
-                    type="button"
-                    onClick={handleCloseForm}
-                    className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
-                  >
-                    Cancelar
-                  </button>
-                  <button
-                    type="submit"
-                    className="flex-1 px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
-                  >
-                    Crear Usuario
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+      {/* New User Modal */}
+      <NewUserModal
+        isOpen={showNewUserModal}
+        onClose={() => setShowNewUserModal(false)}
+        onSave={handleCreateUser}
+      />
     </div>
   );
 }
