@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { ArrowLeft, Plus, Mail, User, Edit, Trash2, Eye, EyeOff, Shield, MoreVertical } from 'lucide-react';
 
 interface AddUserPageProps {
@@ -61,7 +62,7 @@ function NewUserModal({ isOpen, onClose, onSave }: NewUserModalProps) {
 
   if (!isOpen) return null;
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999]">
       <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Agregar Nuevo Usuario</h3>
@@ -161,7 +162,8 @@ function NewUserModal({ isOpen, onClose, onSave }: NewUserModalProps) {
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
