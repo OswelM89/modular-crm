@@ -263,16 +263,7 @@ export function BillingPage({ onBack }: BillingPageProps) {
           </div>
           
           <div className="flex flex-col sm:flex-row gap-3">
-            {!hasActiveSubscription ? (
-              <button
-                onClick={handleCreatePayment}
-                disabled={creatingOrder}
-                className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors rounded-lg font-medium"
-              >
-                <CreditCard className="w-5 h-5 mr-2" />
-                {creatingOrder ? 'Procesando...' : 'Suscribirse Ahora'}
-              </button>
-            ) : subscription?.status === 'cancelled' ? (
+            {subscription?.status === 'cancelled' ? (
               <div className="flex flex-col gap-3 items-end">
                 <button
                   onClick={handleReactivateSubscription}
@@ -286,6 +277,15 @@ export function BillingPage({ onBack }: BillingPageProps) {
                   Te quedan {timeRemaining} de suscripción pagada
                 </div>
               </div>
+            ) : !hasActiveSubscription ? (
+              <button
+                onClick={handleCreatePayment}
+                disabled={creatingOrder}
+                className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors rounded-lg font-medium"
+              >
+                <CreditCard className="w-5 h-5 mr-2" />
+                {creatingOrder ? 'Procesando...' : 'Suscribirse Ahora'}
+              </button>
             ) : subscription?.status === 'active' ? (
               <button
                 onClick={handleCancelSubscription}
