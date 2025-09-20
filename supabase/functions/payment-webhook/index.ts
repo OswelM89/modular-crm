@@ -23,43 +23,43 @@ serve(async (req) => {
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const { order, transaction } = webhookData;
+    // Bold.co Payment Link webhook structure
+    const { id: linkId, status, transaction_id } = webhookData;
     
-    if (!order || !transaction) {
-      console.log('Invalid webhook data - missing order or transaction');
+    if (!linkId) {
+      console.log('Invalid webhook data - missing link ID');
       return new Response('Invalid webhook data', { status: 400 });
     }
 
-    // Find payment order by order reference (our internal payment order ID)
+    // Find payment order by Bold link ID
     const { data: paymentOrder, error: findError } = await supabase
       .from('payment_orders')
       .select('*, organization_id')
-      .eq('id', order.order_reference)
+      .eq('bold_order_id', linkId)
       .single();
 
     if (findError || !paymentOrder) {
-      console.error('Payment order not found:', order.order_reference, findError);
+      console.error('Payment order not found for link ID:', linkId, findError);
       return new Response('Payment order not found', { status: 404 });
     }
 
     console.log('Found payment order:', paymentOrder);
 
-    // Update payment order status based on transaction status
+    // Update payment order status based on Bold.co link status
     let newStatus = 'pending';
-    if (transaction.status === 'APPROVED') {
+    if (status === 'PAID') {
       newStatus = 'completed';
-    } else if (transaction.status === 'REJECTED' || transaction.status === 'FAILED') {
+    } else if (status === 'EXPIRED') {
       newStatus = 'failed';
-    } else if (transaction.status === 'CANCELLED') {
-      newStatus = 'cancelled';
+    } else if (status === 'PROCESSING') {
+      newStatus = 'pending';
     }
 
     // Update payment order
     const { error: updatePaymentError } = await supabase
       .from('payment_orders')
       .update({ 
-        status: newStatus,
-        bold_order_id: order.id
+        status: newStatus
       })
       .eq('id', paymentOrder.id);
 
@@ -68,8 +68,8 @@ serve(async (req) => {
     }
 
     // If payment is successful, activate or extend subscription
-    if (transaction.status === 'APPROVED') {
-      console.log('Payment approved, activating subscription for organization:', paymentOrder.organization_id);
+    if (status === 'PAID') {
+      console.log('Payment completed, activating subscription for organization:', paymentOrder.organization_id);
       
       // Calculate expiry date (30 days from now)
       const expiryDate = new Date();
