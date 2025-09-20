@@ -1,12 +1,19 @@
-import { useState } from 'react';
-import { CreditCard, AlertTriangle, CheckCircle } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { AlertTriangle, CreditCard, CheckCircle } from 'lucide-react';
 import { useSubscription } from '../../hooks/useSubscription';
+import { useAuth } from '../../contexts/AuthContext';
+import { supabase } from '../../integrations/supabase/client';
 
 export function SubscriptionExpiredPage() {
-  const { createPaymentOrder } = useSubscription();
+  const { 
+    createPaymentOrder,
+    checkSubscriptionStatus,
+    loading 
+  } = useSubscription();
+  const { user, signOut } = useAuth();
   const [creatingOrder, setCreatingOrder] = useState(false);
 
-  const handleSubscribe = async () => {
+  const handleCreatePayment = async () => {
     try {
       setCreatingOrder(true);
       await createPaymentOrder();
@@ -18,6 +25,48 @@ export function SubscriptionExpiredPage() {
     }
   };
 
+  // Check for payment success in URL
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentStatus = urlParams.get('payment');
+    const boldOrderId = urlParams.get('bold-order-id');
+    const boldTxStatus = urlParams.get('bold-tx-status');
+    
+    if (paymentStatus === 'success' || boldTxStatus === 'approved') {
+      if (boldOrderId && boldTxStatus === 'approved') {
+        // Activate subscription for this specific payment
+        activatePayment(boldOrderId);
+      } else {
+        // Just refresh subscription status
+        checkSubscriptionStatus();
+      }
+      
+      // Clear URL parameters
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, [checkSubscriptionStatus]);
+
+  const activatePayment = async (boldOrderId: string) => {
+    try {
+      const { error } = await supabase.rpc('activate_subscription_for_order', {
+        p_bold_order_id: boldOrderId
+      });
+      
+      if (error) {
+        console.error('Error activating subscription:', error);
+      } else {
+        // Refresh subscription status after activation
+        setTimeout(() => checkSubscriptionStatus(), 1000);
+      }
+    } catch (error) {
+      console.error('Error activating payment:', error);
+    }
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+  };
+
   const formatAmount = (amount: number) => {
     return new Intl.NumberFormat('es-CO', {
       style: 'currency',
@@ -25,98 +74,132 @@ export function SubscriptionExpiredPage() {
     }).format(amount);
   };
 
-  return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="text-center">
-          <AlertTriangle className="mx-auto h-12 w-12 text-red-600" />
-          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-            Suscripción Requerida
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Tu suscripción ha expirado. Renueva para continuar usando el CRM.
-          </p>
-        </div>
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
       </div>
+    );
+  }
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          {/* Plan Details */}
-          <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              Plan Mensual CRM
-            </h3>
-            <div className="border border-gray-200 rounded-lg p-4">
-              <div className="flex justify-between items-center mb-4">
-                <div>
-                  <div className="text-2xl font-bold text-gray-900">
-                    {formatAmount(120000)}
-                  </div>
-                  <div className="text-gray-600">por mes</div>
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+      <div className="w-full max-w-2xl">
+        {/* User Info Bar */}
+        <div className="bg-white rounded-lg shadow-sm p-4 mb-6 flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+              <span className="text-blue-600 font-medium">
+                {user?.user_metadata?.first_name?.[0] || user?.email?.[0]?.toUpperCase() || 'U'}
+              </span>
+            </div>
+            <div>
+              <p className="font-medium text-gray-900">
+                {user?.user_metadata?.first_name && user?.user_metadata?.last_name 
+                  ? `${user.user_metadata.first_name} ${user.user_metadata.last_name}`
+                  : user?.email
+                }
+              </p>
+              <p className="text-sm text-gray-600">{user?.email}</p>
+            </div>
+          </div>
+          <button
+            onClick={handleSignOut}
+            className="text-sm text-gray-600 hover:text-gray-800 px-3 py-1 rounded border border-gray-300 hover:bg-gray-50"
+          >
+            Cerrar Sesión
+          </button>
+        </div>
+
+        {/* Subscription Required Card */}
+        <div className="bg-white border border-red-200 rounded-xl p-8 text-center">
+          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <AlertTriangle className="w-8 h-8 text-red-600" />
+          </div>
+          
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">
+            Suscripción Requerida
+          </h1>
+          
+          <p className="text-gray-600 mb-8 text-lg">
+            Tu cuenta ha sido creada exitosamente. Para continuar usando el CRM, necesitas activar tu suscripción.
+          </p>
+
+          {/* Plan Card */}
+          <div className="max-w-md mx-auto mb-8">
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-100 border border-blue-200 rounded-xl p-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                Plan Mensual CRM
+              </h2>
+              
+              <div className="text-center mb-6">
+                <div className="text-4xl font-bold text-gray-900 mb-2">
+                  $ 120.000,00
                 </div>
-                <CreditCard className="w-8 h-8 text-gray-400" />
+                <div className="text-gray-600">por mes</div>
+              </div>
+
+              <div className="space-y-3 text-left mb-6">
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  <span className="text-gray-700">Gestión completa de contactos</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  <span className="text-gray-700">Administración de empresas</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  <span className="text-gray-700">Pipeline de ventas</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  <span className="text-gray-700">Generación de cotizaciones</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  <span className="text-gray-700">Dashboard y reportes</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  <span className="text-gray-700">Gestión de usuarios</span>
+                </div>
               </div>
               
-              <div className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-4 h-4 text-green-600" />
-                  <span className="text-sm text-gray-600">Gestión completa de contactos</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-4 h-4 text-green-600" />
-                  <span className="text-sm text-gray-600">Administración de empresas</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-4 h-4 text-green-600" />
-                  <span className="text-sm text-gray-600">Pipeline de ventas</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-4 h-4 text-green-600" />
-                  <span className="text-sm text-gray-600">Generación de cotizaciones</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-4 h-4 text-green-600" />
-                  <span className="text-sm text-gray-600">Dashboard y reportes</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-4 h-4 text-green-600" />
-                  <span className="text-sm text-gray-600">Gestión de usuarios</span>
-                </div>
-              </div>
+              <button
+                onClick={handleCreatePayment}
+                disabled={creatingOrder}
+                className="w-full bg-blue-600 text-white py-4 px-6 rounded-lg font-medium text-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
+              >
+                <CreditCard className="w-5 h-5 mr-2" />
+                {creatingOrder ? 'Procesando...' : 'Suscribirse Ahora'}
+              </button>
             </div>
           </div>
 
-          {/* Payment Button */}
-          <div className="mb-6">
-            <button
-              onClick={handleSubscribe}
-              disabled={creatingOrder}
-              className="w-full flex justify-center items-center px-4 py-3 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
-              <CreditCard className="w-5 h-5 mr-2" />
-              {creatingOrder ? 'Procesando...' : 'Suscribirse Ahora'}
-            </button>
-          </div>
-
-          {/* Security Notice */}
           <div className="text-center">
-            <p className="text-xs text-gray-500">
+            <p className="text-sm text-gray-500 mb-2">
               Pago seguro procesado por Bold.co
             </p>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-sm text-gray-500">
               Tu suscripción se activará inmediatamente después del pago
             </p>
           </div>
         </div>
 
-        {/* Help */}
+        {/* Help Section */}
         <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600">
-            ¿Tienes preguntas?{' '}
-            <a href="#" className="text-primary hover:text-primary/90 font-medium">
-              Contacta soporte
-            </a>
-          </p>
+          <p className="text-gray-600 mb-2">¿Tienes preguntas?</p>
+          <a 
+            href="#" 
+            className="text-blue-600 hover:text-blue-700 font-medium"
+            onClick={(e) => {
+              e.preventDefault();
+              alert('Contacta nuestro soporte: soporte@inmolinks.com');
+            }}
+          >
+            Contacta soporte
+          </a>
         </div>
       </div>
     </div>

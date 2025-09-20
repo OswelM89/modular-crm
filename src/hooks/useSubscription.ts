@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../integrations/supabase/client';
+import { useAuth } from '../contexts/AuthContext';
 import { getActiveOrganizationId } from '../utils/org';
 
 export interface Subscription {
@@ -23,6 +24,7 @@ export interface PaymentOrder {
 }
 
 export function useSubscription() {
+  const { user } = useAuth();
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [paymentOrders, setPaymentOrders] = useState<PaymentOrder[]>([]);
   const [loading, setLoading] = useState(true);
@@ -87,8 +89,15 @@ export function useSubscription() {
   };
 
   useEffect(() => {
-    checkSubscriptionStatus();
-  }, []);
+    if (user) {
+      checkSubscriptionStatus();
+    } else {
+      setLoading(false);
+      setHasActiveSubscription(false);
+      setSubscription(null);
+      setPaymentOrders([]);
+    }
+  }, [user]);
 
   return {
     subscription,
