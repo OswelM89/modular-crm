@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { UserPlus, FileText, Settings, Plus, ArrowRight } from 'lucide-react';
+import { UserPlus, FileText, Settings, Plus } from 'lucide-react';
 import { AddUserPage } from './AddUserPage';
 import { QuoteConfigPage } from './QuoteConfigPage';
 import { PreferencesPage } from './PreferencesPage';
@@ -99,37 +99,22 @@ export function SettingsPage() {
             <div 
               key={card.id}
               onClick={card.available ? card.action : undefined}
-              className={`bg-white border border-gray-200 rounded-xl p-6 transition-all duration-200 ${
+              className={`bg-white border border-gray-200 rounded-xl p-6 transition-colors ${
                 card.available 
-                  ? 'cursor-pointer hover:shadow-md hover:border-primary' 
+                  ? 'cursor-pointer' 
                   : 'cursor-not-allowed opacity-60'
               }`}
             >
-              <div className="flex flex-col items-start space-y-4">
-                <div className={`${card.color} p-3 rounded-xl`}>
-                  <Icon className="w-6 h-6 text-black" />
-                </div>
+              <div className="flex flex-col items-start space-y-1">
+                <Icon className="w-8 h-8 text-black" />
+                <p className="text-sm font-medium text-gray-600">{card.title}</p>
+                <p className="text-sm text-gray-500">{card.description}</p>
                 
-                <div className="flex-1 w-full">
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {card.title}
-                    </h3>
-                    {card.available && (
-                      <ArrowRight className="w-5 h-5 text-gray-400" />
-                    )}
+                {!card.available && (
+                  <div className="pt-2">
+                    <span className="text-sm text-gray-400 font-medium">Próximamente</span>
                   </div>
-                  
-                  <p className="text-sm text-gray-600 mb-4">
-                    {card.description}
-                  </p>
-                  
-                  {!card.available && (
-                    <div className="flex items-center justify-center py-2">
-                      <span className="text-sm text-gray-400 font-medium">Próximamente</span>
-                    </div>
-                  )}
-                </div>
+                )}
               </div>
             </div>
           );
