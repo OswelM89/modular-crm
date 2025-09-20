@@ -3,16 +3,31 @@ import { BarChart3, Building2, Users, Handshake, FileText, TrendingUp, Menu, X, 
 import { LanguageSelector } from '../UI/LanguageSelector';
 import { useTranslation } from '../../hooks/useTranslation';
 import { useAuth } from '../../contexts/AuthContext';
-
-const navigation = [
-  { id: 'dashboard', nameKey: 'nav.dashboard', icon: BarChart3 },
-  { id: 'contacts', nameKey: 'nav.contacts', icon: Users },
-  { id: 'companies', nameKey: 'nav.companies', icon: Building2 },
-  { id: 'deals', nameKey: 'nav.deals', icon: Handshake },
-  { id: 'quotes', nameKey: 'nav.quotes', icon: FileText },
-  { id: 'pipeline', nameKey: 'nav.pipeline', icon: TrendingUp },
-];
-
+const navigation = [{
+  id: 'dashboard',
+  nameKey: 'nav.dashboard',
+  icon: BarChart3
+}, {
+  id: 'contacts',
+  nameKey: 'nav.contacts',
+  icon: Users
+}, {
+  id: 'companies',
+  nameKey: 'nav.companies',
+  icon: Building2
+}, {
+  id: 'deals',
+  nameKey: 'nav.deals',
+  icon: Handshake
+}, {
+  id: 'quotes',
+  nameKey: 'nav.quotes',
+  icon: FileText
+}, {
+  id: 'pipeline',
+  nameKey: 'nav.pipeline',
+  icon: TrendingUp
+}];
 interface HeaderProps {
   activeSection: string;
   onSectionChange: (section: string) => void;
@@ -24,10 +39,17 @@ interface HeaderProps {
     avatar_url: string | null;
   } | null;
 }
-
-export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
-  const { t } = useTranslation();
-  const { signOut } = useAuth();
+export function Header({
+  activeSection,
+  onSectionChange,
+  user
+}: HeaderProps) {
+  const {
+    t
+  } = useTranslation();
+  const {
+    signOut
+  } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
 
@@ -39,16 +61,13 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
         setUserDropdownOpen(false);
       }
     };
-
     if (userDropdownOpen) {
       document.addEventListener('click', handleClickOutside);
     }
-
     return () => {
       document.removeEventListener('click', handleClickOutside);
     };
   }, [userDropdownOpen]);
-
   const handleLogout = async () => {
     try {
       await signOut();
@@ -57,9 +76,7 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
       console.error('Error al cerrar sesión:', error);
     }
   };
-
-  return (
-    <header className="bg-white border-b border-border shadow-sm">
+  return <header className="border-b border-border shadow-sm bg-teal-400">
       <div className="max-w-[1200px] mx-auto px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -69,20 +86,11 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-2">
-            {navigation.map((item) => {
-              const Icon = item.icon;
-              const isActive = activeSection === item.id;
-              
-              return (
-                <div key={item.id} className="relative group">
-                  <button
-                    onClick={() => onSectionChange(item.id)}
-                    className={`flex items-center justify-center w-10 h-10 rounded-md transition-all duration-200 ${
-                      isActive 
-                        ? 'bg-primary text-primary-foreground shadow-sm' 
-                        : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                    }`}
-                  >
+            {navigation.map(item => {
+            const Icon = item.icon;
+            const isActive = activeSection === item.id;
+            return <div key={item.id} className="relative group">
+                  <button onClick={() => onSectionChange(item.id)} className={`flex items-center justify-center w-10 h-10 rounded-md transition-all duration-200 ${isActive ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground hover:bg-muted'}`}>
                     <Icon className="w-5 h-5" />
                   </button>
                   
@@ -91,9 +99,8 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
                     {t(item.nameKey)}
                     <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-b-gray-900"></div>
                   </div>
-                </div>
-              );
-            })}
+                </div>;
+          })}
           </nav>
 
           {/* Right section */}
@@ -101,24 +108,12 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
             <LanguageSelector />
             
             {/* User info */}
-            {user && (
-              <div className="relative user-dropdown">
-                <div 
-                  className="hidden sm:flex items-center gap-3 cursor-pointer hover:bg-muted/80 bg-muted/40 px-4 py-2 rounded-2xl border border-border/50 hover:border-border transition-all duration-200 shadow-sm hover:shadow-md"
-                  onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                >
+            {user && <div className="relative user-dropdown">
+                <div className="hidden sm:flex items-center gap-3 cursor-pointer hover:bg-muted/80 bg-muted/40 px-4 py-2 rounded-2xl border border-border/50 hover:border-border transition-all duration-200 shadow-sm hover:shadow-md" onClick={() => setUserDropdownOpen(!userDropdownOpen)}>
                   {/* Avatar a la izquierda */}
-                  {user.avatar_url ? (
-                    <img 
-                      src={user.avatar_url} 
-                      alt="Avatar" 
-                      className="w-8 h-8 rounded-full ring-2 ring-primary/20"
-                    />
-                  ) : (
-                    <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-medium ring-2 ring-primary/20">
+                  {user.avatar_url ? <img src={user.avatar_url} alt="Avatar" className="w-8 h-8 rounded-full ring-2 ring-primary/20" /> : <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-medium ring-2 ring-primary/20">
                       {user.firstName.charAt(0)}
-                    </div>
-                  )}
+                    </div>}
                   
                   {/* Nombre */}
                   <div className="text-left">
@@ -128,84 +123,53 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
                   </div>
                   
                   {/* Chevron */}
-                  <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform duration-200 ${
-                    userDropdownOpen ? 'rotate-180' : ''
-                  }`} />
+                  <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform duration-200 ${userDropdownOpen ? 'rotate-180' : ''}`} />
                 </div>
                 
                 {/* Dropdown Menu */}
-                {userDropdownOpen && (
-                  <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-border shadow-lg rounded-md py-2 z-50 animate-scale-in">
-                    <button
-                      onClick={() => {
-                        onSectionChange('profile');
-                        setUserDropdownOpen(false);
-                      }}
-                      className="w-full px-4 py-2 text-left text-sm text-foreground hover:bg-muted transition-colors"
-                    >
+                {userDropdownOpen && <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-border shadow-lg rounded-md py-2 z-50 animate-scale-in">
+                    <button onClick={() => {
+                onSectionChange('profile');
+                setUserDropdownOpen(false);
+              }} className="w-full px-4 py-2 text-left text-sm text-foreground hover:bg-muted transition-colors">
                       Perfil
                     </button>
-                    <button
-                      onClick={() => {
-                        onSectionChange('settings');
-                        setUserDropdownOpen(false);
-                      }}
-                      className="w-full px-4 py-2 text-left text-sm text-foreground hover:bg-muted transition-colors"
-                    >
+                    <button onClick={() => {
+                onSectionChange('settings');
+                setUserDropdownOpen(false);
+              }} className="w-full px-4 py-2 text-left text-sm text-foreground hover:bg-muted transition-colors">
                       Configuración
                     </button>
                     <hr className="my-1 border-border" />
-                    <button
-                      onClick={handleLogout}
-                      className="w-full px-4 py-2 text-left text-sm text-destructive hover:bg-destructive/10 transition-colors"
-                    >
+                    <button onClick={handleLogout} className="w-full px-4 py-2 text-left text-sm text-destructive hover:bg-destructive/10 transition-colors">
                       Salir
                     </button>
-                  </div>
-                )}
-              </div>
-            )}
+                  </div>}
+              </div>}
 
             {/* Mobile menu button */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 text-muted-foreground hover:text-foreground"
-            >
+            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="md:hidden p-2 text-muted-foreground hover:text-foreground">
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
-        {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-border">
+        {mobileMenuOpen && <div className="md:hidden py-4 border-t border-border">
             <nav className="flex flex-col gap-2">
-              {navigation.map((item) => {
-                const Icon = item.icon;
-                const isActive = activeSection === item.id;
-                
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => {
-                      onSectionChange(item.id);
-                      setMobileMenuOpen(false);
-                    }}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-md text-sm font-medium transition-colors text-left ${
-                      isActive 
-                        ? 'bg-primary text-primary-foreground' 
-                        : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                    }`}
-                  >
+              {navigation.map(item => {
+            const Icon = item.icon;
+            const isActive = activeSection === item.id;
+            return <button key={item.id} onClick={() => {
+              onSectionChange(item.id);
+              setMobileMenuOpen(false);
+            }} className={`flex items-center gap-3 px-4 py-3 rounded-md text-sm font-medium transition-colors text-left ${isActive ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-muted'}`}>
                     <Icon className="w-4 h-4" />
                     {t(item.nameKey)}
-                  </button>
-                );
-              })}
+                  </button>;
+          })}
             </nav>
-          </div>
-        )}
+          </div>}
       </div>
-    </header>
-  );
+    </header>;
 }
