@@ -6,6 +6,7 @@ import { CompanyList } from './components/Companies/CompanyList';
 import { DealList } from './components/Deals/DealList';
 import { QuoteList } from './components/Quotes/QuoteList';
 import { QuoteBuilder } from './components/Quotes/QuoteBuilder';
+import { Pipeline } from './components/Pipeline/Pipeline';
 import { SettingsPage } from './components/Settings/SettingsPage';
 import { ProfilePage } from './components/Profile/ProfilePage';
 import { AuthPage } from './components/Auth/AuthPage';
@@ -57,19 +58,7 @@ function App() {
       case 'quote-builder':
         return <QuoteBuilder />;
       case 'pipeline':
-        return (
-          <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div>
-                <h1 className="text-display-lg text-foreground">Pipeline</h1>
-                <p className="text-muted-foreground">Administra tu pipeline de ventas</p>
-              </div>
-            </div>
-            <div className="bg-card rounded-xl shadow-sm border border-border p-8 text-center">
-              <p className="text-muted-foreground">Módulo de pipeline en desarrollo</p>
-            </div>
-          </div>
-        );
+        return <Pipeline />;
       case 'reports':
         return (
           <div className="space-y-6">
