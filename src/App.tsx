@@ -122,7 +122,7 @@ function App() {
         user={transformedUser}
       />
       
-      <main className="px-6 py-8">
+      <main className="px-6 py-8 bg-content-background">
         <div className="max-w-[1150px] mx-auto">
           {renderContent()}
         </div>
