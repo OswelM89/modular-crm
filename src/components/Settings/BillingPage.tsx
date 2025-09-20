@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ArrowLeft, CreditCard, Calendar, CheckCircle, XCircle, Clock, AlertTriangle } from 'lucide-react';
 import { useSubscription } from '../../hooks/useSubscription';
+import { supabase } from '../../integrations/supabase/client';
 
 interface BillingPageProps {
   onBack: () => void;
@@ -32,13 +33,40 @@ export function BillingPage({ onBack }: BillingPageProps) {
   // Check for payment success in URL
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('payment') === 'success') {
-      // Refresh subscription status after successful payment
-      checkSubscriptionStatus();
-      // Clean up URL
+    const paymentStatus = urlParams.get('payment');
+    const boldOrderId = urlParams.get('bold-order-id');
+    const boldTxStatus = urlParams.get('bold-tx-status');
+    
+    if (paymentStatus === 'success' || boldTxStatus === 'approved') {
+      if (boldOrderId && boldTxStatus === 'approved') {
+        // Activate subscription for this specific payment
+        activatePayment(boldOrderId);
+      } else {
+        // Just refresh subscription status
+        checkSubscriptionStatus();
+      }
+      
+      // Clear URL parameters
       window.history.replaceState({}, document.title, window.location.pathname);
     }
   }, [checkSubscriptionStatus]);
+
+  const activatePayment = async (boldOrderId: string) => {
+    try {
+      const { error } = await supabase.rpc('activate_subscription_for_order', {
+        p_bold_order_id: boldOrderId
+      });
+      
+      if (error) {
+        console.error('Error activating subscription:', error);
+      } else {
+        // Refresh subscription status after activation
+        setTimeout(() => checkSubscriptionStatus(), 1000);
+      }
+    } catch (error) {
+      console.error('Error activating payment:', error);
+    }
+  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('es-CO', {
