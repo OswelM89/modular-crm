@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, CreditCard, Calendar, CheckCircle, XCircle, Clock, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, CreditCard, Calendar, CheckCircle, XCircle, Clock, AlertTriangle, Ban } from 'lucide-react';
 import { useSubscription } from '../../hooks/useSubscription';
 import { supabase } from '../../integrations/supabase/client';
 
@@ -17,6 +17,79 @@ export function BillingPage({ onBack }: BillingPageProps) {
     checkSubscriptionStatus 
   } = useSubscription();
   const [creatingOrder, setCreatingOrder] = useState(false);
+  const [cancellingSubscription, setCancellingSubscription] = useState(false);
+  const [reactivatingSubscription, setReactivatingSubscription] = useState(false);
+  const [timeRemaining, setTimeRemaining] = useState('');
+
+  // Calculate time remaining when subscription is cancelled
+  useEffect(() => {
+    if (subscription?.status === 'cancelled' && subscription?.expires_at) {
+      const updateTimeRemaining = () => {
+        const now = new Date().getTime();
+        const expiry = new Date(subscription.expires_at!).getTime();
+        const difference = expiry - now;
+
+        if (difference > 0) {
+          const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+          
+          if (days > 0) {
+            setTimeRemaining(`${days}d ${hours}h ${minutes}m`);
+          } else if (hours > 0) {
+            setTimeRemaining(`${hours}h ${minutes}m`);
+          } else {
+            setTimeRemaining(`${minutes}m`);
+          }
+        } else {
+          setTimeRemaining('Expirado');
+        }
+      };
+
+      updateTimeRemaining();
+      const interval = setInterval(updateTimeRemaining, 60000); // Update every minute
+      
+      return () => clearInterval(interval);
+    }
+  }, [subscription]);
+
+  const handleCancelSubscription = async () => {
+    try {
+      setCancellingSubscription(true);
+      const { error } = await supabase.rpc('cancel_subscription');
+      
+      if (error) {
+        console.error('Error cancelling subscription:', error);
+        alert('Error al cancelar la suscripción. Por favor, inténtalo de nuevo.');
+      } else {
+        await checkSubscriptionStatus();
+      }
+    } catch (error) {
+      console.error('Error cancelling subscription:', error);
+      alert('Error al cancelar la suscripción. Por favor, inténtalo de nuevo.');
+    } finally {
+      setCancellingSubscription(false);
+    }
+  };
+
+  const handleReactivateSubscription = async () => {
+    try {
+      setReactivatingSubscription(true);
+      const { error } = await supabase.rpc('reactivate_subscription');
+      
+      if (error) {
+        console.error('Error reactivating subscription:', error);
+        alert('Error al reactivar la suscripción. Por favor, inténtalo de nuevo.');
+      } else {
+        await checkSubscriptionStatus();
+      }
+    } catch (error) {
+      console.error('Error reactivating subscription:', error);
+      alert('Error al reactivar la suscripción. Por favor, inténtalo de nuevo.');
+    } finally {
+      setReactivatingSubscription(false);
+    }
+  };
 
   const handleCreatePayment = async () => {
     try {
