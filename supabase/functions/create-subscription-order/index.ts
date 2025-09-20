@@ -89,7 +89,7 @@ serve(async (req) => {
     // Update payment order with Bold.co link ID
     const { error: updateError } = await supabase
       .from('payment_orders')
-      .update({ bold_order_id: boldOrder.link_id })
+      .update({ bold_order_id: boldOrder.payment_link })
       .eq('id', paymentOrder.id);
 
     if (updateError) {
@@ -97,8 +97,8 @@ serve(async (req) => {
     }
 
     return new Response(JSON.stringify({ 
-      paymentUrl: boldOrder.payment_link,
-      orderId: boldOrder.link_id,
+      paymentUrl: boldOrder.url,
+      orderId: boldOrder.payment_link,
       orderReference: paymentOrder.id
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
