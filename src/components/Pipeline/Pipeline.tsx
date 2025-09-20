@@ -178,13 +178,13 @@ export function Pipeline() {
 
       {/* Pipeline Board */}
       <div className="bg-white border border-gray-200 rounded-xl p-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="flex gap-6 overflow-x-auto pb-4 min-h-[600px]" style={{ scrollbarWidth: 'thin' }}>
           {stages.map((stage) => {
             const stageDeals = getDealsForStage(stage.id);
             const totalValue = getTotalValue(stage.id);
 
             return (
-              <div key={stage.id} className="bg-gray-50 rounded-xl p-4">
+              <div key={stage.id} className="bg-gray-50 rounded-xl p-4 min-w-[300px] flex-shrink-0">
                 {/* Stage Header */}
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
@@ -228,7 +228,7 @@ export function Pipeline() {
                 </div>
 
                 {/* Deals */}
-                <div className="space-y-3 max-h-96 overflow-y-auto">
+                <div className="space-y-3 max-h-[450px] overflow-y-auto">
                   {stageDeals.map((deal) => (
                     <div key={deal.id} className="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow cursor-pointer">
                       <h4 className="font-medium text-gray-900 text-sm mb-2 line-clamp-2">
@@ -275,6 +275,11 @@ export function Pipeline() {
               </div>
             );
           })}
+        </div>
+        
+        {/* Scroll indicator */}
+        <div className="text-center text-xs text-gray-500 mt-2">
+          ← Desliza horizontalmente para ver más etapas →
         </div>
       </div>
 
