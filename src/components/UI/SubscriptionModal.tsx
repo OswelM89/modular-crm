@@ -27,7 +27,7 @@ export function SubscriptionModal({ isOpen, onClose }: SubscriptionModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+    <div className="fixed top-0 left-0 right-0 bottom-0 bg-black/50 flex items-center justify-center p-4 z-[9999]">
       <div className="bg-white rounded-xl max-w-md w-full p-6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold text-gray-900">Suscripción Requerida</h2>
