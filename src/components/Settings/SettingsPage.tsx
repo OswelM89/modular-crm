@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-import { UserPlus, FileText, Settings, Plus } from 'lucide-react';
+import { UserPlus, FileText, Plus, CreditCard } from 'lucide-react';
 import { AddUserPage } from './AddUserPage';
 import { QuoteConfigPage } from './QuoteConfigPage';
-import { PreferencesPage } from './PreferencesPage';
 
 export function SettingsPage() {
   const [currentPage, setCurrentPage] = useState<string>(() => {
@@ -14,6 +13,15 @@ export function SettingsPage() {
   }, [currentPage]);
 
   const settingsCards = [
+    {
+      id: 'billing',
+      title: 'Facturación',
+      description: 'Gestiona tu suscripción y métodos de pago',
+      icon: CreditCard,
+      color: 'bg-gray-100',
+      available: true,
+      action: () => {}
+    },
     {
       id: 'users',
       title: 'Gestión de Usuarios',
@@ -33,15 +41,6 @@ export function SettingsPage() {
       action: () => setCurrentPage('quotes')
     },
     {
-      id: 'preferences',
-      title: 'Preferencias Generales',
-      description: 'Configura idioma, zona horaria y otras preferencias',
-      icon: Settings,
-      color: 'bg-gray-100',
-      available: true,
-      action: () => setCurrentPage('preferences')
-    },
-    {
       id: 'integrations',
       title: 'Integraciones',
       description: 'Conecta con herramientas externas y APIs',
@@ -58,15 +57,6 @@ export function SettingsPage() {
       color: 'bg-gray-100',
       available: false,
       action: () => {}
-    },
-    {
-      id: 'billing',
-      title: 'Facturación',
-      description: 'Gestiona tu suscripción y métodos de pago',
-      icon: Plus,
-      color: 'bg-gray-100',
-      available: true,
-      action: () => {}
     }
   ];
 
@@ -77,10 +67,6 @@ export function SettingsPage() {
 
   if (currentPage === 'quotes') {
     return <QuoteConfigPage onBack={() => setCurrentPage('main')} />;
-  }
-
-  if (currentPage === 'preferences') {
-    return <PreferencesPage onBack={() => setCurrentPage('main')} />;
   }
 
   // Vista principal de configuraciones
