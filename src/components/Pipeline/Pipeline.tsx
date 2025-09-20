@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Plus, DollarSign, User, Building2, Calendar, MoreVertical, Edit, Trash2 } from 'lucide-react';
 import { Deal } from '../../types';
 import { mockDeals } from '../../data/mockData';
@@ -40,7 +41,7 @@ function NewStageModal({ isOpen, onClose, onSave }: NewStageModalProps) {
 
   if (!isOpen) return null;
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Crear Nueva Etapa</h3>
@@ -93,7 +94,8 @@ function NewStageModal({ isOpen, onClose, onSave }: NewStageModalProps) {
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
