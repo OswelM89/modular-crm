@@ -319,17 +319,6 @@ export function BillingPage({ onBack }: BillingPageProps) {
             </div>
           </div>
         </div>
-        
-        {hasActiveSubscription && (
-          <button
-            onClick={handleCreatePayment}
-            disabled={creatingOrder}
-            className="mt-4 inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 transition-colors rounded-lg"
-          >
-            <CreditCard className="w-4 h-4 mr-2" />
-            {creatingOrder ? 'Procesando...' : 'Renovar Suscripción'}
-          </button>
-        )}
       </div>
 
       {/* Payment History */}
