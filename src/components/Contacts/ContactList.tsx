@@ -10,10 +10,14 @@ export function ContactList() {
   const [loading, setLoading] = React.useState(true);
   const [contacts, setContacts] = React.useState<Contact[]>([]);
   const [searchTerm, setSearchTerm] = React.useState('');
+  const [responsibleFilter, setResponsibleFilter] = React.useState('all');
+  const [currentPage, setCurrentPage] = React.useState(1);
   const [showContactForm, setShowContactForm] = React.useState(false);
   const [selectedContact, setSelectedContact] = React.useState<Contact | null>(null);
   const [selectedContacts, setSelectedContacts] = React.useState<string[]>([]);
   const { t } = useTranslation();
+
+  const ITEMS_PER_PAGE = 20;
 
   // Load contacts from database
   React.useEffect(() => {
@@ -32,11 +36,33 @@ export function ContactList() {
     loadContacts();
   }, []);
 
-  const filteredContacts = contacts.filter(contact =>
-    contact.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    contact.last_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    contact.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredContacts = contacts.filter(contact => {
+    const matchesSearch = contact.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      contact.last_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      contact.email.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesResponsible = responsibleFilter === 'all' || contact.user_id === responsibleFilter;
+    return matchesSearch && matchesResponsible;
+  });
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredContacts.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const paginatedContacts = filteredContacts.slice(startIndex, endIndex);
+
+  // Get unique responsible users
+  const uniqueResponsible = React.useMemo(() => {
+    const responsibleUsers = contacts.reduce((acc, contact) => {
+      if (!acc.some(user => user.id === contact.user_id)) {
+        acc.push({
+          id: contact.user_id,
+          name: `Usuario ${contact.user_id.slice(-5).toUpperCase()}`
+        });
+      }
+      return acc;
+    }, [] as { id: string; name: string }[]);
+    return responsibleUsers;
+  }, [contacts]);
 
   const handleCreateContact = (newContact: Contact) => {
     setContacts(prev => [newContact, ...prev]);
@@ -51,10 +77,10 @@ export function ContactList() {
   };
 
   const handleSelectAll = () => {
-    if (selectedContacts.length === filteredContacts.length) {
+    if (selectedContacts.length === paginatedContacts.length) {
       setSelectedContacts([]);
     } else {
-      setSelectedContacts(filteredContacts.map(contact => contact.id));
+      setSelectedContacts(paginatedContacts.map(contact => contact.id));
     }
   };
 
@@ -203,15 +229,29 @@ export function ContactList() {
         </div>
       </div>
 
-      <div className="bg-white border border-gray-200">
+      <div className="bg-white border border-gray-200 rounded-xl">
         <div className="p-6 border-b border-gray-200">
-          <input
-            type="text"
-            placeholder={t('contacts.search')}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-           className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent"
-          />
+          <div className="flex flex-col sm:flex-row gap-4">
+            <input
+              type="text"
+              placeholder={t('contacts.search')}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+            />
+            <select
+              value={responsibleFilter}
+              onChange={(e) => setResponsibleFilter(e.target.value)}
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+            >
+              <option value="all">Todos los responsables</option>
+              {uniqueResponsible.map((user) => (
+                <option key={user.id} value={user.id}>
+                  {user.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         <div className="overflow-x-auto">
@@ -221,7 +261,7 @@ export function ContactList() {
                 <th className="px-6 py-3 text-left">
                   <input
                     type="checkbox"
-                    checked={selectedContacts.length === filteredContacts.length && filteredContacts.length > 0}
+                    checked={selectedContacts.length === paginatedContacts.length && paginatedContacts.length > 0}
                     onChange={handleSelectAll}
                    className="w-4 h-4 text-primary bg-gray-100 border-gray-300 focus:ring-primary focus:ring-2"
                   />
@@ -241,7 +281,7 @@ export function ContactList() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {filteredContacts.map((contact) => (
+              {paginatedContacts.map((contact) => (
                 <tr key={contact.id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <input
@@ -294,6 +334,62 @@ export function ContactList() {
             </tbody>
           </table>
         </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+            <div className="text-sm text-gray-700">
+              Mostrando {startIndex + 1} - {Math.min(endIndex, filteredContacts.length)} de {filteredContacts.length} contactos
+            </div>
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="px-3 py-1 text-sm border border-gray-300 rounded-lg bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Anterior
+              </button>
+              
+              {/* Page numbers */}
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => {
+                // Show first page, last page, current page, and pages around current page
+                const showPage = pageNum === 1 || 
+                                pageNum === totalPages || 
+                                (pageNum >= currentPage - 1 && pageNum <= currentPage + 1);
+                
+                if (!showPage && pageNum === 2 && currentPage > 4) {
+                  return <span key={pageNum} className="px-2 text-gray-400">...</span>;
+                }
+                if (!showPage && pageNum === totalPages - 1 && currentPage < totalPages - 3) {
+                  return <span key={pageNum} className="px-2 text-gray-400">...</span>;
+                }
+                if (!showPage) return null;
+
+                return (
+                  <button
+                    key={pageNum}
+                    onClick={() => setCurrentPage(pageNum)}
+                    className={`px-3 py-1 text-sm rounded-lg ${
+                      currentPage === pageNum
+                        ? 'bg-primary text-primary-foreground'
+                        : 'border border-gray-300 bg-white hover:bg-gray-50'
+                    }`}
+                  >
+                    {pageNum}
+                  </button>
+                );
+              })}
+              
+              <button
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className="px-3 py-1 text-sm border border-gray-300 rounded-lg bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Siguiente
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       <ContactForm
