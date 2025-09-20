@@ -61,6 +61,7 @@ serve(async (req) => {
       },
       description: "Suscripción mensual CRM - $120,000 COP",
       callback_url: `${req.headers.get('origin')}/settings?payment=success`,
+      webhook_url: `https://drmismwbcohktquctoal.supabase.co/functions/v1/payment-webhook`,
       payment_methods: ["CREDIT_CARD", "PSE"]
     };
 
