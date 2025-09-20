@@ -312,10 +312,18 @@ export function QuoteList() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="space-y-1">
-                      <div className="flex items-center text-sm text-gray-900">
-                        <Building2 className="w-4 h-4 mr-2" />
-                        {quote.company?.name}
-                      </div>
+                      {quote.company ? (
+                        <div className="flex items-center text-sm text-gray-900">
+                          <Building2 className="w-4 h-4 mr-2" />
+                          {quote.company.name}
+                        </div>
+                      ) : (
+                        <div className="flex items-center text-sm text-gray-900">
+                          <User className="w-4 h-4 mr-2" />
+                          {quote.contact?.firstName} {quote.contact?.lastName}
+                          <span className="ml-2 text-xs text-gray-500">(Independiente)</span>
+                        </div>
+                      )}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
