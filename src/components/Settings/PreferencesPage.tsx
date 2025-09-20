@@ -210,7 +210,7 @@ export function PreferencesPage({ onBack }: PreferencesPageProps) {
                       key={theme.value}
                       className={`flex flex-col items-center p-4 border cursor-pointer ${
                         preferences.theme === theme.value
-                          ? 'border-[#FF6200] bg-orange-50'
+                          ? 'border-primary bg-primary/10'
                           : 'border-gray-300'
                       }`}
                     >

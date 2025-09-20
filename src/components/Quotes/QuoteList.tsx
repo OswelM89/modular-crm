@@ -90,7 +90,7 @@ export function QuoteList() {
         <div className="flex items-center gap-4">
           <button 
             onClick={() => setShowCreateQuote(true)}
-            className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+            className="inline-flex items-center px-6 py-3 text-base bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
           >
             <Plus className="w-4 h-4 mr-2" />
             {t('quotes.new')}
@@ -192,7 +192,7 @@ export function QuoteList() {
                       <button className="text-gray-600 hover:text-gray-900 transition-colors">
                         <Eye className="w-4 h-4" />
                       </button>
-                      <button className="text-[#FF6200] hover:text-orange-700 transition-colors">
+                      <button className="text-primary hover:text-primary/70 transition-colors">
                         <Edit className="w-4 h-4" />
                       </button>
                       <button className="text-red-600 hover:text-red-900 transition-colors">

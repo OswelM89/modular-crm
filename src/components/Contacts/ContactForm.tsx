@@ -182,7 +182,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                       type="text"
                       value={formData.firstName}
                       onChange={(e) => handleInputChange('firstName', e.target.value)}
-                     className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                     className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-primary focus:border-transparent ${
                         errors.firstName ? 'border-red-500' : 'border-gray-300'
                       }`}
                       placeholder={t('contacts.form.firstNamePlaceholder')}
@@ -201,7 +201,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                     type="text"
                     value={formData.lastName}
                     onChange={(e) => handleInputChange('lastName', e.target.value)}
-                   className={`w-full px-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                   className={`w-full px-4 py-2 border focus:ring-2 focus:ring-primary focus:border-transparent ${
                       errors.lastName ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder={t('contacts.form.lastNamePlaceholder')}
@@ -223,7 +223,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                     type="text"
                     value={formData.idNumber}
                     onChange={(e) => handleInputChange('idNumber', e.target.value)}
-                    className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                     className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-primary focus:border-transparent ${
                       errors.idNumber ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder={t('contacts.form.idNumberPlaceholder')}
@@ -327,7 +327,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   {t('contacts.form.taxDocument')}
                 </label>
-                <div className={`border-2 border-dashed p-4 hover:border-[#FF6200] transition-colors ${
+                <div className={`border-2 border-dashed p-4 hover:border-primary transition-colors ${
                   errors.taxDocument ? 'border-red-500' : 'border-gray-300'
                 }`}>
                   <input
@@ -388,7 +388,7 @@ export function ContactForm({ isOpen, onClose, onSubmit }: ContactFormProps) {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2 bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+                  className="flex-1 px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
                 >
                   {t('contacts.form.create')}
                 </button>

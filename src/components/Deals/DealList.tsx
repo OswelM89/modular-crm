@@ -49,7 +49,7 @@ export function DealList() {
       'prospecting': 'bg-gray-100 text-gray-800',
       'qualification': 'bg-blue-100 text-blue-800',
       'proposal': 'bg-yellow-100 text-yellow-800',
-      'negotiation': 'bg-orange-100 text-orange-800',
+      'negotiation': 'bg-primary/10 text-primary',
       'closed-won': 'bg-green-100 text-green-800',
       'closed-lost': 'bg-red-100 text-red-800',
     };
@@ -192,7 +192,7 @@ export function DealList() {
           )}
           <button 
             onClick={() => setShowDealForm(true)}
-            className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+            className="inline-flex items-center px-6 py-3 text-base bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
           >
             <Plus className="w-4 h-4 mr-2" />
             {t('deals.new')}
@@ -208,12 +208,12 @@ export function DealList() {
               placeholder={t('deals.search')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-             className="flex-1 px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+             className="flex-1 px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent"
             />
             <select
               value={filterStage}
               onChange={(e) => setFilterStage(e.target.value)}
-             className="px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+             className="px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent"
             >
               {stages.map((stage) => (
                 <option key={stage.value} value={stage.value}>
@@ -233,7 +233,7 @@ export function DealList() {
                     type="checkbox"
                     checked={selectedDeals.length === filteredDeals.length && filteredDeals.length > 0}
                     onChange={handleSelectAll}
-                   className="w-4 h-4 text-[#FF6200] bg-gray-100 border-gray-300 focus:ring-[#FF6200] focus:ring-2"
+                   className="w-4 h-4 text-primary bg-gray-100 border-gray-300 focus:ring-primary focus:ring-2"
                   />
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -261,12 +261,12 @@ export function DealList() {
                       type="checkbox"
                       checked={selectedDeals.includes(deal.id)}
                       onChange={() => handleSelectDeal(deal.id)}
-                     className="w-4 h-4 text-[#FF6200] bg-gray-100 border-gray-300 focus:ring-[#FF6200] focus:ring-2"
+                     className="w-4 h-4 text-primary bg-gray-100 border-gray-300 focus:ring-primary focus:ring-2"
                     />
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                      <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
                         <span className="text-sm font-medium text-[#FF6200]">
                           {deal.title.charAt(0)}
                         </span>

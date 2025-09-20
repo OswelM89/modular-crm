@@ -101,7 +101,7 @@ export function SettingsPage() {
               onClick={card.available ? card.action : undefined}
               className={`bg-white border border-gray-200 p-6 transition-all duration-200 ${
                 card.available 
-                  ? 'cursor-pointer hover:shadow-md hover:border-[#FF6200]' 
+                  ? 'cursor-pointer hover:shadow-md hover:border-primary' 
                   : 'cursor-not-allowed opacity-60'
               }`}
             >
@@ -150,7 +150,7 @@ export function SettingsPage() {
             </a>
             <a 
               href="#" 
-              className="inline-flex items-center px-4 py-2 bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+              className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
             >
               Contactar Soporte
             </a>

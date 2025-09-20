@@ -307,7 +307,7 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
         {!isEditing ? (
           <button
             onClick={() => setIsEditing(true)}
-            className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+            className="inline-flex items-center px-6 py-3 text-base bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
           >
             <Edit className="w-4 h-4 mr-2" />
             Editar Perfil
@@ -323,7 +323,7 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
             </button>
             <button
               onClick={handleSave}
-              className="inline-flex items-center px-4 py-2 bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+              className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
             >
               <Save className="w-4 h-4 mr-2" />
               Guardar
@@ -341,7 +341,7 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
             <div className="flex items-start gap-6">
               {/* Avatar */}
               <div className="relative">
-                <div className="w-24 h-24 bg-orange-100 flex items-center justify-center overflow-hidden">
+                <div className="w-24 h-24 bg-primary/10 flex items-center justify-center overflow-hidden">
                   {previewAvatar || profileData.avatar ? (
                     <img 
                       src={previewAvatar || profileData.avatar || undefined} 
@@ -513,7 +513,7 @@ export function ProfilePage({ user, onBack }: ProfilePageProps) {
             
             <div className="grid grid-cols-1 gap-6">
               <div className="flex items-center">
-                <div className="w-10 h-10 bg-orange-100 flex items-center justify-center mr-4 rounded-lg">
+                <div className="w-10 h-10 bg-primary/10 flex items-center justify-center mr-4 rounded-lg">
                   <Building2 className="w-5 h-5 text-[#FF6200]" />
                 </div>
                 <div className="flex-1">

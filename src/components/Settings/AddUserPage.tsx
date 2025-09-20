@@ -288,7 +288,7 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
         </div>
         <button 
           onClick={() => setShowUserForm(true)}
-          className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+          className="inline-flex items-center px-6 py-3 text-base bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
         >
           <Plus className="w-4 h-4 mr-2" />
           Nuevo Usuario
@@ -367,7 +367,7 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      <div className="w-10 h-10 bg-orange-100 flex items-center justify-center">
+                      <div className="w-10 h-10 bg-primary/10 flex items-center justify-center">
                         <span className="text-sm font-medium text-[#FF6200]">
                           {user.firstName.charAt(0)}{user.lastName.charAt(0)}
                         </span>
@@ -401,7 +401,7 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div className="flex items-center justify-end space-x-2">
-                      <button className="text-[#FF6200] hover:text-orange-700 transition-colors">
+                      <button className="text-primary hover:text-primary/70 transition-colors">
                         <Edit className="w-4 h-4" />
                       </button>
                       <button className="text-red-600 hover:text-red-900 transition-colors">
@@ -623,7 +623,7 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 px-4 py-2 bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+                    className="flex-1 px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
                   >
                     Crear Usuario
                   </button>

@@ -171,7 +171,7 @@ export function QuoteBuilder() {
               <h4 className="text-lg font-semibold text-gray-900">Items de la Cotización</h4>
               <button
                 onClick={addItem}
-                className="inline-flex items-center px-3 py-2 bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+                className="inline-flex items-center px-3 py-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Agregar Item

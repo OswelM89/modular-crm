@@ -194,7 +194,7 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
             <div className="flex gap-2">
               <button
                 onClick={handleSave}
-                className="inline-flex items-center px-4 py-2 bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+                className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
               >
                 <Save className="w-4 h-4 mr-2" />
                 Guardar
@@ -243,8 +243,8 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
       <div className="bg-white border border-gray-200">
         <div className="p-6 border-b border-gray-200">
           <div className="flex items-center">
-            <div className="w-16 h-16 bg-orange-100 flex items-center justify-center">
-              <span className="text-xl font-semibold text-[#FF6200]">
+            <div className="w-16 h-16 bg-primary/10 flex items-center justify-center">
+              <span className="text-xl font-semibold text-primary">
                 {(isEditing ? editedContact : contact).first_name.charAt(0)}{(isEditing ? editedContact : contact).last_name.charAt(0)}
               </span>
             </div>
@@ -258,14 +258,14 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
                       type="text"
                       value={editedContact.first_name}
                       onChange={(e) => handleInputChange('first_name', e.target.value)}
-                      className="text-2xl font-bold bg-transparent border-b-2 border-[#FF6200] focus:outline-none"
+                      className="text-2xl font-bold bg-transparent border-b-2 border-primary focus:outline-none"
                       placeholder="Nombre"
                     />
                     <input
                       type="text"
                       value={editedContact.last_name}
                       onChange={(e) => handleInputChange('last_name', e.target.value)}
-                      className="text-2xl font-bold bg-transparent border-b-2 border-[#FF6200] focus:outline-none"
+                      className="text-2xl font-bold bg-transparent border-b-2 border-primary focus:outline-none"
                       placeholder="Apellido"
                     />
                   </div>
@@ -273,7 +273,7 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
                     type="text"
                     value={editedContact.position || ''}
                     onChange={(e) => handleInputChange('position', e.target.value)}
-                    className="text-lg text-gray-600 bg-transparent border-b border-gray-300 focus:outline-none focus:border-[#FF6200]"
+                    className="text-lg text-gray-600 bg-transparent border-b border-gray-300 focus:outline-none focus:border-primary"
                     placeholder="Cargo o posición"
                   />
                 </div>
@@ -290,7 +290,7 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
                 </div>
                 
                 {!isEditing && (
-                  <button className="inline-flex items-center px-4 py-2 bg-[#FF6200] text-white rounded-lg hover:bg-orange-600 transition-colors">
+                  <button className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors">
                     <Briefcase className="w-4 h-4 mr-2" />
                     Crear Negocio
                   </button>
@@ -362,8 +362,8 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
 
                 {(isEditing || contact.company_id) && (
                   <div className="flex items-center">
-                    <div className="w-10 h-10 bg-orange-100 flex items-center justify-center mr-4">
-                      <Building2 className="w-5 h-5 text-[#FF6200]" />
+                    <div className="w-10 h-10 bg-primary/10 flex items-center justify-center mr-4">
+                      <Building2 className="w-5 h-5 text-primary" />
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-900">Empresa</p>
@@ -440,7 +440,7 @@ export function ContactDetail({ contact, onBack, onUpdate, onDelete }: ContactDe
                       <p className="text-sm font-medium text-gray-900">Documento Fiscal</p>
                       {isEditing ? (
                         <div className="space-y-2">
-                          <div className="border-2 border-dashed border-gray-300 p-3 hover:border-[#FF6200] transition-colors">
+                          <div className="border-2 border-dashed border-gray-300 p-3 hover:border-primary transition-colors">
                             <input
                               type="file"
                               id="editTaxDocument"

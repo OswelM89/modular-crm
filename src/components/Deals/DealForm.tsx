@@ -370,7 +370,7 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
                             }}
                             className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
                           >
-                            <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center mr-3">
+                            <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mr-3">
                               <span className="text-xs font-medium text-[#FF6200]">
                                 {contact.firstName.charAt(0)}{contact.lastName.charAt(0)}
                               </span>
@@ -541,7 +541,7 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
               </button>
               <button
                 type="submit"
-                className="flex-1 px-4 py-2 bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+                className="flex-1 px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
               >
                 {t('deals.form.create')}
               </button>

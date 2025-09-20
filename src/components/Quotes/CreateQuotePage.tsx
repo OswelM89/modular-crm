@@ -191,7 +191,7 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
           </button>
           <button
             onClick={handleSend}
-            className="inline-flex items-center px-4 py-2 bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+            className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
           >
             <Send className="w-4 h-4 mr-2" />
             Enviar Cotización
@@ -308,7 +308,7 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
               <h3 className="text-lg font-semibold text-gray-900">Items de la Cotización</h3>
               <button
                 onClick={addItem}
-                className="inline-flex items-center px-4 py-2 bg-[#FF6200] text-white hover:bg-orange-600 transition-colors shadow-sm"
+                className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-sm"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Agregar Item

@@ -195,7 +195,7 @@ export function ContactList() {
           )}
           <button 
             onClick={() => setShowContactForm(true)}
-            className="inline-flex items-center px-6 py-3 text-base bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+            className="inline-flex items-center px-6 py-3 text-base bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
           >
             <Plus className="w-4 h-4 mr-2" />
             {t('contacts.new')}
@@ -210,7 +210,7 @@ export function ContactList() {
             placeholder={t('contacts.search')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-           className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+           className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent"
           />
         </div>
 
@@ -223,7 +223,7 @@ export function ContactList() {
                     type="checkbox"
                     checked={selectedContacts.length === filteredContacts.length && filteredContacts.length > 0}
                     onChange={handleSelectAll}
-                   className="w-4 h-4 text-[#FF6200] bg-gray-100 border-gray-300 focus:ring-[#FF6200] focus:ring-2"
+                   className="w-4 h-4 text-primary bg-gray-100 border-gray-300 focus:ring-primary focus:ring-2"
                   />
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -248,12 +248,12 @@ export function ContactList() {
                       type="checkbox"
                       checked={selectedContacts.includes(contact.id)}
                       onChange={() => handleSelectContact(contact.id)}
-                     className="w-4 h-4 text-[#FF6200] bg-gray-100 border-gray-300 focus:ring-[#FF6200] focus:ring-2"
+                     className="w-4 h-4 text-primary bg-gray-100 border-gray-300 focus:ring-primary focus:ring-2"
                     />
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                      <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
                         <span className="text-sm font-medium text-[#FF6200]">
                           {contact.first_name.charAt(0)}{contact.last_name.charAt(0)}
                         </span>

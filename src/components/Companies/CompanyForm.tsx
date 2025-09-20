@@ -161,7 +161,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
                     type="text"
                     value={formData.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
-                    className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                    className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-primary focus:border-transparent ${
                       errors.name ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder={t('companies.form.namePlaceholder')}
@@ -183,7 +183,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
                     type="text"
                     value={formData.nit}
                     onChange={(e) => handleInputChange('nit', e.target.value)}
-                    className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                    className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-primary focus:border-transparent ${
                       errors.nit ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder={t('companies.form.nitPlaceholder')}
@@ -205,7 +205,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
                     type="text"
                     value={formData.sector}
                     onChange={(e) => handleInputChange('sector', e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent"
                     placeholder={t('companies.form.sectorPlaceholder')}
                   />
                 </div>
@@ -222,7 +222,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
                     type="url"
                     value={formData.website}
                     onChange={(e) => handleInputChange('website', e.target.value)}
-                    className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                    className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-primary focus:border-transparent ${
                       errors.website ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder={t('companies.form.websitePlaceholder')}
@@ -244,7 +244,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
                     type="email"
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
-                    className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-[#FF6200] focus:border-transparent ${
+                    className={`w-full pl-10 pr-4 py-2 border focus:ring-2 focus:ring-primary focus:border-transparent ${
                       errors.email ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder={t('companies.form.emailPlaceholder')}
@@ -266,7 +266,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent"
                     placeholder={t('companies.form.phonePlaceholder')}
                   />
                 </div>
@@ -283,7 +283,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
                     rows={3}
                     value={formData.address}
                     onChange={(e) => handleInputChange('address', e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent"
                     placeholder={t('companies.form.addressPlaceholder')}
                   />
                 </div>
@@ -300,7 +300,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
                     type="text"
                     value={formData.city}
                     onChange={(e) => handleInputChange('city', e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent"
                     placeholder={t('companies.form.cityPlaceholder')}
                   />
                 </div>
@@ -317,7 +317,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
                     type="text"
                     value={formData.country}
                     onChange={(e) => handleInputChange('country', e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent"
                     placeholder={t('companies.form.countryPlaceholder')}
                   />
                 </div>
@@ -328,7 +328,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Documento Fiscal
                 </label>
-                <div className={`border-2 border-dashed p-4 hover:border-[#FF6200] transition-colors ${
+                <div className={`border-2 border-dashed p-4 hover:border-primary transition-colors ${
                   errors.taxDocument ? 'border-red-500' : 'border-gray-300'
                 }`}>
                   <input
@@ -383,7 +383,7 @@ export function CompanyForm({ isOpen, onClose, onSubmit }: CompanyFormProps) {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2 bg-[#FF6200] text-white hover:bg-orange-600 transition-colors"
+                  className="flex-1 px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
                 >
                   {t('companies.form.create')}
                 </button>
