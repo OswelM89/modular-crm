@@ -234,7 +234,7 @@ export function BillingPage({ onBack }: BillingPageProps) {
             <h2 className="text-xl font-semibold text-gray-900 mb-2">
               Estado de Suscripción
             </h2>
-            {hasActiveSubscription && subscription?.status !== 'cancelled' ? (
+            {hasActiveSubscription && subscription?.status === 'active' ? (
               <div className="flex items-center space-x-2 mb-4">
                 <CheckCircle className="w-6 h-6 text-green-600" />
                 <span className="text-green-700 font-medium">Suscripción Activa</span>
@@ -289,7 +289,7 @@ export function BillingPage({ onBack }: BillingPageProps) {
                   {reactivatingSubscription ? 'Reactivando...' : 'Reactivar Suscripción'}
                 </button>
               </div>
-            ) : (
+            ) : subscription?.status === 'active' ? (
               <button
                 onClick={handleCancelSubscription}
                 disabled={cancellingSubscription}
@@ -298,7 +298,7 @@ export function BillingPage({ onBack }: BillingPageProps) {
                 <Ban className="w-5 h-5 mr-2" />
                 {cancellingSubscription ? 'Cancelando...' : 'Cancelar Suscripción'}
               </button>
-            )}
+            ) : null}
           </div>
         </div>
       </div>
