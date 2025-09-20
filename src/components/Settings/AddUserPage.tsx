@@ -288,7 +288,7 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
         </div>
         <button 
           onClick={() => setShowUserForm(true)}
-          className="inline-flex items-center px-6 py-3 text-base bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+          className="inline-flex items-center px-6 py-3 text-base bg-primary text-primary-foreground hover:bg-primary/90 transition-colors rounded-lg"
         >
           <Plus className="w-4 h-4 mr-2" />
           Nuevo Usuario
@@ -304,7 +304,7 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
               </span>
               <button
                 onClick={handleDeleteSelected}
-                className="inline-flex items-center px-3 py-2 bg-red-600 text-white hover:bg-red-700 transition-colors"
+                className="inline-flex items-center px-3 py-2 bg-red-600 text-white hover:bg-red-700 transition-colors rounded-lg"
               >
                 <Trash2 className="w-4 h-4 mr-2" />
                 Eliminar
@@ -314,105 +314,104 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
         </div>
       </div>
 
-      <div className="bg-white border border-gray-200">
+      <div className="bg-white border border-gray-200 rounded-xl">
         <div className="p-6 border-b border-gray-200">
           <input
             type="text"
             placeholder="Buscar usuarios..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
           />
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left">
-                  <input
-                    type="checkbox"
-                    checked={selectedUsers.length === filteredUsers.length && filteredUsers.length > 0}
-                    onChange={handleSelectAll}
-                    className="w-4 h-4 text-[#FF6200] bg-gray-100 border-gray-300 focus:ring-[#FF6200] focus:ring-2"
-                  />
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Usuario
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Rol
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Estado
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Contacto
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Acciones
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {filteredUsers.map((user) => (
-                <tr key={user.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <input
-                      type="checkbox"
-                      checked={selectedUsers.includes(user.id)}
-                      onChange={() => handleSelectUser(user.id)}
-                      className="w-4 h-4 text-[#FF6200] bg-gray-100 border-gray-300 focus:ring-[#FF6200] focus:ring-2"
-                    />
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      <div className="w-10 h-10 bg-primary/10 flex items-center justify-center">
+        <div className="p-6">
+          {/* Select All Option */}
+          <div className="mb-6 pb-4 border-b border-gray-200">
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={selectedUsers.length === filteredUsers.length && filteredUsers.length > 0}
+                onChange={handleSelectAll}
+                className="w-4 h-4 text-primary bg-gray-100 border-gray-300 focus:ring-primary focus:ring-2 rounded"
+              />
+              <span className="text-sm text-gray-600">Seleccionar todos ({filteredUsers.length})</span>
+            </label>
+          </div>
+
+          {/* Users Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredUsers.map((user) => (
+              <div key={user.id} className="bg-gray-50 border border-gray-200 rounded-xl p-6 transition-colors hover:bg-gray-100">
+                <div className="flex flex-col items-start space-y-4">
+                  {/* Checkbox and Avatar */}
+                  <div className="flex items-start justify-between w-full">
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="checkbox"
+                        checked={selectedUsers.includes(user.id)}
+                        onChange={() => handleSelectUser(user.id)}
+                        className="w-4 h-4 text-primary bg-gray-100 border-gray-300 focus:ring-primary focus:ring-2 rounded"
+                      />
+                      <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
                         <span className="text-sm font-medium text-[#FF6200]">
                           {user.firstName.charAt(0)}{user.lastName.charAt(0)}
                         </span>
                       </div>
-                      <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">
-                          {user.firstName} {user.lastName}
-                        </div>
-                        <div className="text-sm text-gray-500">
-                          Creado el {user.createdAt.toLocaleDateString('es-MX')}
-                        </div>
-                      </div>
                     </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      <Shield className="w-4 h-4 text-gray-400 mr-2" />
-                      <span className="text-sm text-gray-900">{getRoleLabel(user.role)}</span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-medium ${getStatusColor(user.status)}`}>
-                      {getStatusLabel(user.status)}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Mail className="w-4 h-4 mr-2" />
-                      {user.email}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <div className="flex items-center justify-end space-x-2">
-                      <button className="text-primary hover:text-primary/70 transition-colors">
+                    
+                    {/* Actions */}
+                    <div className="flex items-center space-x-2">
+                      <button className="p-2 text-primary hover:text-primary/70 transition-colors rounded-lg hover:bg-white">
                         <Edit className="w-4 h-4" />
                       </button>
-                      <button className="text-red-600 hover:text-red-900 transition-colors">
+                      <button className="p-2 text-red-600 hover:text-red-900 transition-colors rounded-lg hover:bg-white">
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  </div>
+
+                  {/* User Info */}
+                  <div className="w-full space-y-3">
+                    <div>
+                      <h3 className="text-sm font-medium text-gray-900">
+                        {user.firstName} {user.lastName}
+                      </h3>
+                      <p className="text-xs text-gray-500">
+                        Creado el {user.createdAt.toLocaleDateString('es-MX')}
+                      </p>
+                    </div>
+
+                    {/* Role */}
+                    <div className="flex items-center gap-2">
+                      <Shield className="w-4 h-4 text-gray-400" />
+                      <span className="text-sm text-gray-900">{getRoleLabel(user.role)}</span>
+                    </div>
+
+                    {/* Status */}
+                    <div>
+                      <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(user.status)}`}>
+                        {getStatusLabel(user.status)}
+                      </span>
+                    </div>
+
+                    {/* Email */}
+                    <div className="flex items-center gap-2">
+                      <Mail className="w-4 h-4 text-gray-400" />
+                      <span className="text-sm text-gray-600 truncate">{user.email}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {filteredUsers.length === 0 && (
+            <div className="text-center py-12">
+              <User className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+              <p className="text-gray-500 text-sm">No se encontraron usuarios</p>
+            </div>
+          )}
         </div>
       </div>
 
