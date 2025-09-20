@@ -3,14 +3,14 @@ import { Plus, Calendar, DollarSign, User, Building2, Edit, Trash2, Eye } from '
 import { Quote } from '../../types';
 import { SkeletonHeader, SkeletonTable } from '../UI/SkeletonLoader';
 import { SubscriptionModal } from '../UI/SubscriptionModal';
-import { mockQuotes } from '../../data/mockData';
+// import { mockQuotes } from '../../data/mockData'; // Removed mock data
 import { useTranslation } from '../../hooks/useTranslation';
 import { useSubscriptionCheck } from '../../hooks/useSubscriptionCheck';
 import { CreateQuotePage } from './CreateQuotePage';
 
 export function QuoteList() {
   const [loading, setLoading] = useState(true);
-  const [quotes, setQuotes] = useState<Quote[]>(mockQuotes);
+  const [quotes, setQuotes] = useState<Quote[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [filterResponsible, setFilterResponsible] = useState<string>('all');
