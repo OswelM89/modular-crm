@@ -24,38 +24,18 @@ function AppContent() {
       if (!user) return;
       
       try {
-        const { supabase } = await import('./integrations/supabase/client');
+        const { ensureUserOrganization } = await import('./utils/org');
         
-        // Check if user already has organizations
-        const { data: orgs } = await supabase
-          .from('organizations')
-          .select('id')
-          .limit(1);
+        // Usar la función robusta para garantizar organización correcta
+        const organizationId = await ensureUserOrganization();
         
-        if (!orgs || orgs.length === 0) {
-          // Create default organization for new user
-          const { data: newOrg } = await supabase
-            .from('organizations')
-            .insert({
-              name: `Org'${user.email?.split('@')[0] || 'Mi_Organizacion'}`,
-              organization_type: 'Startup'
-            })
-            .select()
-            .single();
-          
-          if (newOrg) {
-            // Add user as admin to the organization
-            await supabase
-              .from('organization_members')
-              .insert({
-                organization_id: newOrg.id,
-                user_id: user.id,
-                role: 'admin'
-              });
-          }
+        if (!organizationId) {
+          console.warn('⚠️ No se pudo obtener organización del usuario en App.tsx');
+        } else {
+          console.log('✅ Organización inicializada correctamente:', organizationId);
         }
       } catch (error) {
-        console.error('Error initializing default organization:', error);
+        console.error('❌ Error inicializando organización:', error);
       }
     };
 

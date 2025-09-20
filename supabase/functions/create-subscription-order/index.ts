@@ -20,10 +20,42 @@ serve(async (req) => {
       throw new Error('Organization ID is required');
     }
 
+    console.log('🏢 Validando organización:', organizationId);
+
     // Initialize Supabase client
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
+
+    // Get user from auth header
+    const authHeader = req.headers.get('authorization');
+    if (!authHeader) {
+      throw new Error('Authorization header required');
+    }
+
+    const { data: { user }, error: userError } = await supabase.auth.getUser(
+      authHeader.replace('Bearer ', '')
+    );
+
+    if (userError || !user) {
+      console.error('❌ Error validating user:', userError);
+      throw new Error('Invalid authentication');
+    }
+
+    // Validate that the organization belongs to the authenticated user
+    const { data: membership, error: membershipError } = await supabase
+      .from('organization_members')
+      .select('organization_id')
+      .eq('organization_id', organizationId)
+      .eq('user_id', user.id)
+      .single();
+
+    if (membershipError || !membership) {
+      console.error('❌ Usuario no pertenece a la organización:', membershipError);
+      throw new Error('User does not belong to this organization');
+    }
+
+    console.log('✅ Organización validada correctamente para usuario:', user.id);
 
     // Bold.co credentials
     const boldPublicKey = Deno.env.get('BOLD_PUBLIC_KEY');

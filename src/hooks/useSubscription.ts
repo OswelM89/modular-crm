@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../integrations/supabase/client';
 import { useAuth } from '../contexts/AuthContext';
-import { getActiveOrganizationId } from '../utils/org';
+import { ensureUserOrganization } from '../utils/org';
 
 export interface Subscription {
   id: string;
@@ -32,11 +32,14 @@ export function useSubscription() {
 
   const checkSubscriptionStatus = async () => {
     try {
-      const organizationId = getActiveOrganizationId();
+      const organizationId = await ensureUserOrganization();
       if (!organizationId) {
+        console.warn('⚠️ No se pudo obtener organización del usuario');
         setLoading(false);
         return;
       }
+      
+      console.log('🔍 Verificando estado de suscripción para organización:', organizationId);
 
       const { data, error } = await supabase.functions.invoke('subscription-status', {
         body: { organizationId }
@@ -59,10 +62,12 @@ export function useSubscription() {
 
   const createPaymentOrder = async () => {
     try {
-      const organizationId = getActiveOrganizationId();
+      const organizationId = await ensureUserOrganization();
       if (!organizationId) {
-        throw new Error('No organization selected');
+        throw new Error('No se pudo obtener la organización del usuario');
       }
+      
+      console.log('💳 Creando orden de pago para organización:', organizationId);
 
       const { data, error } = await supabase.functions.invoke('create-subscription-order', {
         body: { organizationId }

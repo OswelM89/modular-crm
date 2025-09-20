@@ -27,6 +27,68 @@ export const getActiveOrganizationId = (): string | null => {
   return localStorage.getItem('activeOrganizationId')
 }
 
+// Función robusta que garantiza obtener la organización correcta del usuario
+export const ensureUserOrganization = async (): Promise<string | null> => {
+  try {
+    // Primero intentar desde localStorage
+    let activeOrgId = localStorage.getItem('activeOrganizationId');
+    
+    if (activeOrgId) {
+      // Verificar que la organización existe y pertenece al usuario
+      const user = await supabase.auth.getUser();
+      if (!user.data.user) {
+        console.error('❌ Usuario no autenticado');
+        localStorage.removeItem('activeOrganizationId');
+        return null;
+      }
+      
+      const { data: orgCheck, error } = await supabase
+        .from('organization_members')
+        .select('organization_id')
+        .eq('organization_id', activeOrgId)
+        .eq('user_id', user.data.user.id)
+        .single();
+      
+      if (!error && orgCheck) {
+        console.log('✅ Organización activa válida desde localStorage:', activeOrgId);
+        return activeOrgId;
+      } else {
+        console.warn('⚠️ Organización en localStorage no válida, buscando en base de datos...');
+        localStorage.removeItem('activeOrganizationId');
+      }
+    }
+    
+    // Si no hay en localStorage o no es válida, buscar en la base de datos
+    const user = await supabase.auth.getUser();
+    if (!user.data.user) {
+      console.error('❌ Usuario no autenticado');
+      return null;
+    }
+    
+    const { data: userOrgs, error: orgError } = await supabase
+      .from('organization_members')
+      .select('organization_id')
+      .eq('user_id', user.data.user.id)
+      .limit(1);
+    
+    if (orgError || !userOrgs || userOrgs.length === 0) {
+      console.error('❌ No se encontraron organizaciones para el usuario:', orgError);
+      return null;
+    }
+    
+    const correctOrgId = userOrgs[0].organization_id;
+    console.log('✅ Organización encontrada en base de datos:', correctOrgId);
+    
+    // Actualizar localStorage con la organización correcta
+    localStorage.setItem('activeOrganizationId', correctOrgId);
+    
+    return correctOrgId;
+  } catch (error) {
+    console.error('❌ Error en ensureUserOrganization:', error);
+    return null;
+  }
+}
+
 export const setActiveOrganizationId = (organizationId: string): void => {
   localStorage.setItem('activeOrganizationId', organizationId)
 }
@@ -42,8 +104,9 @@ export const getDefaultOrganization = async (): Promise<Organization | null> => 
     if (organizations.length > 0) {
       const defaultOrg = organizations[0]
       
-      // Set as active if no active organization is set
-      if (!getActiveOrganizationId()) {
+      // Set as active using the robust function
+      const currentOrgId = await ensureUserOrganization();
+      if (!currentOrgId) {
         setActiveOrganizationId(defaultOrg.id)
       }
       
