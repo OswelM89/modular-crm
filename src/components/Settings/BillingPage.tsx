@@ -273,21 +273,18 @@ export function BillingPage({ onBack }: BillingPageProps) {
                 {creatingOrder ? 'Procesando...' : 'Suscribirse Ahora'}
               </button>
             ) : subscription?.status === 'cancelled' ? (
-              <div className="flex flex-col gap-3">
-                <div className="flex items-center space-x-2 text-amber-600">
-                  <Clock className="w-5 h-5" />
-                  <span className="font-medium">
-                    Suscripción cancelada - Tiempo restante: {timeRemaining}
-                  </span>
-                </div>
+              <div className="flex flex-col gap-3 items-end">
                 <button
                   onClick={handleReactivateSubscription}
                   disabled={reactivatingSubscription}
-                  className="inline-flex items-center px-6 py-3 bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 transition-colors rounded-lg font-medium"
+                  className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors rounded-lg font-medium"
                 >
                   <CheckCircle className="w-5 h-5 mr-2" />
-                  {reactivatingSubscription ? 'Reactivando...' : 'Reactivar Suscripción'}
+                  {reactivatingSubscription ? 'Reactivando...' : 'Reanudar Suscripción'}
                 </button>
+                <div className="text-sm text-amber-600 font-medium">
+                  Te quedan {timeRemaining} de suscripción pagada
+                </div>
               </div>
             ) : subscription?.status === 'active' ? (
               <button
