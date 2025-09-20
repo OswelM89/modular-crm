@@ -106,7 +106,7 @@ export function AuthPage() {
             <Building className="w-12 h-12 text-blue-600" />
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Inmolinks CRM
+            Modular CRM
           </h1>
           <p className="text-gray-600">
             {isLogin ? 'Inicia sesión en tu cuenta' : 'Crea tu cuenta gratuita'}

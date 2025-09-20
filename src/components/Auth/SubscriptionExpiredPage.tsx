@@ -67,13 +67,6 @@ export function SubscriptionExpiredPage() {
     await signOut();
   };
 
-  const formatAmount = (amount: number) => {
-    return new Intl.NumberFormat('es-CO', {
-      style: 'currency',
-      currency: 'COP'
-    }).format(amount);
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
