@@ -121,13 +121,10 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
                     </div>
                   )}
                   
-                  {/* Nombre y organización */}
+                  {/* Nombre */}
                   <div className="text-left">
                     <p className="text-sm font-medium text-foreground leading-tight">
                       {user.firstName} {user.lastName}
-                    </p>
-                    <p className="text-xs text-muted-foreground leading-tight">
-                      Org: {user.id.slice(-5).toUpperCase()}
                     </p>
                   </div>
                   
