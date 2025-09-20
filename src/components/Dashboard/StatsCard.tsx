@@ -38,21 +38,17 @@ export function StatsCard({ title, value, icon: Icon, trend, color }: StatsCardP
   const colors = colorClasses[color];
   
   return (
-    <div className={`${colors.bg} p-6`}>
-      <div className="flex items-center">
-        <div className={`${colors.icon} p-3`}>
-          <Icon className="w-6 h-6" />
-        </div>
-        <div className="ml-4 flex-1">
-          <p className="text-sm font-medium text-gray-600">{title}</p>
-          <div className="flex items-baseline">
-            <p className="text-2xl font-semibold text-gray-900">{value}</p>
-            {trend && (
-              <p className={`ml-2 text-sm ${trend.isPositive ? 'text-green-600' : 'text-red-600'}`}>
-                {trend.isPositive ? '+' : ''}{trend.value}%
-              </p>
-            )}
-          </div>
+    <div className={`${colors.bg} p-6 rounded-xl`}>
+      <div className="flex flex-col items-center text-center space-y-3">
+        <Icon className={`w-8 h-8 ${colors.text}`} />
+        <p className="text-sm font-medium text-gray-600">{title}</p>
+        <div className="flex items-baseline">
+          <p className="text-2xl font-semibold text-gray-900">{value}</p>
+          {trend && (
+            <p className={`ml-2 text-sm ${trend.isPositive ? 'text-green-600' : 'text-red-600'}`}>
+              {trend.isPositive ? '+' : ''}{trend.value}%
+            </p>
+          )}
         </div>
       </div>
     </div>
