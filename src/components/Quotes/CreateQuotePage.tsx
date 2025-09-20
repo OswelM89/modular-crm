@@ -182,20 +182,20 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
           </p>
         </div>
         <div className="flex gap-3">
-          <button
-            onClick={handleSave}
-            className="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
-          >
-            <Save className="w-4 h-4 mr-2" />
-            Guardar Borrador
-          </button>
-          <button
-            onClick={handleSend}
-            className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
-          >
-            <Send className="w-4 h-4 mr-2" />
-            Enviar Cotización
-          </button>
+            <button
+              onClick={handleSave}
+              className="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors rounded-lg"
+            >
+              <Save className="w-4 h-4 mr-2" />
+              Guardar Borrador
+            </button>
+            <button
+              onClick={handleSend}
+              className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors rounded-lg"
+            >
+              <Send className="w-4 h-4 mr-2" />
+              Enviar Cotización
+            </button>
         </div>
       </div>
 
@@ -203,7 +203,7 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
         {/* Formulario Principal */}
         <div className="lg:col-span-2 space-y-6">
           {/* Información General */}
-          <div className="bg-white border border-gray-200 p-6">
+          <div className="bg-white border border-gray-200 rounded-xl p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Información General</h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -215,7 +215,7 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
                   type="text"
                   value={formData.title}
                   onChange={(e) => handleInputChange('title', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                   placeholder="Ej: Desarrollo de Sistema CRM"
                 />
               </div>
@@ -227,7 +227,7 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
                 <select
                   value={formData.currency}
                   onChange={(e) => handleInputChange('currency', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                 >
                   {currencies.map((currency) => (
                     <option key={currency.value} value={currency.value}>
@@ -246,7 +246,7 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
                 rows={3}
                 value={formData.description}
                 onChange={(e) => handleInputChange('description', e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                 placeholder="Descripción general de la cotización..."
               />
             </div>
@@ -259,7 +259,7 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
                 <select
                   value={formData.companyId}
                   onChange={(e) => handleInputChange('companyId', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                 >
                   <option value="">Seleccionar empresa...</option>
                   {mockCompanies.map((company) => (
@@ -277,7 +277,7 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
                 <select
                   value={formData.contactId}
                   onChange={(e) => handleInputChange('contactId', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                 >
                   <option value="">Seleccionar contacto...</option>
                   {mockContacts.map((contact) => (
@@ -291,24 +291,24 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
           </div>
 
           {/* Mensaje Formal */}
-          <div className="bg-white border border-gray-200 p-6">
+          <div className="bg-white border border-gray-200 rounded-xl p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Mensaje Formal</h3>
             <textarea
               rows={4}
               value={formData.formalMessage}
               onChange={(e) => handleInputChange('formalMessage', e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
               placeholder="Mensaje de introducción para el cliente..."
             />
           </div>
 
           {/* Items de la Cotización */}
-          <div className="bg-white border border-gray-200 p-6">
+          <div className="bg-white border border-gray-200 rounded-xl p-6">
             <div className="flex items-center justify-between mb-4 sticky top-0 bg-white z-10 py-4 -mx-6 px-6 border-b border-gray-100">
               <h3 className="text-lg font-semibold text-gray-900">Items de la Cotización</h3>
               <button
                 onClick={addItem}
-                className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-sm"
+                className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-sm rounded-lg"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Agregar Item
@@ -317,13 +317,13 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
 
             <div className="space-y-4">
               {formData.items.map((item, index) => (
-                <div key={item.id} className="p-6 bg-gray-50 border border-gray-200 rounded-lg">
+                <div key={item.id} className="p-6 bg-gray-50 border border-gray-200 rounded-xl">
                   {/* Título del Item */}
                   <div className="flex items-center justify-between mb-4">
                     <h4 className="text-md font-semibold text-gray-900">Item #{index + 1}</h4>
                     <button
                       onClick={() => removeItem(item.id)}
-                      className="p-2 text-red-600 hover:text-red-800 transition-colors"
+                      className="p-2 text-red-600 hover:text-red-800 transition-colors rounded-lg"
                       disabled={formData.items.length === 1}
                     >
                       <Trash2 className="w-4 h-4" />
@@ -339,7 +339,7 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
                       type="text"
                       value={item.description}
                       onChange={(e) => updateItem(item.id, 'description', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                       placeholder="Ej: Tablero para sistema de presión constante con variadores de velocidad Inomax Max500"
                     />
                   </div>
@@ -353,7 +353,7 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
                       rows={6}
                       value={item.detailedDescription || ''}
                       onChange={(e) => updateItem(item.id, 'detailedDescription', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                       placeholder="Especificaciones detalladas:&#10;• Tablero de 3 x 4 eléctrico&#10;• Variadores Inomax Max500 x 2&#10;• Interruptores termomagnéticos&#10;• Contactores principales&#10;• Etc..."
                     />
                     <p className="mt-1 text-xs text-gray-500">
@@ -371,7 +371,7 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
                         type="number"
                         value={item.quantity}
                         onChange={(e) => updateItem(item.id, 'quantity', parseFloat(e.target.value) || 0)}
-                        className="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                        className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                         min="0"
                         step="1"
                         placeholder="1"
@@ -390,7 +390,7 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
                           type="number"
                           value={item.unitPrice}
                           onChange={(e) => updateItem(item.id, 'unitPrice', parseFloat(e.target.value) || 0)}
-                          className="w-full pl-8 pr-3 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                          className="w-full pl-8 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                           min="0"
                           step="0.01"
                           placeholder="0.00"
@@ -402,13 +402,13 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Total
                       </label>
-                      <div className="px-3 py-2 bg-white border border-gray-300 text-gray-900 font-semibold rounded">
+                      <div className="px-3 py-3 bg-white border border-gray-300 text-gray-900 font-semibold rounded-lg">
                         {formatCurrency(item.total)}
                       </div>
                     </div>
 
                     <div className="flex items-end">
-                      <div className="w-full px-3 py-2 bg-gray-100 border border-gray-200 rounded text-center">
+                      <div className="w-full px-3 py-3 bg-gray-100 border border-gray-200 rounded-lg text-center">
                         <span className="text-xs text-gray-500">Item #{index + 1}</span>
                       </div>
                     </div>
@@ -423,7 +423,7 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
                       rows={2}
                       value={item.notes || ''}
                       onChange={(e) => updateItem(item.id, 'notes', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                       placeholder="Tiempo de entrega, garantías, condiciones especiales, etc."
                     />
                   </div>
@@ -433,7 +433,7 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
           </div>
 
           {/* Información Legal */}
-          <div className="bg-white border border-gray-200 p-6">
+          <div className="bg-white border border-gray-200 rounded-xl p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
               <Info className="w-5 h-5 inline mr-2" />
               Información Legal
@@ -442,13 +442,13 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
               rows={4}
               value={formData.legalInfo}
               onChange={(e) => handleInputChange('legalInfo', e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
               placeholder="Términos y condiciones, información legal..."
             />
           </div>
 
           {/* Datos de la Empresa */}
-          <div className="bg-white border border-gray-200 p-6">
+          <div className="bg-white border border-gray-200 rounded-xl p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
               <Building2 className="w-5 h-5 inline mr-2" />
               Datos de la Empresa
@@ -463,7 +463,7 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
                   type="text"
                   value={formData.companyInfo.name}
                   onChange={(e) => handleCompanyInfoChange('name', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                 />
               </div>
 
@@ -475,7 +475,7 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
                   type="text"
                   value={formData.companyInfo.taxId}
                   onChange={(e) => handleCompanyInfoChange('taxId', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                 />
               </div>
 
@@ -487,7 +487,7 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
                   type="email"
                   value={formData.companyInfo.email}
                   onChange={(e) => handleCompanyInfoChange('email', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                 />
               </div>
 
@@ -499,7 +499,7 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
                   type="tel"
                   value={formData.companyInfo.phone}
                   onChange={(e) => handleCompanyInfoChange('phone', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                 />
               </div>
 
@@ -511,7 +511,7 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
                   type="url"
                   value={formData.companyInfo.website}
                   onChange={(e) => handleCompanyInfoChange('website', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                 />
               </div>
 
@@ -523,7 +523,7 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
                   type="text"
                   value={formData.companyInfo.address}
                   onChange={(e) => handleCompanyInfoChange('address', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#FF6200] focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                 />
               </div>
             </div>
@@ -534,7 +534,7 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
         <div className="space-y-6">
           {/* Resumen de Cliente */}
           {(selectedCompany || selectedContact) && (
-            <div className="bg-white border border-gray-200 p-6">
+            <div className="bg-white border border-gray-200 rounded-xl p-6">
               <h4 className="text-lg font-semibold text-gray-900 mb-4">Cliente</h4>
               
               {selectedCompany && (
@@ -563,7 +563,7 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
           )}
 
           {/* Totalizador */}
-          <div className="bg-white border border-gray-200 p-6">
+          <div className="bg-white border border-gray-200 rounded-xl p-6">
             <div className="flex items-center mb-4">
               <Calculator className="w-5 h-5 text-[#FF6200] mr-2" />
               <h4 className="text-lg font-semibold text-gray-900">Totalizador</h4>
@@ -589,7 +589,7 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
                         type="number"
                         value={formData.discountRate}
                         onChange={(e) => handleInputChange('discountRate', parseFloat(e.target.value) || 0)}
-                        className="w-20 px-2 py-1 border border-gray-300 text-center text-sm"
+                        className="w-20 px-3 py-2 border border-gray-300 rounded-lg text-center text-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                         min="0"
                         max="100"
                         step="0.1"
@@ -616,7 +616,7 @@ export function CreateQuotePage({ onBack }: CreateQuotePageProps) {
                         type="number"
                         value={formData.taxRate}
                         onChange={(e) => handleInputChange('taxRate', parseFloat(e.target.value) || 0)}
-                        className="w-20 px-2 py-1 border border-gray-300 text-center text-sm"
+                        className="w-20 px-3 py-2 border border-gray-300 rounded-lg text-center text-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                         min="0"
                         max="100"
                         step="0.1"
