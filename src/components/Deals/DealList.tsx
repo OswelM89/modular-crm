@@ -11,8 +11,11 @@ export function DealList() {
   const [deals, setDeals] = useState<Deal[]>(mockDeals);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStage, setFilterStage] = useState<string>('all');
+  const [filterResponsible, setFilterResponsible] = useState<string>('all');
   const [selectedDeals, setSelectedDeals] = useState<string[]>([]);
   const [showDealForm, setShowDealForm] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
   const { t } = useTranslation();
 
   React.useEffect(() => {
@@ -34,8 +37,29 @@ export function DealList() {
     const matchesSearch = deal.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          deal.company?.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStage = filterStage === 'all' || deal.stage === filterStage;
-    return matchesSearch && matchesStage;
+    const matchesResponsible = filterResponsible === 'all' || 
+                              (deal.contact && `${deal.contact.firstName} ${deal.contact.lastName}` === filterResponsible);
+    return matchesSearch && matchesStage && matchesResponsible;
   });
+
+  // Get unique responsible persons
+  const responsibleOptions = [
+    { value: 'all', label: 'Todos los responsables' },
+    ...Array.from(new Set(deals
+      .filter(deal => deal.contact)
+      .map(deal => `${deal.contact!.firstName} ${deal.contact!.lastName}`)))
+      .map(name => ({ value: name, label: name }))
+  ];
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredDeals.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedDeals = filteredDeals.slice(startIndex, startIndex + itemsPerPage);
+
+  // Reset to first page when filters change
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, filterStage, filterResponsible]);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('es-MX', {
@@ -77,10 +101,10 @@ export function DealList() {
   };
 
   const handleSelectAll = () => {
-    if (selectedDeals.length === filteredDeals.length) {
-      setSelectedDeals([]);
+    if (selectedDeals.length === paginatedDeals.length && paginatedDeals.length > 0) {
+      setSelectedDeals(prev => prev.filter(id => !paginatedDeals.map(deal => deal.id).includes(id)));
     } else {
-      setSelectedDeals(filteredDeals.map(deal => deal.id));
+      setSelectedDeals(prev => [...new Set([...prev, ...paginatedDeals.map(deal => deal.id)])]);
     }
   };
 
@@ -221,6 +245,17 @@ export function DealList() {
                 </option>
               ))}
             </select>
+            <select
+              value={filterResponsible}
+              onChange={(e) => setFilterResponsible(e.target.value)}
+              className="px-4 py-2 border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent"
+            >
+              {responsibleOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 
@@ -231,7 +266,7 @@ export function DealList() {
                 <th className="px-6 py-3 text-left">
                   <input
                     type="checkbox"
-                    checked={selectedDeals.length === filteredDeals.length && filteredDeals.length > 0}
+                    checked={paginatedDeals.length > 0 && paginatedDeals.every(deal => selectedDeals.includes(deal.id))}
                     onChange={handleSelectAll}
                    className="w-4 h-4 text-primary bg-gray-100 border-gray-300 focus:ring-primary focus:ring-2"
                   />
@@ -254,7 +289,7 @@ export function DealList() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {filteredDeals.map((deal) => (
+              {paginatedDeals.map((deal) => (
                 <tr key={deal.id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <input
@@ -315,6 +350,46 @@ export function DealList() {
             </tbody>
           </table>
         </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="px-6 py-3 border-t border-gray-200 bg-gray-50">
+            <div className="flex items-center justify-between">
+              <div className="text-sm text-gray-700">
+                Mostrando {startIndex + 1} a {Math.min(startIndex + itemsPerPage, filteredDeals.length)} de {filteredDeals.length} resultados
+              </div>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                  disabled={currentPage === 1}
+                  className="px-3 py-1 text-sm border border-gray-300 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Anterior
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={`px-3 py-1 text-sm border rounded-md ${
+                      currentPage === page
+                        ? 'bg-primary text-primary-foreground border-primary'
+                        : 'border-gray-300 hover:bg-gray-100'
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ))}
+                <button
+                  onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                  disabled={currentPage === totalPages}
+                  className="px-3 py-1 text-sm border border-gray-300 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Siguiente
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       <DealForm
