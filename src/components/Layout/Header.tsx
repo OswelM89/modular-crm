@@ -105,7 +105,7 @@ export function Header({ activeSection, onSectionChange, user }: HeaderProps) {
             {user && (
               <div className="relative user-dropdown">
                 <div 
-                  className="hidden sm:flex items-center gap-3 cursor-pointer hover:bg-muted/80 bg-muted/40 px-4 py-2 rounded-full border border-border/50 hover:border-border transition-all duration-200 shadow-sm hover:shadow-md"
+                  className="hidden sm:flex items-center gap-3 cursor-pointer hover:bg-muted/80 bg-muted/40 px-4 py-2 rounded-2xl border border-border/50 hover:border-border transition-all duration-200 shadow-sm hover:shadow-md"
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
                 >
                   {/* Avatar a la izquierda */}

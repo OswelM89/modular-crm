@@ -87,7 +87,7 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
         
         {/* Recent sections skeleton */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-white border border-gray-200 rounded-lg p-6">
+          <div className="bg-white border border-gray-200 rounded-xl p-6">
             <div className="h-6 bg-gray-200 rounded w-40 mb-4 animate-pulse"></div>
             <div className="space-y-4">
               {[1, 2, 3].map((i) => (
@@ -106,7 +106,7 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
               ))}
             </div>
           </div>
-          <div className="bg-white border border-gray-200 rounded-lg p-6">
+          <div className="bg-white border border-gray-200 rounded-xl p-6">
             <div className="h-6 bg-gray-200 rounded w-40 mb-4 animate-pulse"></div>
             <div className="space-y-4">
               {[1, 2, 3].map((i) => (
@@ -128,7 +128,7 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
         </div>
         
         {/* Articles section skeleton */}
-        <div className="bg-white border border-gray-200 rounded-lg p-6">
+        <div className="bg-white border border-gray-200 rounded-xl p-6">
           <div className="flex items-center justify-between mb-6">
             <div className="h-8 bg-gray-200 rounded w-48 animate-pulse"></div>
             <div className="h-12 bg-gray-200 rounded w-24 animate-pulse"></div>
@@ -213,7 +213,7 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
             <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('dashboard.recentDeals')}</h3>
             <div className="space-y-4">
               {recentDeals.map((deal) => (
-                <div key={deal.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                <div key={deal.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
                   <div className="flex-1">
                     <h4 className="font-medium text-gray-900">{deal.title}</h4>
                     <p className="text-sm text-gray-600">{deal.company?.name}</p>
@@ -235,7 +235,7 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
             <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('dashboard.recentQuotes')}</h3>
             <div className="space-y-4">
               {recentQuotes.map((quote) => (
-                <div key={quote.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                <div key={quote.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
                   <div className="flex-1">
                     <h4 className="font-medium text-gray-900">{quote.quoteNumber}</h4>
                     <p className="text-sm text-gray-600">{quote.company?.name}</p>
@@ -261,7 +261,7 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
         <h3 className="text-display-lg font-bold text-foreground">Artículos Destacados</h3>
         <button 
           onClick={() => onSectionChange && onSectionChange('blog')}
-          className="inline-flex items-center px-6 py-3 text-base bg-primary text-primary-foreground hover:bg-primary/90 transition-colors rounded-md"
+          className="inline-flex items-center px-6 py-3 text-base bg-primary text-primary-foreground hover:bg-primary/90 transition-colors rounded-xl"
         >
           Ver Blog
         </button>
@@ -270,7 +270,7 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Artículo Principal - Izquierda */}
           <div className="lg:col-span-1">
-            <div className="bg-gradient-primary p-6 text-primary-foreground h-full min-h-[300px] flex flex-col justify-between rounded-lg">
+            <div className="bg-gradient-primary p-6 text-primary-foreground h-full min-h-[300px] flex flex-col justify-between rounded-2xl">
               <div>
                 <Badge variant="secondary" className="mb-4 bg-white/20 text-white hover:bg-white/30">
                   DESTACADO
@@ -296,7 +296,7 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
           {/* Artículos Secundarios - Derecha */}
           <div className="lg:col-span-2 space-y-4">
             {/* Artículo 1 */}
-            <div className="bg-muted p-6 hover:bg-muted/80 transition-colors cursor-pointer rounded-lg">
+            <div className="bg-muted p-6 hover:bg-muted/80 transition-colors cursor-pointer rounded-2xl">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <Badge variant="info" className="mb-2">
