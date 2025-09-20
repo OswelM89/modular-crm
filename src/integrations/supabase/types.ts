@@ -297,6 +297,10 @@ export type Database = {
         Args: { p_bold_order_id: string }
         Returns: undefined
       }
+      cancel_subscription: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       get_user_org_role: {
         Args: { org_id: string; user_id: string }
         Returns: Database["public"]["Enums"]["organization_role"]
@@ -304,6 +308,10 @@ export type Database = {
       is_org_member: {
         Args: { org_id: string; user_id: string }
         Returns: boolean
+      }
+      reactivate_subscription: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
     }
     Enums: {

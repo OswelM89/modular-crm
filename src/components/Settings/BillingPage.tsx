@@ -234,10 +234,15 @@ export function BillingPage({ onBack }: BillingPageProps) {
             <h2 className="text-xl font-semibold text-gray-900 mb-2">
               Estado de Suscripción
             </h2>
-            {hasActiveSubscription ? (
+            {hasActiveSubscription && subscription?.status !== 'cancelled' ? (
               <div className="flex items-center space-x-2 mb-4">
                 <CheckCircle className="w-6 h-6 text-green-600" />
                 <span className="text-green-700 font-medium">Suscripción Activa</span>
+              </div>
+            ) : subscription?.status === 'cancelled' ? (
+              <div className="flex items-center space-x-2 mb-4">
+                <Ban className="w-6 h-6 text-amber-600" />
+                <span className="text-amber-700 font-medium">Suscripción Cancelada</span>
               </div>
             ) : (
               <div className="flex items-center space-x-2 mb-4">
@@ -257,16 +262,44 @@ export function BillingPage({ onBack }: BillingPageProps) {
             )}
           </div>
           
-          {!hasActiveSubscription && (
-            <button
-              onClick={handleCreatePayment}
-              disabled={creatingOrder}
-              className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors rounded-lg font-medium"
-            >
-              <CreditCard className="w-5 h-5 mr-2" />
-              {creatingOrder ? 'Procesando...' : 'Suscribirse Ahora'}
-            </button>
-          )}
+          <div className="flex flex-col sm:flex-row gap-3">
+            {!hasActiveSubscription ? (
+              <button
+                onClick={handleCreatePayment}
+                disabled={creatingOrder}
+                className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors rounded-lg font-medium"
+              >
+                <CreditCard className="w-5 h-5 mr-2" />
+                {creatingOrder ? 'Procesando...' : 'Suscribirse Ahora'}
+              </button>
+            ) : subscription?.status === 'cancelled' ? (
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center space-x-2 text-amber-600">
+                  <Clock className="w-5 h-5" />
+                  <span className="font-medium">
+                    Suscripción cancelada - Tiempo restante: {timeRemaining}
+                  </span>
+                </div>
+                <button
+                  onClick={handleReactivateSubscription}
+                  disabled={reactivatingSubscription}
+                  className="inline-flex items-center px-6 py-3 bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 transition-colors rounded-lg font-medium"
+                >
+                  <CheckCircle className="w-5 h-5 mr-2" />
+                  {reactivatingSubscription ? 'Reactivando...' : 'Reactivar Suscripción'}
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={handleCancelSubscription}
+                disabled={cancellingSubscription}
+                className="inline-flex items-center px-6 py-3 bg-red-600 text-white hover:bg-red-700 disabled:opacity-50 transition-colors rounded-lg font-medium"
+              >
+                <Ban className="w-5 h-5 mr-2" />
+                {cancellingSubscription ? 'Cancelando...' : 'Cancelar Suscripción'}
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
