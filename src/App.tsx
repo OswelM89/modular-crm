@@ -6,6 +6,7 @@ import { DealList } from './components/Deals/DealList';
 import { Pipeline } from './components/Pipeline/Pipeline';
 import { QuoteList } from './components/Quotes/QuoteList';
 import { CreateQuotePage } from './components/Quotes/CreateQuotePage';
+import { ProfilePage } from './components/Profile/ProfilePage';
 import { SettingsPage } from './components/Settings/SettingsPage';
 import { Header } from './components/Layout/Header';
 import { SubscriptionGuard } from './components/Auth/SubscriptionGuard';
@@ -59,7 +60,7 @@ function AppContent() {
   const renderContent = () => {
     switch (activeSection) {
       case 'dashboard':
-        return <Dashboard />;
+        return <Dashboard user={transformedUser} onSectionChange={handleSectionChange} />;
       case 'contacts':
         return <ContactList />;
       case 'companies':
@@ -72,10 +73,12 @@ function AppContent() {
         return <QuoteList />;
       case 'create-quote':
         return <CreateQuotePage onBack={() => handleSectionChange('quotes')} />;
+      case 'profile':
+        return <ProfilePage user={transformedUser} onBack={() => handleSectionChange('dashboard')} />;
       case 'settings':
         return <SettingsPage />;
       default:
-        return <Dashboard />;
+        return <Dashboard user={transformedUser} onSectionChange={handleSectionChange} />;
     }
   };
 
