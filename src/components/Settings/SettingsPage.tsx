@@ -19,7 +19,7 @@ export function SettingsPage() {
       title: 'Gestión de Usuarios',
       description: 'Administra los usuarios de tu equipo y sus permisos',
       icon: UserPlus,
-      color: 'bg-blue-500',
+      color: 'bg-gray-100',
       available: true,
       action: () => setCurrentPage('users')
     },
@@ -28,7 +28,7 @@ export function SettingsPage() {
       title: 'Configuración de Cotizaciones',
       description: 'Personaliza plantillas y configuraciones de cotizaciones',
       icon: FileText,
-      color: 'bg-green-500',
+      color: 'bg-gray-100',
       available: true,
       action: () => setCurrentPage('quotes')
     },
@@ -37,7 +37,7 @@ export function SettingsPage() {
       title: 'Preferencias Generales',
       description: 'Configura idioma, zona horaria y otras preferencias',
       icon: Settings,
-      color: 'bg-purple-500',
+      color: 'bg-gray-100',
       available: true,
       action: () => setCurrentPage('preferences')
     },
@@ -46,7 +46,7 @@ export function SettingsPage() {
       title: 'Integraciones',
       description: 'Conecta con herramientas externas y APIs',
       icon: Plus,
-      color: 'bg-gray-400',
+      color: 'bg-gray-100',
       available: false,
       action: () => {}
     },
@@ -55,7 +55,7 @@ export function SettingsPage() {
       title: 'Seguridad',
       description: 'Configuraciones de seguridad y acceso',
       icon: Plus,
-      color: 'bg-gray-400',
+      color: 'bg-gray-100',
       available: false,
       action: () => {}
     },
@@ -64,8 +64,8 @@ export function SettingsPage() {
       title: 'Facturación',
       description: 'Gestiona tu suscripción y métodos de pago',
       icon: Plus,
-      color: 'bg-gray-400',
-      available: false,
+      color: 'bg-gray-100',
+      available: true,
       action: () => {}
     }
   ];
@@ -107,7 +107,7 @@ export function SettingsPage() {
             >
               <div className="flex flex-col items-start space-y-4">
                 <div className={`${card.color} p-3 rounded-xl`}>
-                  <Icon className="w-6 h-6 text-white" />
+                  <Icon className="w-6 h-6 text-black" />
                 </div>
                 
                 <div className="flex-1 w-full">
