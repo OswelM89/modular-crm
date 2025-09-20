@@ -23,6 +23,11 @@ export function QuoteList() {
     return () => clearTimeout(timer);
   }, []);
 
+  // Reset to first page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, filterStatus, filterResponsible]);
+
   // Si está en modo crear cotización, mostrar esa página
   if (showCreateQuote) {
     return <CreateQuotePage onBack={() => setShowCreateQuote(false)} />;
@@ -60,11 +65,6 @@ export function QuoteList() {
   const totalPages = Math.ceil(filteredQuotes.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedQuotes = filteredQuotes.slice(startIndex, startIndex + itemsPerPage);
-
-  // Reset to first page when filters change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchTerm, filterStatus, filterResponsible]);
 
   const handleSelectQuote = (quoteId: string) => {
     setSelectedQuotes(prev => 
