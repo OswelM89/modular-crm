@@ -72,7 +72,7 @@ serve(async (req) => {
       .from('payment_orders')
       .insert({
         organization_id: organizationId,
-        amount: 120000,
+        amount: 20000,
         currency: 'COP',
         status: 'pending'
       })
@@ -89,9 +89,9 @@ serve(async (req) => {
       amount_type: "CLOSE", // Fixed amount
       amount: {
         currency: "COP",
-        total_amount: 120000
+        total_amount: 20000
       },
-      description: "Suscripción mensual CRM - $120,000 COP",
+      description: "Suscripción mensual CRM - $20,000 COP",
       callback_url: `${req.headers.get('origin')}/settings?payment=success`,
       webhook_url: `https://drmismwbcohktquctoal.supabase.co/functions/v1/payment-webhook`,
       payment_methods: ["CREDIT_CARD", "PSE"]

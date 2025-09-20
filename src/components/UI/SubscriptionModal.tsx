@@ -55,7 +55,7 @@ export function SubscriptionModal({ isOpen, onClose }: SubscriptionModalProps) {
           </h3>
           
           <div className="text-center mb-4">
-            <div className="text-2xl font-bold text-gray-900">$ 120.000,00</div>
+            <div className="text-2xl font-bold text-gray-900">$ 20.000,00</div>
             <div className="text-sm text-gray-600">por mes</div>
           </div>
 

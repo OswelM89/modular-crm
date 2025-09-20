@@ -313,7 +313,7 @@ export function BillingPage({ onBack }: BillingPageProps) {
             </div>
             <div className="text-right">
               <div className="text-2xl font-bold text-gray-900">
-                {formatAmount(120000)}
+                {formatAmount(20000)}
               </div>
               <div className="text-gray-600">por mes</div>
             </div>
