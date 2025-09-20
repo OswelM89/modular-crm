@@ -177,7 +177,7 @@ export function ContactList() {
               </span>
               <button
                 onClick={handleDownloadSelected}
-                className="inline-flex items-center px-3 py-2 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
+                className="inline-flex items-center px-4 py-3 border border-gray-300 text-gray-700 bg-white rounded-lg hover:bg-gray-50 transition-all duration-200 shadow-sm hover:shadow-md font-semibold"
               >
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -186,7 +186,7 @@ export function ContactList() {
               </button>
               <button
                 onClick={handleDeleteSelected}
-                className="inline-flex items-center px-3 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-colors"
+                className="inline-flex items-center px-4 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all duration-200 shadow-sm hover:shadow-md font-semibold"
               >
                 <Trash2 className="w-4 h-4 mr-2" />
                 {t('contacts.delete')}
@@ -195,7 +195,7 @@ export function ContactList() {
           )}
           <button 
             onClick={() => setShowContactForm(true)}
-            className="inline-flex items-center px-6 py-3 text-base bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+            className="inline-flex items-center px-6 py-3 text-base bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-200 shadow-sm hover:shadow-md font-semibold rounded-lg"
           >
             <Plus className="w-4 h-4 mr-2" />
             {t('contacts.new')}
@@ -261,7 +261,7 @@ export function ContactList() {
                       <div className="ml-4">
                         <button
                           onClick={() => handleContactClick(contact)}
-                          className="text-sm font-medium text-gray-900 hover:text-[#FF6200] transition-colors cursor-pointer"
+                          className="text-sm font-semibold text-gray-900 hover:text-primary transition-colors cursor-pointer"
                         >
                           {contact.first_name} {contact.last_name}
                         </button>

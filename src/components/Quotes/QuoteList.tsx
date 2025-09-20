@@ -90,7 +90,7 @@ export function QuoteList() {
         <div className="flex items-center gap-4">
           <button 
             onClick={() => setShowCreateQuote(true)}
-            className="inline-flex items-center px-6 py-3 text-base bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+            className="inline-flex items-center px-6 py-3 text-base bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-200 shadow-sm hover:shadow-md font-semibold rounded-lg"
           >
             <Plus className="w-4 h-4 mr-2" />
             {t('quotes.new')}
@@ -189,13 +189,13 @@ export function QuoteList() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div className="flex items-center justify-end space-x-2">
-                      <button className="text-gray-600 hover:text-gray-900 transition-colors">
+                      <button className="p-2 text-gray-600 hover:text-gray-900 transition-colors rounded-lg bg-gray-50 hover:bg-gray-100 shadow-sm">
                         <Eye className="w-4 h-4" />
                       </button>
-                      <button className="text-primary hover:text-primary/70 transition-colors">
+                      <button className="p-2 text-primary hover:text-primary/70 transition-colors rounded-lg bg-primary/10 hover:bg-primary/20 shadow-sm">
                         <Edit className="w-4 h-4" />
                       </button>
-                      <button className="text-red-600 hover:text-red-900 transition-colors">
+                      <button className="p-2 text-red-600 hover:text-red-900 transition-colors rounded-lg bg-red-50 hover:bg-red-100 shadow-sm">
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>

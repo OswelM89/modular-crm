@@ -535,13 +535,13 @@ export function DealForm({ isOpen, onClose, onSubmit }: DealFormProps) {
               <button
                 type="button"
                 onClick={handleClose}
-                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
+                className="flex-1 px-5 py-3 border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 transition-all duration-200 shadow-sm hover:shadow-md font-semibold rounded-lg"
               >
                 {t('deals.form.cancel')}
               </button>
               <button
                 type="submit"
-                className="flex-1 px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                className="flex-1 px-5 py-3 bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-200 shadow-sm hover:shadow-md font-semibold rounded-lg"
               >
                 {t('deals.form.create')}
               </button>
