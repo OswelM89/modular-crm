@@ -265,8 +265,8 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
         </button>
       </div>
 
-      <div className="bg-white border border-gray-200 rounded-xl">
-        <div className="p-6 border-b border-gray-200">
+      <div className="space-y-6">
+        <div className="px-4 py-3 bg-gray-50 rounded-lg">
           <input
             type="text"
             placeholder="Buscar usuarios..."
@@ -276,82 +276,80 @@ export function AddUserPage({ onBack }: AddUserPageProps) {
           />
         </div>
 
-        <div className="p-6">
-          {/* Users Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredUsers.map((user) => (
-              <div key={user.id} className="bg-gray-50 border border-gray-200 rounded-xl p-6 transition-colors hover:bg-gray-100">
-                <div className="flex flex-col items-start space-y-4">
-                  {/* Header with Avatar and Menu */}
-                  <div className="flex items-start justify-between w-full">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                        <span className="text-sm font-medium text-[#FF6200]">
-                          {user.firstName.charAt(0)}{user.lastName.charAt(0)}
-                        </span>
-                      </div>
-                    </div>
-                    
-                    {/* Three dots menu */}
-                    <div className="relative group">
-                      <button className="p-2 text-gray-400 hover:text-gray-600 transition-colors rounded-lg hover:bg-white">
-                        <MoreVertical className="w-4 h-4" />
-                      </button>
-                      <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 min-w-[120px]">
-                        <button className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 w-full text-left">
-                          <Edit className="w-3 h-3" />
-                          Editar
-                        </button>
-                        <button className="flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 w-full text-left">
-                          <Trash2 className="w-3 h-3" />
-                          Eliminar
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* User Info */}
-                  <div className="w-full space-y-3">
-                    <div>
-                      <h3 className="text-sm font-medium text-gray-900">
-                        {user.firstName} {user.lastName}
-                      </h3>
-                      <p className="text-xs text-gray-500">
-                        Creado el {user.createdAt.toLocaleDateString('es-MX')}
-                      </p>
-                    </div>
-
-                    {/* Role */}
-                    <div className="flex items-center gap-2">
-                      <Shield className="w-4 h-4 text-gray-400" />
-                      <span className="text-sm text-gray-900">{getRoleLabel(user.role)}</span>
-                    </div>
-
-                    {/* Status */}
-                    <div>
-                      <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(user.status)}`}>
-                        {getStatusLabel(user.status)}
+        {/* Users Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredUsers.map((user) => (
+            <div key={user.id} className="bg-white border border-gray-200 rounded-xl p-6 transition-colors hover:bg-gray-50">
+              <div className="flex flex-col items-start space-y-4">
+                {/* Header with Avatar and Menu */}
+                <div className="flex items-start justify-between w-full">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                      <span className="text-sm font-medium text-[#FF6200]">
+                        {user.firstName.charAt(0)}{user.lastName.charAt(0)}
                       </span>
                     </div>
-
-                    {/* Email */}
-                    <div className="flex items-center gap-2">
-                      <Mail className="w-4 h-4 text-gray-400" />
-                      <span className="text-sm text-gray-600 truncate">{user.email}</span>
+                  </div>
+                  
+                  {/* Three dots menu */}
+                  <div className="relative group">
+                    <button className="p-2 text-gray-400 hover:text-gray-600 transition-colors rounded-lg hover:bg-gray-50">
+                      <MoreVertical className="w-4 h-4" />
+                    </button>
+                    <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 min-w-[120px]">
+                      <button className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 w-full text-left">
+                        <Edit className="w-3 h-3" />
+                        Editar
+                      </button>
+                      <button className="flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 w-full text-left">
+                        <Trash2 className="w-3 h-3" />
+                        Eliminar
+                      </button>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
 
-          {filteredUsers.length === 0 && (
-            <div className="text-center py-12">
-              <User className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500 text-sm">No se encontraron usuarios</p>
+                {/* User Info */}
+                <div className="w-full space-y-3">
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-900">
+                      {user.firstName} {user.lastName}
+                    </h3>
+                    <p className="text-xs text-gray-500">
+                      Creado el {user.createdAt.toLocaleDateString('es-MX')}
+                    </p>
+                  </div>
+
+                  {/* Role */}
+                  <div className="flex items-center gap-2">
+                    <Shield className="w-4 h-4 text-gray-400" />
+                    <span className="text-sm text-gray-900">{getRoleLabel(user.role)}</span>
+                  </div>
+
+                  {/* Status */}
+                  <div>
+                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(user.status)}`}>
+                      {getStatusLabel(user.status)}
+                    </span>
+                  </div>
+
+                  {/* Email */}
+                  <div className="flex items-center gap-2">
+                    <Mail className="w-4 h-4 text-gray-400" />
+                    <span className="text-sm text-gray-600 truncate">{user.email}</span>
+                  </div>
+                </div>
+              </div>
             </div>
-          )}
+          ))}
         </div>
+
+        {filteredUsers.length === 0 && (
+          <div className="text-center py-12">
+            <User className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+            <p className="text-gray-500 text-sm">No se encontraron usuarios</p>
+          </div>
+        )}
       </div>
 
       {/* Popup lateral para crear usuario */}
