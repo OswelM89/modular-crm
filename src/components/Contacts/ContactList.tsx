@@ -3,7 +3,9 @@ import { Plus, Mail, Phone, Building2, Trash2 } from 'lucide-react';
 import { SkeletonHeader, SkeletonTable } from '../UI/SkeletonLoader';
 import { ContactForm } from './ContactForm';
 import { ContactDetail } from './ContactDetail';
+import { SubscriptionModal } from '../UI/SubscriptionModal';
 import { useTranslation } from '../../hooks/useTranslation';
+import { useSubscriptionCheck } from '../../hooks/useSubscriptionCheck';
 import { fetchContacts, deleteContact, type Contact } from '../../utils/contacts';
 import { supabase } from '../../integrations/supabase/client';
 
@@ -18,6 +20,7 @@ export function ContactList() {
   const [selectedContact, setSelectedContact] = React.useState<Contact | null>(null);
   const [selectedContacts, setSelectedContacts] = React.useState<string[]>([]);
   const { t } = useTranslation();
+  const { showSubscriptionModal, setShowSubscriptionModal, checkSubscription } = useSubscriptionCheck();
 
   const ITEMS_PER_PAGE = 20;
 
@@ -247,7 +250,7 @@ export function ContactList() {
             </>
           )}
           <button 
-            onClick={() => setShowContactForm(true)}
+            onClick={() => checkSubscription(() => setShowContactForm(true))}
             className="inline-flex items-center px-6 py-3 text-base bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-200 shadow-sm hover:shadow-md font-semibold rounded-lg"
           >
             <Plus className="w-4 h-4 mr-2" />
@@ -423,6 +426,11 @@ export function ContactList() {
         isOpen={showContactForm}
         onClose={() => setShowContactForm(false)}
         onSubmit={handleCreateContact}
+      />
+
+      <SubscriptionModal
+        isOpen={showSubscriptionModal}
+        onClose={() => setShowSubscriptionModal(false)}
       />
     </div>
   );

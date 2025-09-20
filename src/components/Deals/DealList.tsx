@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { Plus, Calendar, DollarSign, User, Building2, Trash2 } from 'lucide-react';
 import { Deal } from '../../types';
 import { SkeletonHeader, SkeletonTable } from '../UI/SkeletonLoader';
+import { SubscriptionModal } from '../UI/SubscriptionModal';
 import { mockDeals } from '../../data/mockData';
 import { DealForm, DealFormData } from './DealForm';
 import { useTranslation } from '../../hooks/useTranslation';
+import { useSubscriptionCheck } from '../../hooks/useSubscriptionCheck';
 
 export function DealList() {
   const [loading, setLoading] = useState(true);
@@ -17,6 +19,7 @@ export function DealList() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
   const { t } = useTranslation();
+  const { showSubscriptionModal, setShowSubscriptionModal, checkSubscription } = useSubscriptionCheck();
 
   React.useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1400);
@@ -215,7 +218,7 @@ export function DealList() {
             </>
           )}
           <button 
-            onClick={() => setShowDealForm(true)}
+            onClick={() => checkSubscription(() => setShowDealForm(true))}
             className="inline-flex items-center px-6 py-3 text-base bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-200 shadow-sm hover:shadow-md font-semibold rounded-lg"
           >
             <Plus className="w-4 h-4 mr-2" />
@@ -396,6 +399,11 @@ export function DealList() {
         isOpen={showDealForm}
         onClose={() => setShowDealForm(false)}
         onSubmit={handleCreateDeal}
+      />
+
+      <SubscriptionModal
+        isOpen={showSubscriptionModal}
+        onClose={() => setShowSubscriptionModal(false)}
       />
     </div>
   );

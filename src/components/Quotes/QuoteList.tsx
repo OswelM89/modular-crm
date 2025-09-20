@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import { Plus, Calendar, DollarSign, User, Building2, Edit, Trash2, Eye } from 'lucide-react';
 import { Quote } from '../../types';
 import { SkeletonHeader, SkeletonTable } from '../UI/SkeletonLoader';
+import { SubscriptionModal } from '../UI/SubscriptionModal';
 import { mockQuotes } from '../../data/mockData';
 import { useTranslation } from '../../hooks/useTranslation';
+import { useSubscriptionCheck } from '../../hooks/useSubscriptionCheck';
 import { CreateQuotePage } from './CreateQuotePage';
 
 export function QuoteList() {
@@ -17,6 +19,7 @@ export function QuoteList() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
   const { t } = useTranslation();
+  const { showSubscriptionModal, setShowSubscriptionModal, checkSubscription } = useSubscriptionCheck();
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1100);
@@ -199,7 +202,7 @@ export function QuoteList() {
             </>
           )}
           <button 
-            onClick={() => setShowCreateQuote(true)}
+            onClick={() => checkSubscription(() => setShowCreateQuote(true))}
             className="inline-flex items-center px-6 py-3 text-base bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-200 shadow-sm hover:shadow-md font-semibold rounded-lg"
           >
             <Plus className="w-4 h-4 mr-2" />
@@ -404,6 +407,11 @@ export function QuoteList() {
           </div>
         )}
       </div>
+
+      <SubscriptionModal
+        isOpen={showSubscriptionModal}
+        onClose={() => setShowSubscriptionModal(false)}
+      />
     </div>
   );
 }

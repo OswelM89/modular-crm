@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Globe, Phone, Users, Mail, Building2 } from 'lucide-react';
 import { SkeletonHeader, SkeletonTable } from '../UI/SkeletonLoader';
 import { CompanyForm } from './CompanyForm';
+import { SubscriptionModal } from '../UI/SubscriptionModal';
 import { CompanyFormData } from '../../utils/companies';
 import { useTranslation } from '../../hooks/useTranslation';
+import { useSubscriptionCheck } from '../../hooks/useSubscriptionCheck';
 import { fetchCompanies, createCompany, deleteCompany, type Company } from '../../utils/companies';
 import { supabase } from '../../integrations/supabase/client';
 
@@ -17,6 +19,7 @@ export function CompanyList() {
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
   const [showCompanyForm, setShowCompanyForm] = useState(false);
   const { t } = useTranslation();
+  const { showSubscriptionModal, setShowSubscriptionModal, checkSubscription } = useSubscriptionCheck();
 
   const ITEMS_PER_PAGE = 20;
 
@@ -213,7 +216,7 @@ export function CompanyList() {
             </>
           )}
           <button 
-            onClick={() => setShowCompanyForm(true)}
+            onClick={() => checkSubscription(() => setShowCompanyForm(true))}
             className="inline-flex items-center px-6 py-3 text-base bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-200 shadow-sm hover:shadow-md font-semibold rounded-lg"
           >
             <Plus className="w-4 h-4 mr-2" />
@@ -393,6 +396,11 @@ export function CompanyList() {
         isOpen={showCompanyForm}
         onClose={() => setShowCompanyForm(false)}
         onSubmit={handleCreateCompany}
+      />
+
+      <SubscriptionModal
+        isOpen={showSubscriptionModal}
+        onClose={() => setShowSubscriptionModal(false)}
       />
     </div>
   );

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useSubscription } from '../../hooks/useSubscription';
-import { SubscriptionExpiredPage } from './SubscriptionExpiredPage';
 import { AuthPage } from './AuthPage';
 
 interface SubscriptionGuardProps {
@@ -10,7 +9,7 @@ interface SubscriptionGuardProps {
 
 export function SubscriptionGuard({ children }: SubscriptionGuardProps) {
   const { user, loading: authLoading } = useAuth();
-  const { hasActiveSubscription, loading: subscriptionLoading } = useSubscription();
+  const { loading: subscriptionLoading } = useSubscription();
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
@@ -33,11 +32,6 @@ export function SubscriptionGuard({ children }: SubscriptionGuardProps) {
     return <AuthPage />;
   }
 
-  // Show subscription page if no active subscription
-  if (!hasActiveSubscription) {
-    return <SubscriptionExpiredPage />;
-  }
-
-  // Show main app content if authenticated and subscribed
+  // Show main app content if authenticated (regardless of subscription)
   return <>{children}</>;
 }
