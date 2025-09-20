@@ -39,8 +39,8 @@ export function StatsCard({ title, value, icon: Icon, trend, color }: StatsCardP
   
   return (
     <div className={`${colors.bg} p-6 rounded-xl`}>
-      <div className="flex flex-col items-center text-center space-y-3">
-        <Icon className={`w-8 h-8 ${colors.text}`} />
+      <div className="flex flex-col items-start space-y-1">
+        <Icon className="w-8 h-8 text-black" />
         <p className="text-sm font-medium text-gray-600">{title}</p>
         <div className="flex items-baseline">
           <p className="text-2xl font-semibold text-gray-900">{value}</p>
