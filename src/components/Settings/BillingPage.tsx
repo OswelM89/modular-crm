@@ -3,6 +3,15 @@ import { ArrowLeft, CreditCard, Calendar, CheckCircle, XCircle, Clock, AlertTria
 import { useSubscription } from '../../hooks/useSubscription';
 import { supabase } from '../../integrations/supabase/client';
 
+// Declare Bold types for TypeScript
+declare global {
+  interface Window {
+    BoldUiKit?: {
+      init: (config: { selector: string; type: string }) => void;
+    };
+  }
+}
+
 interface BillingPageProps {
   onBack: () => void;
 }
@@ -20,6 +29,35 @@ export function BillingPage({ onBack }: BillingPageProps) {
   const [cancellingSubscription, setCancellingSubscription] = useState(false);
   const [reactivatingSubscription, setReactivatingSubscription] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState('');
+
+  // Load Bold script
+  useEffect(() => {
+    const scriptId = 'bold-ui-kit';
+    if (!document.getElementById(scriptId)) {
+      const script = document.createElement('script');
+      script.id = scriptId;
+      script.src = 'https://bold.co/library/ui-kit.js?type=slider';
+      script.async = true;
+      script.onload = () => {
+        // Initialize Bold widget after script loads
+        if (window.BoldUiKit) {
+          window.BoldUiKit.init({
+            selector: '#bold-security-badge',
+            type: 'slider'
+          });
+        }
+      };
+      document.head.appendChild(script);
+    } else {
+      // Script already exists, try to initialize
+      if (window.BoldUiKit) {
+        window.BoldUiKit.init({
+          selector: '#bold-security-badge',
+          type: 'slider'
+        });
+      }
+    }
+  }, []);
 
   // Calculate time remaining when subscription is cancelled
   useEffect(() => {
@@ -296,8 +334,8 @@ export function BillingPage({ onBack }: BillingPageProps) {
                   <Ban className="w-5 h-5 mr-2" />
                   {cancellingSubscription ? 'Cancelando...' : 'Cancelar Suscripción'}
                 </button>
-                <div className="mt-3">
-                  <script src="https://bold.co/library/ui-kit.js?type=slider"></script>
+                <div className="mt-3 flex justify-center">
+                  <div id="bold-security-badge"></div>
                 </div>
               </div>
             ) : null}
