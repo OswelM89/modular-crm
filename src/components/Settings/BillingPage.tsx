@@ -287,14 +287,19 @@ export function BillingPage({ onBack }: BillingPageProps) {
                 {creatingOrder ? 'Procesando...' : 'Suscribirse Ahora'}
               </button>
             ) : subscription?.status === 'active' ? (
-              <button
-                onClick={handleCancelSubscription}
-                disabled={cancellingSubscription}
-                className="inline-flex items-center px-6 py-3 bg-red-600 text-white hover:bg-red-700 disabled:opacity-50 transition-colors rounded-lg font-medium"
-              >
-                <Ban className="w-5 h-5 mr-2" />
-                {cancellingSubscription ? 'Cancelando...' : 'Cancelar Suscripción'}
-              </button>
+              <div>
+                <button
+                  onClick={handleCancelSubscription}
+                  disabled={cancellingSubscription}
+                  className="inline-flex items-center px-6 py-3 bg-red-600 text-white hover:bg-red-700 disabled:opacity-50 transition-colors rounded-lg font-medium"
+                >
+                  <Ban className="w-5 h-5 mr-2" />
+                  {cancellingSubscription ? 'Cancelando...' : 'Cancelar Suscripción'}
+                </button>
+                <div className="mt-3">
+                  <script src="https://bold.co/library/ui-kit.js?type=slider"></script>
+                </div>
+              </div>
             ) : null}
           </div>
         </div>
