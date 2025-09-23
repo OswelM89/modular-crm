@@ -104,38 +104,34 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <Button
             onClick={() => setShowContactForm(true)}
-            variant="outline"
-            className="h-16 flex flex-col items-center justify-center gap-2"
+            className="aspect-square h-20 flex flex-col items-start justify-center gap-2 bg-[#030712] text-white hover:bg-[#030712]/90 border-none p-4"
           >
             <UserPlus className="w-5 h-5" />
-            <span className="text-xs">Crear Contacto</span>
+            <span className="text-xs text-left">Crear Contacto</span>
           </Button>
           
           <Button
             onClick={() => setShowCompanyForm(true)}
-            variant="outline" 
-            className="h-16 flex flex-col items-center justify-center gap-2"
+            className="aspect-square h-20 flex flex-col items-start justify-center gap-2 bg-[#030712] text-white hover:bg-[#030712]/90 border-none p-4"
           >
             <Building2 className="w-5 h-5" />
-            <span className="text-xs">Crear Empresa</span>
+            <span className="text-xs text-left">Crear Empresa</span>
           </Button>
           
           <Button
             onClick={() => setShowDealForm(true)}
-            variant="outline"
-            className="h-16 flex flex-col items-center justify-center gap-2"
+            className="aspect-square h-20 flex flex-col items-start justify-center gap-2 bg-[#030712] text-white hover:bg-[#030712]/90 border-none p-4"
           >
             <HandshakeIcon className="w-5 h-5" />
-            <span className="text-xs">Crear Negocio</span>
+            <span className="text-xs text-left">Crear Negocio</span>
           </Button>
           
           <Button
             onClick={() => onSectionChange?.('quotes')}
-            variant="outline"
-            className="h-16 flex flex-col items-center justify-center gap-2"
+            className="aspect-square h-20 flex flex-col items-start justify-center gap-2 bg-[#030712] text-white hover:bg-[#030712]/90 border-none p-4"
           >
             <FileText className="w-5 h-5" />
-            <span className="text-xs">Crear Cotización</span>
+            <span className="text-xs text-left">Crear Cotización</span>
           </Button>
         </div>
       </div>
