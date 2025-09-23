@@ -13,7 +13,6 @@ import { formatCurrency } from '../../lib/utils';
 import { createCompany, type CompanyFormData } from '../../utils/companies';
 import { type Contact } from '../../utils/contacts';
 import { type DealFormData } from '../Deals/DealForm';
-import { Button } from '../ui/button';
 
 interface DashboardProps {
   user?: {
@@ -101,38 +100,58 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
       {/* Acciones Rápidas */}
       <div className="mb-8">
         <h2 className="text-lg font-semibold text-foreground mb-4">Acciones Rápidas</h2>
-        <div className="grid grid-cols-4 gap-4 w-full">
-          <Button
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div 
             onClick={() => setShowContactForm(true)}
-            className="aspect-square w-full flex flex-col items-start justify-start gap-2 bg-[#030712] text-white hover:bg-[#030712]/90 border-none p-4 rounded-2xl"
+            className="bg-[#030712] p-6 rounded-xl cursor-pointer hover:bg-[#030712]/90 transition-colors"
           >
-            <Plus className="w-6 h-6 mb-1" />
-            <span className="text-sm font-medium text-left">Crear Contacto</span>
-          </Button>
-          
-          <Button
+            <div className="flex flex-col items-start space-y-1">
+              <Plus className="w-8 h-8 text-white" />
+              <p className="text-sm font-medium text-gray-300">Crear Contacto</p>
+              <div className="flex items-baseline">
+                <p className="text-2xl font-semibold text-white">+</p>
+              </div>
+            </div>
+          </div>
+
+          <div 
             onClick={() => setShowCompanyForm(true)}
-            className="aspect-square w-full flex flex-col items-start justify-start gap-2 bg-[#030712] text-white hover:bg-[#030712]/90 border-none p-4 rounded-2xl"
+            className="bg-[#030712] p-6 rounded-xl cursor-pointer hover:bg-[#030712]/90 transition-colors"
           >
-            <Plus className="w-6 h-6 mb-1" />
-            <span className="text-sm font-medium text-left">Crear Empresa</span>
-          </Button>
-          
-          <Button
+            <div className="flex flex-col items-start space-y-1">
+              <Plus className="w-8 h-8 text-white" />
+              <p className="text-sm font-medium text-gray-300">Crear Empresa</p>
+              <div className="flex items-baseline">
+                <p className="text-2xl font-semibold text-white">+</p>
+              </div>
+            </div>
+          </div>
+
+          <div 
             onClick={() => setShowDealForm(true)}
-            className="aspect-square w-full flex flex-col items-start justify-start gap-2 bg-[#030712] text-white hover:bg-[#030712]/90 border-none p-4 rounded-2xl"
+            className="bg-[#030712] p-6 rounded-xl cursor-pointer hover:bg-[#030712]/90 transition-colors"
           >
-            <Plus className="w-6 h-6 mb-1" />
-            <span className="text-sm font-medium text-left">Crear Negocio</span>
-          </Button>
-          
-          <Button
+            <div className="flex flex-col items-start space-y-1">
+              <Plus className="w-8 h-8 text-white" />
+              <p className="text-sm font-medium text-gray-300">Crear Negocio</p>
+              <div className="flex items-baseline">
+                <p className="text-2xl font-semibold text-white">+</p>
+              </div>
+            </div>
+          </div>
+
+          <div 
             onClick={() => onSectionChange?.('quotes')}
-            className="aspect-square w-full flex flex-col items-start justify-start gap-2 bg-[#030712] text-white hover:bg-[#030712]/90 border-none p-4 rounded-2xl"
+            className="bg-[#030712] p-6 rounded-xl cursor-pointer hover:bg-[#030712]/90 transition-colors"
           >
-            <Plus className="w-6 h-6 mb-1" />
-            <span className="text-sm font-medium text-left">Crear Cotización</span>
-          </Button>
+            <div className="flex flex-col items-start space-y-1">
+              <Plus className="w-8 h-8 text-white" />
+              <p className="text-sm font-medium text-gray-300">Crear Cotización</p>
+              <div className="flex items-baseline">
+                <p className="text-2xl font-semibold text-white">+</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       
