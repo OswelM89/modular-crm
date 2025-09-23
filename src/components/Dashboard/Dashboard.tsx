@@ -1,5 +1,5 @@
 import React from 'react';
-import { Users, Building2, FileText, DollarSign, TrendingUp, UserPlus, HandshakeIcon } from 'lucide-react';
+import { Users, Building2, FileText, DollarSign, TrendingUp, Plus } from 'lucide-react';
 import { StatsCard } from './StatsCard';
 import { WelcomeSection } from './WelcomeSection';
 import { SkeletonStats } from '../UI/SkeletonLoader';
@@ -101,37 +101,37 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
       {/* Acciones Rápidas */}
       <div className="mb-8">
         <h2 className="text-lg font-semibold text-foreground mb-4">Acciones Rápidas</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-4 gap-4 w-full">
           <Button
             onClick={() => setShowContactForm(true)}
-            className="aspect-square h-20 flex flex-col items-start justify-center gap-2 bg-[#030712] text-white hover:bg-[#030712]/90 border-none p-4"
+            className="aspect-square w-full flex flex-col items-center justify-center gap-3 bg-[#030712] text-white hover:bg-[#030712]/90 border-none p-6 rounded-2xl"
           >
-            <UserPlus className="w-5 h-5" />
-            <span className="text-xs text-left">Crear Contacto</span>
+            <Plus className="w-8 h-8" />
+            <span className="text-sm font-medium">Crear Contacto</span>
           </Button>
           
           <Button
             onClick={() => setShowCompanyForm(true)}
-            className="aspect-square h-20 flex flex-col items-start justify-center gap-2 bg-[#030712] text-white hover:bg-[#030712]/90 border-none p-4"
+            className="aspect-square w-full flex flex-col items-center justify-center gap-3 bg-[#030712] text-white hover:bg-[#030712]/90 border-none p-6 rounded-2xl"
           >
-            <Building2 className="w-5 h-5" />
-            <span className="text-xs text-left">Crear Empresa</span>
+            <Plus className="w-8 h-8" />
+            <span className="text-sm font-medium">Crear Empresa</span>
           </Button>
           
           <Button
             onClick={() => setShowDealForm(true)}
-            className="aspect-square h-20 flex flex-col items-start justify-center gap-2 bg-[#030712] text-white hover:bg-[#030712]/90 border-none p-4"
+            className="aspect-square w-full flex flex-col items-center justify-center gap-3 bg-[#030712] text-white hover:bg-[#030712]/90 border-none p-6 rounded-2xl"
           >
-            <HandshakeIcon className="w-5 h-5" />
-            <span className="text-xs text-left">Crear Negocio</span>
+            <Plus className="w-8 h-8" />
+            <span className="text-sm font-medium">Crear Negocio</span>
           </Button>
           
           <Button
             onClick={() => onSectionChange?.('quotes')}
-            className="aspect-square h-20 flex flex-col items-start justify-center gap-2 bg-[#030712] text-white hover:bg-[#030712]/90 border-none p-4"
+            className="aspect-square w-full flex flex-col items-center justify-center gap-3 bg-[#030712] text-white hover:bg-[#030712]/90 border-none p-6 rounded-2xl"
           >
-            <FileText className="w-5 h-5" />
-            <span className="text-xs text-left">Crear Cotización</span>
+            <Plus className="w-8 h-8" />
+            <span className="text-sm font-medium">Crear Cotización</span>
           </Button>
         </div>
       </div>
