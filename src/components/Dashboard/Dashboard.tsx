@@ -104,34 +104,34 @@ export function Dashboard({ user, onSectionChange }: DashboardProps) {
         <div className="grid grid-cols-4 gap-4 w-full">
           <Button
             onClick={() => setShowContactForm(true)}
-            className="aspect-square w-full flex flex-col items-center justify-center gap-3 bg-[#030712] text-white hover:bg-[#030712]/90 border-none p-6 rounded-2xl"
+            className="aspect-square w-full flex flex-col items-start justify-start gap-2 bg-[#030712] text-white hover:bg-[#030712]/90 border-none p-4 rounded-2xl"
           >
-            <Plus className="w-8 h-8" />
-            <span className="text-sm font-medium">Crear Contacto</span>
+            <Plus className="w-6 h-6 mb-1" />
+            <span className="text-sm font-medium text-left">Crear Contacto</span>
           </Button>
           
           <Button
             onClick={() => setShowCompanyForm(true)}
-            className="aspect-square w-full flex flex-col items-center justify-center gap-3 bg-[#030712] text-white hover:bg-[#030712]/90 border-none p-6 rounded-2xl"
+            className="aspect-square w-full flex flex-col items-start justify-start gap-2 bg-[#030712] text-white hover:bg-[#030712]/90 border-none p-4 rounded-2xl"
           >
-            <Plus className="w-8 h-8" />
-            <span className="text-sm font-medium">Crear Empresa</span>
+            <Plus className="w-6 h-6 mb-1" />
+            <span className="text-sm font-medium text-left">Crear Empresa</span>
           </Button>
           
           <Button
             onClick={() => setShowDealForm(true)}
-            className="aspect-square w-full flex flex-col items-center justify-center gap-3 bg-[#030712] text-white hover:bg-[#030712]/90 border-none p-6 rounded-2xl"
+            className="aspect-square w-full flex flex-col items-start justify-start gap-2 bg-[#030712] text-white hover:bg-[#030712]/90 border-none p-4 rounded-2xl"
           >
-            <Plus className="w-8 h-8" />
-            <span className="text-sm font-medium">Crear Negocio</span>
+            <Plus className="w-6 h-6 mb-1" />
+            <span className="text-sm font-medium text-left">Crear Negocio</span>
           </Button>
           
           <Button
             onClick={() => onSectionChange?.('quotes')}
-            className="aspect-square w-full flex flex-col items-center justify-center gap-3 bg-[#030712] text-white hover:bg-[#030712]/90 border-none p-6 rounded-2xl"
+            className="aspect-square w-full flex flex-col items-start justify-start gap-2 bg-[#030712] text-white hover:bg-[#030712]/90 border-none p-4 rounded-2xl"
           >
-            <Plus className="w-8 h-8" />
-            <span className="text-sm font-medium">Crear Cotización</span>
+            <Plus className="w-6 h-6 mb-1" />
+            <span className="text-sm font-medium text-left">Crear Cotización</span>
           </Button>
         </div>
       </div>
