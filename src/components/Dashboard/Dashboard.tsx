@@ -107,7 +107,8 @@ export function Dashboard({
               <Plus className="w-8 h-8 text-white" />
               <p className="text-sm font-medium text-gray-300">Crear Empresa</p>
               <div className="flex items-baseline">
-                <p className="text-2xl font-semibold text-white">+</p>
+                <p className="text-2xl font-semibold text-white">
+              </p>
               </div>
             </div>
           </div>
@@ -117,7 +118,8 @@ export function Dashboard({
               <Plus className="w-8 h-8 text-white" />
               <p className="text-sm font-medium text-gray-300">Crear Negocio</p>
               <div className="flex items-baseline">
-                <p className="text-2xl font-semibold text-white">+</p>
+                <p className="text-2xl font-semibold text-white">
+              </p>
               </div>
             </div>
           </div>
@@ -127,7 +129,8 @@ export function Dashboard({
               <Plus className="w-8 h-8 text-white" />
               <p className="text-sm font-medium text-gray-300">Crear Cotización</p>
               <div className="flex items-baseline">
-                <p className="text-2xl font-semibold text-white">+</p>
+                <p className="text-2xl font-semibold text-white">
+              </p>
               </div>
             </div>
           </div>
