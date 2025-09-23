@@ -89,7 +89,8 @@ export function Dashboard({
       
       {/* Acciones Rápidas */}
       <div className="mb-8">
-        <h2 className="text-lg font-semibold text-foreground mb-4">Acciones Rápidas</h2>
+        <h2 className="text-lg font-semibold text-foreground mb-4">
+      </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div onClick={() => setShowContactForm(true)} className="bg-[#030712] p-6 rounded-xl cursor-pointer hover:bg-[#030712]/90 transition-colors">
             <div className="flex flex-col items-start space-y-1">
