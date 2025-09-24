@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus, Mail, Phone, Building2, Trash2, MoreVertical } from 'lucide-react';
+import { Plus, Building2, Trash2, MoreVertical } from 'lucide-react';
 import { SkeletonHeader, SkeletonTable } from '../UI/SkeletonLoader';
 import { ContactForm } from './ContactForm';
 import { ContactDetail } from './ContactDetail';
@@ -299,71 +299,57 @@ export function ContactList() {
           {/* Contact Cards */}
           {paginatedContacts.map((contact) => (
             <div key={contact.id} className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex items-start justify-between">
-                <div className="flex items-start space-x-4 flex-1">
-                  {/* Checkbox */}
+              <div className="flex items-center justify-between">
+                {/* Left section with checkbox and main info */}
+                <div className="flex items-center space-x-4 flex-1">
                   <input
                     type="checkbox"
                     checked={selectedContacts.includes(contact.id)}
                     onChange={() => handleSelectContact(contact.id)}
-                    className="w-4 h-4 text-primary bg-gray-100 border-gray-300 focus:ring-primary focus:ring-2 mt-1"
+                    className="w-4 h-4 text-primary bg-gray-100 border-gray-300 focus:ring-primary focus:ring-2"
                   />
                   
-                  {/* Avatar */}
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-lg font-medium text-[#FF6200]">
-                      {contact.first_name.charAt(0)}{contact.last_name.charAt(0)}
-                    </span>
-                  </div>
-                  
-                  {/* Contact Info */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between">
+                      <div>
                         <button
                           onClick={() => handleContactClick(contact)}
-                          className="text-xl font-bold text-gray-900 hover:text-primary transition-colors cursor-pointer"
+                          className="text-lg font-bold text-gray-900 hover:text-primary transition-colors cursor-pointer block mb-1"
                         >
                           {contact.first_name} {contact.last_name}
                         </button>
-                        <p className="text-gray-600 mt-1">
+                        <p className="text-sm text-gray-600">
                           {contact.position || 'Sin cargo'} at {userProfiles[contact.user_id] ? 
                             `${userProfiles[contact.user_id].first_name} ${userProfiles[contact.user_id].last_name}`.trim() : 
                             'Empresa no especificada'}
                         </p>
                       </div>
-                      
-                      {/* Status Badge */}
-                      <div className="flex items-center space-x-2">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                          Active
-                        </span>
-                        
-                        {/* More Options */}
-                        <button className="text-gray-400 hover:text-gray-600">
-                          <MoreVertical className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </div>
-                    
-                    {/* Contact Details Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                      <div>
-                        <div className="text-sm text-gray-500 mb-1">Email</div>
-                        <div className="flex items-center text-gray-900">
-                          <Mail className="w-4 h-4 mr-2 text-gray-400" />
-                          <span className="text-sm">{contact.email}</span>
-                        </div>
-                      </div>
-                      <div>
-                        <div className="text-sm text-gray-500 mb-1">Phone</div>
-                        <div className="flex items-center text-gray-900">
-                          <Phone className="w-4 h-4 mr-2 text-gray-400" />
-                          <span className="text-sm">{contact.phone || 'No disponible'}</span>
-                        </div>
-                      </div>
                     </div>
                   </div>
+                </div>
+
+                {/* Right section with contact details */}
+                <div className="flex items-center space-x-8">
+                  <div className="text-right">
+                    <div className="text-sm text-gray-500 mb-1">Email</div>
+                    <div className="text-sm text-gray-900">{contact.email}</div>
+                  </div>
+                  
+                  <div className="text-right">
+                    <div className="text-sm text-gray-500 mb-1">Phone</div>
+                    <div className="text-sm text-gray-900">{contact.phone || 'No disponible'}</div>
+                  </div>
+                  
+                  <div className="text-right">
+                    <div className="text-sm text-gray-500 mb-1">Status</div>
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                      Active
+                    </span>
+                  </div>
+                  
+                  <button className="text-gray-400 hover:text-gray-600 p-1">
+                    <MoreVertical className="w-4 h-4" />
+                  </button>
                 </div>
               </div>
             </div>
