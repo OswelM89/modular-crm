@@ -56,7 +56,7 @@ function AppContent() {
       'dashboard': '/',
       'contacts': '/contactos',
       'companies': '/companias',
-      'deals': '/tratos',
+      'deals': '/negocios',
       'pipeline': '/pipeline',
       'quotes': '/cotizaciones',
       'create-quote': '/cotizaciones/crear',
@@ -80,7 +80,7 @@ function AppContent() {
     if (path === '/') return 'dashboard';
     if (path === '/contactos') return 'contacts';
     if (path === '/companias') return 'companies';
-    if (path === '/tratos') return 'deals';
+    if (path === '/negocios') return 'deals';
     if (path === '/pipeline') return 'pipeline';
     if (path === '/cotizaciones') return 'quotes';
     if (path === '/cotizaciones/crear') return 'create-quote';
@@ -101,7 +101,7 @@ function AppContent() {
           <Route path="/" element={<Dashboard user={transformedUser} onSectionChange={handleSectionChange} />} />
           <Route path="/contactos" element={<ContactList />} />
           <Route path="/companias" element={<CompanyList />} />
-          <Route path="/tratos" element={<DealList />} />
+          <Route path="/negocios" element={<DealList />} />
           <Route path="/pipeline" element={<Pipeline />} />
           <Route path="/cotizaciones" element={<QuoteList />} />
           <Route path="/cotizaciones/crear" element={<CreateQuotePage onBack={() => handleSectionChange('quotes')} />} />
