@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { Dashboard } from './components/Dashboard/Dashboard';
 import { ContactList } from './components/Contacts/ContactList';
 import { CompanyList } from './components/Companies/CompanyList';
@@ -14,11 +15,9 @@ import { AuthProvider } from './contexts/AuthContext';
 import { useAuth } from './contexts/AuthContext';
 
 function AppContent() {
-  const [activeSection, setActiveSection] = useState(() => {
-    return localStorage.getItem('activeSection') || 'dashboard';
-  });
-
   const { user } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const initializeDefaultOrg = async () => {
@@ -53,33 +52,18 @@ function AppContent() {
   } : null;
 
   const handleSectionChange = (section: string) => {
-    setActiveSection(section);
-    localStorage.setItem('activeSection', section);
-  };
-
-  const renderContent = () => {
-    switch (activeSection) {
-      case 'dashboard':
-        return <Dashboard user={transformedUser} onSectionChange={handleSectionChange} />;
-      case 'contacts':
-        return <ContactList />;
-      case 'companies':
-        return <CompanyList />;
-      case 'deals':
-        return <DealList />;
-      case 'pipeline':
-        return <Pipeline />;
-      case 'quotes':
-        return <QuoteList />;
-      case 'create-quote':
-        return <CreateQuotePage onBack={() => handleSectionChange('quotes')} />;
-      case 'profile':
-        return <ProfilePage user={transformedUser} onBack={() => handleSectionChange('dashboard')} />;
-      case 'settings':
-        return <SettingsPage />;
-      default:
-        return <Dashboard user={transformedUser} onSectionChange={handleSectionChange} />;
-    }
+    const routes: { [key: string]: string } = {
+      'dashboard': '/',
+      'contacts': '/contactos',
+      'companies': '/companias',
+      'deals': '/tratos',
+      'pipeline': '/pipeline',
+      'quotes': '/cotizaciones',
+      'create-quote': '/cotizaciones/crear',
+      'profile': '/perfil',
+      'settings': '/configuracion'
+    };
+    navigate(routes[section] || '/');
   };
 
   if (!transformedUser) {
@@ -90,15 +74,40 @@ function AppContent() {
     );
   }
 
+  // Get current section from path
+  const getActiveSection = () => {
+    const path = location.pathname;
+    if (path === '/') return 'dashboard';
+    if (path === '/contactos') return 'contacts';
+    if (path === '/companias') return 'companies';
+    if (path === '/tratos') return 'deals';
+    if (path === '/pipeline') return 'pipeline';
+    if (path === '/cotizaciones') return 'quotes';
+    if (path === '/cotizaciones/crear') return 'create-quote';
+    if (path === '/perfil') return 'profile';
+    if (path === '/configuracion') return 'settings';
+    return 'dashboard';
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header
-        activeSection={activeSection}
+        activeSection={getActiveSection()}
         onSectionChange={handleSectionChange}
         user={transformedUser}
       />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {renderContent()}
+        <Routes>
+          <Route path="/" element={<Dashboard user={transformedUser} onSectionChange={handleSectionChange} />} />
+          <Route path="/contactos" element={<ContactList />} />
+          <Route path="/companias" element={<CompanyList />} />
+          <Route path="/tratos" element={<DealList />} />
+          <Route path="/pipeline" element={<Pipeline />} />
+          <Route path="/cotizaciones" element={<QuoteList />} />
+          <Route path="/cotizaciones/crear" element={<CreateQuotePage onBack={() => handleSectionChange('quotes')} />} />
+          <Route path="/perfil" element={<ProfilePage user={transformedUser} onBack={() => handleSectionChange('dashboard')} />} />
+          <Route path="/configuracion" element={<SettingsPage />} />
+        </Routes>
       </main>
     </div>
   );
@@ -108,7 +117,9 @@ function App() {
   return (
     <AuthProvider>
       <SubscriptionGuard>
-        <AppContent />
+        <Router>
+          <AppContent />
+        </Router>
       </SubscriptionGuard>
     </AuthProvider>
   );
