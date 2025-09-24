@@ -329,18 +329,27 @@ export function ContactList() {
                 </div>
 
                 {/* Right section with contact details */}
-                <div className="flex items-center space-x-8">
-                  <div className="text-right">
+                <div className="flex items-center space-x-6">
+                  <div className="text-right min-w-[120px]">
                     <div className="text-sm text-gray-500 mb-1">Email</div>
                     <div className="text-sm text-gray-900">{contact.email}</div>
                   </div>
                   
-                  <div className="text-right">
+                  <div className="text-right min-w-[120px]">
                     <div className="text-sm text-gray-500 mb-1">Phone</div>
                     <div className="text-sm text-gray-900">{contact.phone || 'No disponible'}</div>
                   </div>
                   
-                  <div className="text-right">
+                  <div className="text-right min-w-[120px]">
+                    <div className="text-sm text-gray-500 mb-1">Responsable</div>
+                    <div className="text-sm text-gray-900">
+                      {userProfiles[contact.user_id] ? 
+                        `${userProfiles[contact.user_id].first_name} ${userProfiles[contact.user_id].last_name}`.trim() : 
+                        `Usuario ${contact.user_id.slice(-5).toUpperCase()}`}
+                    </div>
+                  </div>
+                  
+                  <div className="text-right min-w-[80px]">
                     <div className="text-sm text-gray-500 mb-1">Status</div>
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                       Active
