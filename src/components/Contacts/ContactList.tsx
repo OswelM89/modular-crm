@@ -1,6 +1,6 @@
 import React from 'react';
 import { Plus, Building2, Trash2, MoreVertical } from 'lucide-react';
-import { SkeletonHeader, SkeletonTable } from '../UI/SkeletonLoader';
+import { SkeletonHeader } from '../UI/SkeletonLoader';
 import { ContactForm } from './ContactForm';
 import { ContactDetail } from './ContactDetail';
 import { SubscriptionModal } from '../UI/SubscriptionModal';
@@ -187,7 +187,61 @@ export function ContactList() {
   if (loading) {
     return <div className="space-y-6">
         <SkeletonHeader />
-        <SkeletonTable />
+        <div className="rounded-xl">
+          <div className="p-6 border border-gray-200 bg-white rounded-lg">
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex items-center space-x-4 flex-1">
+                <div className="w-4 h-4 bg-gray-200 rounded animate-pulse"></div>
+                <div className="flex-1 h-10 bg-gray-200 rounded animate-pulse"></div>
+              </div>
+              <div className="w-48 h-10 bg-gray-200 rounded animate-pulse"></div>
+            </div>
+          </div>
+          
+          <div className="space-y-4 pt-6 bg-transparent">
+            {Array.from({ length: 5 }, (_, i) => (
+              <div key={i} className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-4 flex-1">
+                    <div className="w-4 h-4 bg-gray-200 rounded animate-pulse"></div>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <div className="w-48 h-6 bg-gray-200 rounded animate-pulse mb-1"></div>
+                          <div className="w-32 h-4 bg-gray-200 rounded animate-pulse"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center space-x-6">
+                    <div className="text-right min-w-[120px]">
+                      <div className="w-12 h-3 bg-gray-200 rounded animate-pulse mb-1"></div>
+                      <div className="w-24 h-4 bg-gray-200 rounded animate-pulse"></div>
+                    </div>
+                    
+                    <div className="text-right min-w-[120px]">
+                      <div className="w-12 h-3 bg-gray-200 rounded animate-pulse mb-1"></div>
+                      <div className="w-20 h-4 bg-gray-200 rounded animate-pulse"></div>
+                    </div>
+                    
+                    <div className="text-right min-w-[120px]">
+                      <div className="w-16 h-3 bg-gray-200 rounded animate-pulse mb-1"></div>
+                      <div className="w-24 h-4 bg-gray-200 rounded animate-pulse"></div>
+                    </div>
+                    
+                    <div className="text-right min-w-[80px]">
+                      <div className="w-12 h-3 bg-gray-200 rounded animate-pulse mb-1"></div>
+                      <div className="w-16 h-5 bg-gray-200 rounded-full animate-pulse"></div>
+                    </div>
+                    
+                    <div className="w-4 h-4 bg-gray-200 rounded animate-pulse"></div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>;
   }
   return <div className="space-y-6">
