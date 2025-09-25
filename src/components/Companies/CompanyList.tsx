@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Globe, Phone, Users, Mail, Building2 } from 'lucide-react';
-import { SkeletonHeader, SkeletonTable } from '../UI/SkeletonLoader';
+import { Plus, Building2, MoreVertical } from 'lucide-react';
+import { SkeletonHeader } from '../UI/SkeletonLoader';
 import { CompanyForm } from './CompanyForm';
 import { SubscriptionModal } from '../UI/SubscriptionModal';
 import { CompanyFormData } from '../../utils/companies';
@@ -174,12 +174,69 @@ export function CompanyList() {
   };
 
   if (loading) {
-    return (
-      <div className="space-y-6">
+    return <div className="space-y-6">
         <SkeletonHeader />
-        <SkeletonTable />
-      </div>
-    );
+        <div className="rounded-xl">
+          <div className="p-6 border border-gray-200 bg-white rounded-lg">
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex items-center space-x-4 flex-1">
+                <div className="w-4 h-4 bg-gray-200 rounded animate-pulse"></div>
+                <div className="flex-1 h-10 bg-gray-200 rounded animate-pulse"></div>
+              </div>
+              <div className="w-48 h-10 bg-gray-200 rounded animate-pulse"></div>
+            </div>
+          </div>
+          
+          <div className="space-y-4 pt-6 bg-transparent">
+            {Array.from({ length: 5 }, (_, i) => (
+              <div key={i} className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-4 flex-1">
+                    <div className="w-4 h-4 bg-gray-200 rounded animate-pulse"></div>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <div className="w-48 h-6 bg-gray-200 rounded animate-pulse mb-1"></div>
+                          <div className="w-32 h-4 bg-gray-200 rounded animate-pulse"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center space-x-6">
+                    <div className="text-right min-w-[120px]">
+                      <div className="w-12 h-3 bg-gray-200 rounded animate-pulse mb-1"></div>
+                      <div className="w-24 h-4 bg-gray-200 rounded animate-pulse"></div>
+                    </div>
+                    
+                    <div className="text-right min-w-[120px]">
+                      <div className="w-12 h-3 bg-gray-200 rounded animate-pulse mb-1"></div>
+                      <div className="w-20 h-4 bg-gray-200 rounded animate-pulse"></div>
+                    </div>
+                    
+                    <div className="text-right min-w-[120px]">
+                      <div className="w-16 h-3 bg-gray-200 rounded animate-pulse mb-1"></div>
+                      <div className="w-24 h-4 bg-gray-200 rounded animate-pulse"></div>
+                    </div>
+                    
+                    <div className="text-right min-w-[120px]">
+                      <div className="w-16 h-3 bg-gray-200 rounded animate-pulse mb-1"></div>
+                      <div className="w-24 h-4 bg-gray-200 rounded animate-pulse"></div>
+                    </div>
+                    
+                    <div className="text-right min-w-[80px]">
+                      <div className="w-12 h-3 bg-gray-200 rounded animate-pulse mb-1"></div>
+                      <div className="w-16 h-5 bg-gray-200 rounded-full animate-pulse"></div>
+                    </div>
+                    
+                    <div className="w-4 h-4 bg-gray-200 rounded animate-pulse"></div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>;
   }
 
   return (
@@ -225,16 +282,27 @@ export function CompanyList() {
         </div>
       </div>
 
-      <div className="bg-white border border-gray-200 rounded-xl">
-        <div className="p-6 border-b border-gray-200">
+      <div className="rounded-xl">
+        <div className="p-6 border border-gray-200 bg-white rounded-lg">
           <div className="flex flex-col sm:flex-row gap-4">
-            <input
-              type="text"
-              placeholder={t('companies.search')}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-            />
+            <div className="flex items-center space-x-4 flex-1">
+              <label className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={selectedCompanies.length === paginatedCompanies.length && paginatedCompanies.length > 0}
+                  onChange={handleSelectAll}
+                  className="w-4 h-4 text-primary bg-gray-100 border-gray-300 focus:ring-primary focus:ring-2"
+                />
+                <span className="text-sm text-gray-600">Seleccionar todo</span>
+              </label>
+              <input
+                type="text"
+                placeholder={t('companies.search')}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              />
+            </div>
             <select
               value={responsibleFilter}
               onChange={(e) => setResponsibleFilter(e.target.value)}
@@ -250,89 +318,98 @@ export function CompanyList() {
           </div>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left">
+        <div className="space-y-4 pt-6 bg-transparent">
+          {/* Company Cards */}
+          {paginatedCompanies.map(company => (
+            <div key={company.id} className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center justify-between">
+                {/* Left section with checkbox and main info */}
+                <div className="flex items-center space-x-4 flex-1">
                   <input
                     type="checkbox"
-                    checked={selectedCompanies.length === paginatedCompanies.length && paginatedCompanies.length > 0}
-                    onChange={handleSelectAll}
-                   className="w-4 h-4 text-primary bg-gray-100 border-gray-300 focus:ring-primary focus:ring-2"
+                    checked={selectedCompanies.includes(company.id)}
+                    onChange={() => handleSelectCompany(company.id)}
+                    className="w-4 h-4 text-primary bg-gray-100 border-gray-300 focus:ring-primary focus:ring-2"
                   />
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Empresa
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Sector
-                </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Responsable
-                  </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Contacto
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {paginatedCompanies.map((company) => (
-                <tr key={company.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <input
-                      type="checkbox"
-                      checked={selectedCompanies.includes(company.id)}
-                      onChange={() => handleSelectCompany(company.id)}
-                     className="w-4 h-4 text-primary bg-gray-100 border-gray-300 focus:ring-primary focus:ring-2"
-                    />
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                        <span className="text-sm font-medium text-primary">
-                          {company.name.charAt(0)}
-                        </span>
-                      </div>
-                      <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900 hover:text-primary transition-colors cursor-pointer">
+                  
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="text-lg font-bold text-gray-900 hover:text-primary transition-colors cursor-pointer block mb-1">
                           {company.name}
                         </div>
-                        <div className="flex items-center text-sm text-gray-600">
-                          <Globe className="w-4 h-4 mr-1" />
-                          {company.website || 'Sin sitio web'}
-                        </div>
+                        <p className="text-sm text-gray-600">
+                          NIT: {company.nit} • {company.sector || 'Sin sector especificado'}
+                        </p>
                       </div>
                     </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      <Building2 className="w-4 h-4 text-gray-400 mr-2" />
-                      <span className="text-sm text-gray-900">{company.sector || 'Sin especificar'}</span>
+                  </div>
+                </div>
+
+                {/* Right section with company details */}
+                <div className="flex items-center space-x-6">
+                  <div className="text-right min-w-[120px]">
+                    <div className="text-sm text-gray-500 mb-1">Email</div>
+                    <div className="text-sm text-gray-900">{company.email || 'Sin email'}</div>
+                  </div>
+                  
+                  <div className="text-right min-w-[120px]">
+                    <div className="text-sm text-gray-500 mb-1">Teléfono</div>
+                    <div className="text-sm text-gray-900">{company.phone || 'Sin teléfono'}</div>
+                  </div>
+                  
+                  <div className="text-right min-w-[120px]">
+                    <div className="text-sm text-gray-500 mb-1">Website</div>
+                    <div className="text-sm text-gray-900">{company.website || 'Sin website'}</div>
+                  </div>
+
+                  <div className="text-right min-w-[120px]">
+                    <div className="text-sm text-gray-500 mb-1">Responsable</div>
+                    <div className="text-sm text-gray-900">
+                      {userProfiles[company.user_id] 
+                        ? `${userProfiles[company.user_id].first_name} ${userProfiles[company.user_id].last_name}`.trim()
+                        : `Usuario ${company.user_id.slice(-5).toUpperCase()}`}
                     </div>
-                  </td>
-                   <td className="px-6 py-4 whitespace-nowrap">
-                     <div className="flex items-center">
-                       <Users className="w-4 h-4 text-gray-400 mr-2" />
-                       <span className="text-sm text-gray-900">{company.responsible_name || 'Usuario desconocido'}</span>
-                     </div>
-                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="space-y-1">
-                      <div className="flex items-center text-sm text-gray-600">
-                        <Mail className="w-4 h-4 mr-2" />
-                        {company.email || 'Sin email'}
-                      </div>
-                      <div className="flex items-center text-sm text-gray-600">
-                        <Phone className="w-4 h-4 mr-2" />
-                        {company.phone || 'Sin teléfono'}
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  </div>
+                  
+                  <div className="text-right min-w-[80px]">
+                    <div className="text-sm text-gray-500 mb-1">Status</div>
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                      Activa
+                    </span>
+                  </div>
+                  
+                  <button className="text-gray-400 hover:text-gray-600 p-1">
+                    <MoreVertical className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+          
+          {/* Empty State */}
+          {paginatedCompanies.length === 0 && (
+            <div className="bg-white border border-gray-200 rounded-lg p-12 text-center">
+              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Building2 className="w-8 h-8 text-gray-400" />
+              </div>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">No hay empresas</h3>
+              <p className="text-gray-600 mb-6">
+                {searchTerm || responsibleFilter !== 'all'
+                  ? 'No se encontraron empresas con los filtros aplicados.'
+                  : 'Comienza agregando tu primera empresa.'}
+              </p>
+              {!searchTerm && responsibleFilter === 'all' && (
+                <button
+                  onClick={() => checkSubscription(() => setShowCompanyForm(true))}
+                  className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Agregar Empresa
+                </button>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Pagination */}
