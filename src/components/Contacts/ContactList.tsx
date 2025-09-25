@@ -243,7 +243,7 @@ export function ContactList() {
           </div>
         </div>
 
-        <div className="space-y-4 bg-white/0">
+        <div className="space-y-4 pt-6">
           {/* Contact Cards */}
           {paginatedContacts.map(contact => <div key={contact.id} className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
               <div className="flex items-center justify-between">
