@@ -224,7 +224,7 @@ export function ContactList() {
         </div>
       </div>
 
-      <div className="bg-white border border-gray-200 rounded-xl">
+      <div className="border border-gray-200 rounded-xl">
         <div className="p-6 border-b border-gray-200">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex items-center space-x-4 flex-1">
