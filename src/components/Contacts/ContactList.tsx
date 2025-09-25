@@ -225,7 +225,7 @@ export function ContactList() {
       </div>
 
       <div className="rounded-xl">
-        <div className="p-6 border-b border-gray-200">
+        <div className="p-6 border border-gray-200 bg-white rounded-lg">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex items-center space-x-4 flex-1">
               <label className="flex items-center space-x-2">
