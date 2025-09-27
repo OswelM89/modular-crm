@@ -324,7 +324,7 @@ export function CompanyList() {
             <div key={company.id} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
               <div className="flex items-center justify-between">
                 {/* Left section with checkbox and company info */}
-                <div className="flex items-center space-x-4 flex-1 min-w-0">
+                <div className="flex items-center space-x-4 flex-1">
                   <input
                     type="checkbox"
                     checked={selectedCompanies.includes(company.id)}
@@ -332,43 +332,45 @@ export function CompanyList() {
                     className="w-4 h-4 text-primary bg-gray-100 border-gray-300 focus:ring-primary focus:ring-2 flex-shrink-0"
                   />
                   
-                  <div className="min-w-0 flex-1">
-                    <h3 className="text-lg font-bold text-gray-900 hover:text-primary transition-colors cursor-pointer truncate">
+                  <div className="flex-1">
+                    <h3 className="text-lg font-bold text-gray-900 hover:text-primary transition-colors cursor-pointer">
                       {company.name}
                     </h3>
-                    <p className="text-sm text-gray-500 truncate">
+                    <p className="text-sm text-gray-500">
                       {company.sector || 'Sin sector especificado'}
                     </p>
                   </div>
                 </div>
 
-                {/* Right section with details in columns */}
-                <div className="flex items-center space-x-8 flex-shrink-0">
-                  <div className="text-right min-w-[120px] hidden md:block">
-                    <div className="text-xs text-gray-500 mb-1">Website</div>
-                    <div className="text-sm text-gray-900 truncate">
-                      {company.website || 'Sin website'}
-                    </div>
-                  </div>
-                  
-                  <div className="text-right min-w-[120px] hidden sm:block">
-                    <div className="text-xs text-gray-500 mb-1">Contacto Principal</div>
+                {/* Contact info section */}
+                <div className="flex items-center space-x-12 flex-1">
+                  <div className="text-left">
+                    <div className="text-xs text-gray-500 mb-1">Email</div>
                     <div className="text-sm text-gray-900">
-                      {company.email || 'Sin contacto'}
+                      {company.email || 'Sin email'}
                     </div>
                   </div>
                   
-                  <div className="text-right min-w-[100px]">
-                    <div className="text-xs text-gray-500 mb-1">Estado</div>
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                      Cliente
-                    </span>
+                  <div className="text-left">
+                    <div className="text-xs text-gray-500 mb-1">Teléfono</div>
+                    <div className="text-sm text-gray-900">
+                      {company.phone || 'Sin teléfono'}
+                    </div>
                   </div>
                   
-                  <button className="text-gray-400 hover:text-gray-600 p-1 flex-shrink-0">
-                    <MoreVertical className="w-4 h-4" />
-                  </button>
+                  <div className="text-left">
+                    <div className="text-xs text-gray-500 mb-1">Responsable</div>
+                    <div className="text-sm text-gray-900">
+                      {userProfiles[company.user_id] 
+                        ? `${userProfiles[company.user_id].first_name} ${userProfiles[company.user_id].last_name}`.trim()
+                        : `Usuario ${company.user_id.slice(-5).toUpperCase()}`}
+                    </div>
+                  </div>
                 </div>
+                
+                <button className="text-gray-400 hover:text-gray-600 p-1 flex-shrink-0 ml-4">
+                  <MoreVertical className="w-4 h-4" />
+                </button>
               </div>
 
               {/* Mobile details - only show on small screens */}
@@ -383,6 +385,14 @@ export function CompanyList() {
                   <div className="text-xs text-gray-500 mb-1">Teléfono</div>
                   <div className="text-sm text-gray-900">
                     {company.phone || 'Sin teléfono'}
+                  </div>
+                </div>
+                <div className="col-span-2">
+                  <div className="text-xs text-gray-500 mb-1">Responsable</div>
+                  <div className="text-sm text-gray-900">
+                    {userProfiles[company.user_id] 
+                      ? `${userProfiles[company.user_id].first_name} ${userProfiles[company.user_id].last_name}`.trim()
+                      : `Usuario ${company.user_id.slice(-5).toUpperCase()}`}
                   </div>
                 </div>
               </div>
