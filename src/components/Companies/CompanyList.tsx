@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Building2, MoreVertical } from 'lucide-react';
+import { Plus, Building2 } from 'lucide-react';
 import { SkeletonHeader } from '../UI/SkeletonLoader';
 import { CompanyForm } from './CompanyForm';
+import { CompanyDropdown } from './CompanyDropdown';
 import { SubscriptionModal } from '../UI/SubscriptionModal';
 import { CompanyFormData } from '../../utils/companies';
 import { useTranslation } from '../../hooks/useTranslation';
@@ -324,7 +325,7 @@ export function CompanyList() {
             <div key={company.id} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
               <div className="flex items-center">
                 {/* Checkbox section */}
-                <div className="flex items-center space-x-4 w-1/3">
+                <div className="flex items-center space-x-4 w-1/4">
                   <input
                     type="checkbox"
                     checked={selectedCompanies.includes(company.id)}
@@ -359,7 +360,7 @@ export function CompanyList() {
                 </div>
                 
                 {/* Responsible section */}
-                <div className="w-1/4 text-left">
+                <div className="w-1/5 text-left">
                   <div className="text-xs text-gray-500 mb-1">Responsable</div>
                   <div className="text-sm text-gray-900">
                     {userProfiles[company.user_id] 
@@ -367,12 +368,36 @@ export function CompanyList() {
                       : `Usuario ${company.user_id.slice(-5).toUpperCase()}`}
                   </div>
                 </div>
+
+                {/* Creation date section */}
+                <div className="w-1/6 text-left">
+                  <div className="text-xs text-gray-500 mb-1">Fecha de Creación</div>
+                  <div className="text-sm text-gray-900">
+                    {new Date(company.created_at).toLocaleDateString('es-ES')}
+                  </div>
+                </div>
                 
-                {/* Menu button */}
-                <div className="w-12 flex justify-end">
-                  <button className="text-gray-400 hover:text-gray-600 p-1">
-                    <MoreVertical className="w-4 h-4" />
-                  </button>
+                {/* Menu button with dropdown */}
+                <div className="w-12 flex justify-end relative">
+                  <CompanyDropdown 
+                    company={company}
+                    onEdit={(companyId) => {
+                      // TODO: Implement edit functionality
+                      console.log('Edit company:', companyId);
+                    }}
+                    onDelete={async (companyId) => {
+                      const confirmDelete = window.confirm('¿Estás seguro de que quieres eliminar esta empresa?');
+                      if (confirmDelete) {
+                        try {
+                          await deleteCompany(companyId);
+                          setCompanies(prev => prev.filter(c => c.id !== companyId));
+                        } catch (error) {
+                          console.error('Error deleting company:', error);
+                          alert('Error al eliminar la empresa. Por favor intenta de nuevo.');
+                        }
+                      }
+                    }}
+                  />
                 </div>
               </div>
 
@@ -396,6 +421,12 @@ export function CompanyList() {
                     {userProfiles[company.user_id] 
                       ? `${userProfiles[company.user_id].first_name} ${userProfiles[company.user_id].last_name}`.trim()
                       : `Usuario ${company.user_id.slice(-5).toUpperCase()}`}
+                  </div>
+                </div>
+                <div className="col-span-2">
+                  <div className="text-xs text-gray-500 mb-1">Fecha de Creación</div>
+                  <div className="text-sm text-gray-900">
+                    {new Date(company.created_at).toLocaleDateString('es-ES')}
                   </div>
                 </div>
               </div>
