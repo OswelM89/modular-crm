@@ -322,9 +322,9 @@ export function CompanyList() {
           {/* Company Cards */}
           {paginatedCompanies.map(company => (
             <div key={company.id} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex items-center justify-between">
-                {/* Left section with checkbox and company info */}
-                <div className="flex items-center space-x-4 flex-1">
+              <div className="flex items-center">
+                {/* Checkbox section */}
+                <div className="flex items-center space-x-4 w-1/3">
                   <input
                     type="checkbox"
                     checked={selectedCompanies.includes(company.id)}
@@ -342,35 +342,38 @@ export function CompanyList() {
                   </div>
                 </div>
 
-                {/* Contact info section */}
-                <div className="flex items-center space-x-12 flex-1">
-                  <div className="text-left">
-                    <div className="text-xs text-gray-500 mb-1">Email</div>
-                    <div className="text-sm text-gray-900">
-                      {company.email || 'Sin email'}
-                    </div>
-                  </div>
-                  
-                  <div className="text-left">
-                    <div className="text-xs text-gray-500 mb-1">Teléfono</div>
-                    <div className="text-sm text-gray-900">
-                      {company.phone || 'Sin teléfono'}
-                    </div>
-                  </div>
-                  
-                  <div className="text-left">
-                    <div className="text-xs text-gray-500 mb-1">Responsable</div>
-                    <div className="text-sm text-gray-900">
-                      {userProfiles[company.user_id] 
-                        ? `${userProfiles[company.user_id].first_name} ${userProfiles[company.user_id].last_name}`.trim()
-                        : `Usuario ${company.user_id.slice(-5).toUpperCase()}`}
-                    </div>
+                {/* Email section */}
+                <div className="w-1/6 text-left">
+                  <div className="text-xs text-gray-500 mb-1">Email</div>
+                  <div className="text-sm text-gray-900">
+                    {company.email || 'Sin email'}
                   </div>
                 </div>
                 
-                <button className="text-gray-400 hover:text-gray-600 p-1 flex-shrink-0 ml-4">
-                  <MoreVertical className="w-4 h-4" />
-                </button>
+                {/* Phone section */}
+                <div className="w-1/6 text-left">
+                  <div className="text-xs text-gray-500 mb-1">Teléfono</div>
+                  <div className="text-sm text-gray-900">
+                    {company.phone || 'Sin teléfono'}
+                  </div>
+                </div>
+                
+                {/* Responsible section */}
+                <div className="w-1/4 text-left">
+                  <div className="text-xs text-gray-500 mb-1">Responsable</div>
+                  <div className="text-sm text-gray-900">
+                    {userProfiles[company.user_id] 
+                      ? `${userProfiles[company.user_id].first_name} ${userProfiles[company.user_id].last_name}`.trim()
+                      : `Usuario ${company.user_id.slice(-5).toUpperCase()}`}
+                  </div>
+                </div>
+                
+                {/* Menu button */}
+                <div className="w-12 flex justify-end">
+                  <button className="text-gray-400 hover:text-gray-600 p-1">
+                    <MoreVertical className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
 
               {/* Mobile details - only show on small screens */}
