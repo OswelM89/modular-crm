@@ -321,63 +321,68 @@ export function CompanyList() {
         <div className="space-y-4 pt-6 bg-transparent">
           {/* Company Cards */}
           {paginatedCompanies.map(company => (
-            <div key={company.id} className="bg-white border border-gray-200 rounded-lg p-4 md:p-6 shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex flex-col space-y-4">
-                {/* Header with checkbox and company name */}
-                <div className="flex items-start space-x-3">
+            <div key={company.id} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center justify-between">
+                {/* Left section with checkbox and company info */}
+                <div className="flex items-center space-x-4 flex-1 min-w-0">
                   <input
                     type="checkbox"
                     checked={selectedCompanies.includes(company.id)}
                     onChange={() => handleSelectCompany(company.id)}
-                    className="w-4 h-4 text-primary bg-gray-100 border-gray-300 focus:ring-primary focus:ring-2 mt-1"
+                    className="w-4 h-4 text-primary bg-gray-100 border-gray-300 focus:ring-primary focus:ring-2 flex-shrink-0"
                   />
                   
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-bold text-gray-900 hover:text-primary transition-colors cursor-pointer">
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-lg font-bold text-gray-900 hover:text-primary transition-colors cursor-pointer truncate">
                       {company.name}
                     </h3>
-                    <p className="text-sm text-gray-600 mt-1">
-                      NIT: {company.nit}
+                    <p className="text-sm text-gray-500 truncate">
+                      {company.sector || 'Sin sector especificado'}
                     </p>
-                    {company.sector && (
-                      <p className="text-sm text-gray-500 mt-1">
-                        {company.sector}
-                      </p>
-                    )}
                   </div>
+                </div>
 
+                {/* Right section with details in columns */}
+                <div className="flex items-center space-x-8 flex-shrink-0">
+                  <div className="text-right min-w-[120px] hidden md:block">
+                    <div className="text-xs text-gray-500 mb-1">Website</div>
+                    <div className="text-sm text-gray-900 truncate">
+                      {company.website || 'Sin website'}
+                    </div>
+                  </div>
+                  
+                  <div className="text-right min-w-[120px] hidden sm:block">
+                    <div className="text-xs text-gray-500 mb-1">Contacto Principal</div>
+                    <div className="text-sm text-gray-900">
+                      {company.email || 'Sin contacto'}
+                    </div>
+                  </div>
+                  
+                  <div className="text-right min-w-[100px]">
+                    <div className="text-xs text-gray-500 mb-1">Estado</div>
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                      Cliente
+                    </span>
+                  </div>
+                  
                   <button className="text-gray-400 hover:text-gray-600 p-1 flex-shrink-0">
                     <MoreVertical className="w-4 h-4" />
                   </button>
                 </div>
+              </div>
 
-                {/* Company details grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2 border-t border-gray-100">
-                  <div>
-                    <div className="text-xs text-gray-500 mb-1">Email</div>
-                    <div className="text-sm text-gray-900 truncate">
-                      {company.email || 'Sin email'}
-                    </div>
-                    <div className="text-xs text-gray-500 mb-1 mt-3">Teléfono</div>
-                    <div className="text-sm text-gray-900">
-                      {company.phone || 'Sin teléfono'}
-                    </div>
+              {/* Mobile details - only show on small screens */}
+              <div className="mt-4 grid grid-cols-2 gap-4 sm:hidden border-t border-gray-100 pt-4">
+                <div>
+                  <div className="text-xs text-gray-500 mb-1">Email</div>
+                  <div className="text-sm text-gray-900 truncate">
+                    {company.email || 'Sin email'}
                   </div>
-                  
-                  <div>
-                    <div className="text-xs text-gray-500 mb-1">Responsable</div>
-                    <div className="text-sm text-gray-900">
-                      {userProfiles[company.user_id] 
-                        ? `${userProfiles[company.user_id].first_name} ${userProfiles[company.user_id].last_name}`.trim()
-                        : `Usuario ${company.user_id.slice(-5).toUpperCase()}`}
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <div className="text-xs text-gray-500 mb-1">Estado</div>
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                      Activa
-                    </span>
+                </div>
+                <div>
+                  <div className="text-xs text-gray-500 mb-1">Teléfono</div>
+                  <div className="text-sm text-gray-900">
+                    {company.phone || 'Sin teléfono'}
                   </div>
                 </div>
               </div>
