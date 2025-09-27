@@ -321,50 +321,51 @@ export function CompanyList() {
         <div className="space-y-4 pt-6 bg-transparent">
           {/* Company Cards */}
           {paginatedCompanies.map(company => (
-            <div key={company.id} className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex items-center justify-between">
-                {/* Left section with checkbox and main info */}
-                <div className="flex items-center space-x-4 flex-1">
+            <div key={company.id} className="bg-white border border-gray-200 rounded-lg p-4 md:p-6 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex flex-col space-y-4">
+                {/* Header with checkbox and company name */}
+                <div className="flex items-start space-x-3">
                   <input
                     type="checkbox"
                     checked={selectedCompanies.includes(company.id)}
                     onChange={() => handleSelectCompany(company.id)}
-                    className="w-4 h-4 text-primary bg-gray-100 border-gray-300 focus:ring-primary focus:ring-2"
+                    className="w-4 h-4 text-primary bg-gray-100 border-gray-300 focus:ring-primary focus:ring-2 mt-1"
                   />
                   
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className="text-lg font-bold text-gray-900 hover:text-primary transition-colors cursor-pointer block mb-1">
-                          {company.name}
-                        </div>
-                        <p className="text-sm text-gray-600">
-                          NIT: {company.nit} • {company.sector || 'Sin sector especificado'}
-                        </p>
-                      </div>
-                    </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-lg font-bold text-gray-900 hover:text-primary transition-colors cursor-pointer">
+                      {company.name}
+                    </h3>
+                    <p className="text-sm text-gray-600 mt-1">
+                      NIT: {company.nit}
+                    </p>
+                    {company.sector && (
+                      <p className="text-sm text-gray-500 mt-1">
+                        {company.sector}
+                      </p>
+                    )}
                   </div>
+
+                  <button className="text-gray-400 hover:text-gray-600 p-1 flex-shrink-0">
+                    <MoreVertical className="w-4 h-4" />
+                  </button>
                 </div>
 
-                {/* Right section with company details */}
-                <div className="flex items-center space-x-6">
-                  <div className="text-right min-w-[120px]">
-                    <div className="text-sm text-gray-500 mb-1">Email</div>
-                    <div className="text-sm text-gray-900">{company.email || 'Sin email'}</div>
+                {/* Company details grid */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2 border-t border-gray-100">
+                  <div>
+                    <div className="text-xs text-gray-500 mb-1">Email</div>
+                    <div className="text-sm text-gray-900 truncate">
+                      {company.email || 'Sin email'}
+                    </div>
+                    <div className="text-xs text-gray-500 mb-1 mt-3">Teléfono</div>
+                    <div className="text-sm text-gray-900">
+                      {company.phone || 'Sin teléfono'}
+                    </div>
                   </div>
                   
-                  <div className="text-right min-w-[120px]">
-                    <div className="text-sm text-gray-500 mb-1">Teléfono</div>
-                    <div className="text-sm text-gray-900">{company.phone || 'Sin teléfono'}</div>
-                  </div>
-                  
-                  <div className="text-right min-w-[120px]">
-                    <div className="text-sm text-gray-500 mb-1">Website</div>
-                    <div className="text-sm text-gray-900">{company.website || 'Sin website'}</div>
-                  </div>
-
-                  <div className="text-right min-w-[120px]">
-                    <div className="text-sm text-gray-500 mb-1">Responsable</div>
+                  <div>
+                    <div className="text-xs text-gray-500 mb-1">Responsable</div>
                     <div className="text-sm text-gray-900">
                       {userProfiles[company.user_id] 
                         ? `${userProfiles[company.user_id].first_name} ${userProfiles[company.user_id].last_name}`.trim()
@@ -372,16 +373,12 @@ export function CompanyList() {
                     </div>
                   </div>
                   
-                  <div className="text-right min-w-[80px]">
-                    <div className="text-sm text-gray-500 mb-1">Status</div>
+                  <div>
+                    <div className="text-xs text-gray-500 mb-1">Estado</div>
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                       Activa
                     </span>
                   </div>
-                  
-                  <button className="text-gray-400 hover:text-gray-600 p-1">
-                    <MoreVertical className="w-4 h-4" />
-                  </button>
                 </div>
               </div>
             </div>
