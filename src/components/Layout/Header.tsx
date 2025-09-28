@@ -3,6 +3,7 @@ import { BarChart3, Building2, Users, Handshake, FileText, TrendingUp, Menu, X, 
 import { LanguageSelector } from '../UI/LanguageSelector';
 import { useTranslation } from '../../hooks/useTranslation';
 import { useAuth } from '../../contexts/AuthContext';
+import logoMetricApps from '../../assets/Logo-metricapps.png';
 const navigation = [{
   id: 'dashboard',
   nameKey: 'nav.dashboard',
@@ -81,7 +82,7 @@ export function Header({
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <span className="font-semibold text-lg text-white">Modular CRM</span>
+            <img src={logoMetricApps} alt="Metric Apps" className="h-8 w-auto" />
           </div>
 
           {/* Desktop Navigation */}
