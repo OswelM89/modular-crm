@@ -2,7 +2,7 @@ export function Footer() {
   return (
     <footer className="bg-[#0D1117] text-white mt-12">
       <div className="px-6 py-8">
-        <div className="max-w-[1150px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex flex-col md:flex-row items-center gap-4 w-full justify-center">
               <div className="flex items-center space-x-4">
