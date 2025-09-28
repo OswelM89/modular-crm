@@ -90,7 +90,7 @@ export function Header({
             const Icon = item.icon;
             const isActive = activeSection === item.id;
             return <div key={item.id} className="relative group">
-                  <button onClick={() => onSectionChange(item.id)} className={`flex items-center justify-center w-10 h-10 rounded-md transition-all duration-200 ${isActive ? 'bg-primary text-primary-foreground shadow-sm' : 'text-white hover:text-white/80 hover:bg-white/10'}`}>
+                  <button onClick={() => onSectionChange(item.id)} className={`flex items-center justify-center w-10 h-10 rounded-md transition-all duration-200 ${isActive ? 'bg-[#77ff00] text-black shadow-sm' : 'text-white hover:text-black hover:bg-[#77ff00]/60'}`}>
                     <Icon className="w-5 h-5" />
                   </button>
                   
@@ -111,7 +111,7 @@ export function Header({
             {user && <div className="relative user-dropdown">
                 <div className="hidden sm:flex items-center gap-3 cursor-pointer transition-all duration-200" onClick={() => setUserDropdownOpen(!userDropdownOpen)}>
                   {/* Avatar a la izquierda */}
-                  {user.avatar_url ? <img src={user.avatar_url} alt="Avatar" className="w-8 h-8 rounded-full ring-2 ring-primary/20" /> : <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-medium ring-2 ring-primary/20">
+                  {user.avatar_url ? <img src={user.avatar_url} alt="Avatar" className="w-8 h-8 rounded-full ring-2 ring-[#77ff00]/40" /> : <div className="w-8 h-8 rounded-full bg-[#77ff00] text-black flex items-center justify-center text-sm font-medium ring-2 ring-[#77ff00]/40">
                       {user.firstName.charAt(0)}
                     </div>}
                   
@@ -163,7 +163,7 @@ export function Header({
             return <button key={item.id} onClick={() => {
               onSectionChange(item.id);
               setMobileMenuOpen(false);
-            }} className={`flex items-center gap-3 px-4 py-3 rounded-md text-sm font-medium transition-colors text-left ${isActive ? 'bg-primary text-primary-foreground' : 'text-white hover:text-white/80 hover:bg-white/10'}`}>
+            }} className={`flex items-center gap-3 px-4 py-3 rounded-md text-sm font-medium transition-colors text-left ${isActive ? 'bg-[#77ff00] text-black' : 'text-white hover:text-black hover:bg-[#77ff00]/60'}`}>
                     <Icon className="w-4 h-4" />
                     {t(item.nameKey)}
                   </button>;
