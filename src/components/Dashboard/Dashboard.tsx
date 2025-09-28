@@ -92,45 +92,45 @@ export function Dashboard({
         <h2 className="text-lg font-semibold text-foreground mb-4">
       </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div onClick={() => setShowContactForm(true)} className="bg-[#0C6943] p-6 rounded-xl cursor-pointer hover:bg-[#0C6943]/90 transition-colors">
+          <div onClick={() => setShowContactForm(true)} className="bg-[#77ff00] p-6 rounded-xl cursor-pointer hover:bg-[#77ff00]/90 transition-colors">
             <div className="flex flex-col items-start space-y-1">
-              <Plus className="w-8 h-8 text-white" />
-              <p className="text-sm font-medium text-gray-300">Crear Contacto</p>
+              <Plus className="w-8 h-8 text-black" />
+              <p className="text-sm font-medium text-gray-800">Crear Contacto</p>
               <div className="flex items-baseline">
-                <p className="text-2xl font-semibold text-white">
+                <p className="text-2xl font-semibold text-black">
               </p>
               </div>
             </div>
           </div>
 
-          <div onClick={() => setShowCompanyForm(true)} className="bg-[#0C6943] p-6 rounded-xl cursor-pointer hover:bg-[#0C6943]/90 transition-colors">
+          <div onClick={() => setShowCompanyForm(true)} className="bg-[#77ff00] p-6 rounded-xl cursor-pointer hover:bg-[#77ff00]/90 transition-colors">
             <div className="flex flex-col items-start space-y-1">
-              <Plus className="w-8 h-8 text-white" />
-              <p className="text-sm font-medium text-gray-300">Crear Empresa</p>
+              <Plus className="w-8 h-8 text-black" />
+              <p className="text-sm font-medium text-gray-800">Crear Empresa</p>
               <div className="flex items-baseline">
-                <p className="text-2xl font-semibold text-white">
+                <p className="text-2xl font-semibold text-black">
               </p>
               </div>
             </div>
           </div>
 
-          <div onClick={() => setShowDealForm(true)} className="bg-[#0C6943] p-6 rounded-xl cursor-pointer hover:bg-[#0C6943]/90 transition-colors">
+          <div onClick={() => setShowDealForm(true)} className="bg-[#77ff00] p-6 rounded-xl cursor-pointer hover:bg-[#77ff00]/90 transition-colors">
             <div className="flex flex-col items-start space-y-1">
-              <Plus className="w-8 h-8 text-white" />
-              <p className="text-sm font-medium text-gray-300">Crear Negocio</p>
+              <Plus className="w-8 h-8 text-black" />
+              <p className="text-sm font-medium text-gray-800">Crear Negocio</p>
               <div className="flex items-baseline">
-                <p className="text-2xl font-semibold text-white">
+                <p className="text-2xl font-semibold text-black">
               </p>
               </div>
             </div>
           </div>
 
-          <div onClick={() => onSectionChange?.('quotes')} className="bg-[#0C6943] p-6 rounded-xl cursor-pointer hover:bg-[#0C6943]/90 transition-colors">
+          <div onClick={() => onSectionChange?.('quotes')} className="bg-[#77ff00] p-6 rounded-xl cursor-pointer hover:bg-[#77ff00]/90 transition-colors">
             <div className="flex flex-col items-start space-y-1">
-              <Plus className="w-8 h-8 text-white" />
-              <p className="text-sm font-medium text-gray-300">Crear Cotización</p>
+              <Plus className="w-8 h-8 text-black" />
+              <p className="text-sm font-medium text-gray-800">Crear Cotización</p>
               <div className="flex items-baseline">
-                <p className="text-2xl font-semibold text-white">
+                <p className="text-2xl font-semibold text-black">
               </p>
               </div>
             </div>
