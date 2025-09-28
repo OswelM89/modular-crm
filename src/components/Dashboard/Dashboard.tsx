@@ -91,7 +91,7 @@ export function Dashboard({
       <div className="mb-8">
         <h2 className="text-lg font-semibold text-foreground mb-4">
       </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div onClick={() => setShowContactForm(true)} className="bg-[#0C6943] p-6 rounded-xl cursor-pointer hover:bg-[#0C6943]/90 transition-colors">
             <div className="flex flex-col items-start space-y-1">
               <Plus className="w-8 h-8 text-white" />
@@ -129,17 +129,6 @@ export function Dashboard({
             <div className="flex flex-col items-start space-y-1">
               <Plus className="w-8 h-8 text-white" />
               <p className="text-sm font-medium text-gray-300">Crear Cotización</p>
-              <div className="flex items-baseline">
-                <p className="text-2xl font-semibold text-white">
-              </p>
-              </div>
-            </div>
-          </div>
-
-          <div onClick={() => onSectionChange?.('tutoriales')} className="bg-[#0C6943] p-6 rounded-xl cursor-pointer hover:bg-[#0C6943]/90 transition-colors">
-            <div className="flex flex-col items-start space-y-1">
-              <Plus className="w-8 h-8 text-white" />
-              <p className="text-sm font-medium text-gray-300">Ver Tutoriales</p>
               <div className="flex items-baseline">
                 <p className="text-2xl font-semibold text-white">
               </p>

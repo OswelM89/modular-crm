@@ -46,7 +46,7 @@ export function WelcomeSection({ userName, onSectionChange }: WelcomeSectionProp
             onClick={() => onSectionChange('tutoriales')}
             variant="secondary"
             size="lg"
-            className="hover-scale"
+            className="hover-scale bg-[#0C6943] text-white hover:bg-[#0C6943]/90"
           >
             <BookOpen className="w-4 h-4 mr-2" />
             Tutoriales
