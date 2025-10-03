@@ -55,7 +55,7 @@ function AppContent() {
     const routes: { [key: string]: string } = {
       'dashboard': '/',
       'contacts': '/contactos',
-      'companies': '/companias',
+      'companies': '/empresas',
       'deals': '/negocios',
       'pipeline': '/pipeline',
       'quotes': '/cotizaciones',
@@ -79,13 +79,13 @@ function AppContent() {
     const path = location.pathname;
     if (path === '/') return 'dashboard';
     if (path === '/contactos') return 'contacts';
-    if (path === '/companias') return 'companies';
+    if (path === '/empresas') return 'companies';
     if (path === '/negocios') return 'deals';
     if (path === '/pipeline') return 'pipeline';
     if (path === '/cotizaciones') return 'quotes';
     if (path === '/cotizaciones/crear') return 'create-quote';
     if (path === '/perfil') return 'profile';
-    if (path === '/configuracion') return 'settings';
+    if (path.startsWith('/configuracion')) return 'settings';
     return 'dashboard';
   };
 
@@ -100,13 +100,13 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<Dashboard user={transformedUser} onSectionChange={handleSectionChange} />} />
           <Route path="/contactos" element={<ContactList />} />
-          <Route path="/companias" element={<CompanyList />} />
+          <Route path="/empresas" element={<CompanyList />} />
           <Route path="/negocios" element={<DealList />} />
           <Route path="/pipeline" element={<Pipeline />} />
           <Route path="/cotizaciones" element={<QuoteList />} />
           <Route path="/cotizaciones/crear" element={<CreateQuotePage onBack={() => handleSectionChange('quotes')} />} />
           <Route path="/perfil" element={<ProfilePage user={transformedUser} onBack={() => handleSectionChange('dashboard')} />} />
-          <Route path="/configuracion" element={<SettingsPage />} />
+          <Route path="/configuracion/*" element={<SettingsPage />} />
         </Routes>
       </main>
     </div>

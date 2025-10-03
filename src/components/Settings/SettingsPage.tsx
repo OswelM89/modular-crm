@@ -1,17 +1,11 @@
-import { useState, useEffect } from 'react';
 import { UserPlus, FileText, Plus, CreditCard } from 'lucide-react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import { AddUserPage } from './AddUserPage';
 import { QuoteConfigPage } from './QuoteConfigPage';
 import { BillingPage } from './BillingPage';
 
 export function SettingsPage() {
-  const [currentPage, setCurrentPage] = useState<string>(() => {
-    return localStorage.getItem('settingsCurrentPage') || 'main';
-  });
-
-  useEffect(() => {
-    localStorage.setItem('settingsCurrentPage', currentPage);
-  }, [currentPage]);
+  const navigate = useNavigate();
 
   const settingsCards = [
     {
@@ -21,7 +15,7 @@ export function SettingsPage() {
       icon: CreditCard,
       color: 'bg-gray-100',
       available: true,
-      action: () => setCurrentPage('billing')
+      action: () => navigate('/configuracion/facturacion')
     },
     {
       id: 'users',
@@ -30,7 +24,7 @@ export function SettingsPage() {
       icon: UserPlus,
       color: 'bg-gray-100',
       available: true,
-      action: () => setCurrentPage('users')
+      action: () => navigate('/configuracion/gestion-de-usuarios')
     },
     {
       id: 'quotes',
@@ -39,7 +33,7 @@ export function SettingsPage() {
       icon: FileText,
       color: 'bg-gray-100',
       available: true,
-      action: () => setCurrentPage('quotes')
+      action: () => navigate('/configuracion/configuracion-de-cotizaciones')
     },
     {
       id: 'integrations',
@@ -61,21 +55,7 @@ export function SettingsPage() {
     }
   ];
 
-  // Renderizar páginas específicas
-  if (currentPage === 'billing') {
-    return <BillingPage onBack={() => setCurrentPage('main')} />;
-  }
-
-  if (currentPage === 'users') {
-    return <AddUserPage onBack={() => setCurrentPage('main')} />;
-  }
-
-  if (currentPage === 'quotes') {
-    return <QuoteConfigPage onBack={() => setCurrentPage('main')} />;
-  }
-
-  // Vista principal de configuraciones
-  return (
+  const MainSettings = () => (
     <div className="space-y-6">
       <div>
         <h1 className="text-gray-900" style={{ fontSize: '1.875rem', fontWeight: '700' }}>
@@ -137,5 +117,14 @@ export function SettingsPage() {
         </div>
       </div>
     </div>
+  );
+
+  return (
+    <Routes>
+      <Route index element={<MainSettings />} />
+      <Route path="facturacion" element={<BillingPage onBack={() => navigate('/configuracion')} />} />
+      <Route path="gestion-de-usuarios" element={<AddUserPage onBack={() => navigate('/configuracion')} />} />
+      <Route path="configuracion-de-cotizaciones" element={<QuoteConfigPage onBack={() => navigate('/configuracion')} />} />
+    </Routes>
   );
 }
