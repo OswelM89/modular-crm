@@ -6,6 +6,7 @@ import { SkeletonStats } from '../UI/SkeletonLoader';
 import { ContactForm } from '../Contacts/ContactForm';
 import { CompanyForm } from '../Companies/CompanyForm';
 import { DealForm } from '../Deals/DealForm';
+import { ChartCard } from './ChartCard';
 import { mockQuotes } from '../../data/mockData';
 import { useTranslation } from '../../hooks/useTranslation';
 import { useDashboardStats } from '../../hooks/useDashboardStats';
@@ -84,9 +85,46 @@ export function Dashboard({
         <SkeletonStats />
       </div>;
   }
+  // Mock data for charts - replace with real data
+  const quotesData = [
+    { name: 'Lun', value: 12 },
+    { name: 'Mar', value: 19 },
+    { name: 'Mié', value: 8 },
+    { name: 'Jue', value: 15 },
+    { name: 'Vie', value: 22 },
+    { name: 'Sáb', value: 7 },
+    { name: 'Dom', value: 5 }
+  ];
+
+  const dealsData = [
+    { name: 'Lun', value: 5 },
+    { name: 'Mar', value: 8 },
+    { name: 'Mié', value: 3 },
+    { name: 'Jue', value: 6 },
+    { name: 'Vie', value: 10 },
+    { name: 'Sáb', value: 4 },
+    { name: 'Dom', value: 2 }
+  ];
+
   return <div className="space-y-6">
       <WelcomeSection userName={user?.firstName || 'Usuario'} onSectionChange={onSectionChange || (() => {})} />
       
+      {/* Gráficas */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <ChartCard
+          title="Cotizaciones Realizadas"
+          data={quotesData}
+          color="#77ff00"
+          onPeriodChange={(period) => console.log('Periodo cotizaciones:', period)}
+        />
+        <ChartCard
+          title="Negocios Ganados"
+          data={dealsData}
+          color="#77ff00"
+          onPeriodChange={(period) => console.log('Periodo negocios:', period)}
+        />
+      </div>
+
       {/* Acciones Rápidas */}
       <div className="mb-8">
         <h2 className="text-lg font-semibold text-foreground mb-4">
